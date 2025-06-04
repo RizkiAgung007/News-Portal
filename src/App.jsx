@@ -12,7 +12,7 @@ import Footer from './components/Footer/Footer'
 
 function App() {
   const location = useLocation();
-  const hideNavbarOnPaths = ['/login', '/register', '/profile']; 
+  const hideNavbarOnPaths = ['/login', '/register', '/profile', '/news/:id']; 
   const hideUI = hideNavbarOnPaths.includes(location.pathname);
 
   return (
