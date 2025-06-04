@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../../config'; 
 
 const Comment = ({ newsId, token, username }) => {
   const [comments, setComments] = useState([]);
@@ -11,7 +12,7 @@ const Comment = ({ newsId, token, username }) => {
 
   // Ambil komentar dari backend
   const fetchComments = () => {
-    fetch(`http://localhost:5000/api/comments?news_url=${encodeURIComponent(newsUrl)}`)
+    fetch(`${API_BASE_URL}/api/comments?news_url=${encodeURIComponent(newsUrl)}`)
       .then(res => res.json())
       .then(data => setComments(data))
       .catch(() => setError('Gagal mengambil komentar'));
@@ -89,7 +90,7 @@ const Comment = ({ newsId, token, username }) => {
         {comments.map(({ id_comment, username, content, create_at }) => (
           <div key={id_comment} className="mb-4 border-b pb-2">
             <div className="flex items-center space-x-3 mb-1">
-              <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
                 {username.charAt(0).toUpperCase()}
               </div>
               <span className="font-semibold">{username}</span>

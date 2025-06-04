@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
 import Comment from '../../components/Comments/Comment'
+import { API_BASE_URL } from '../../config'
 
 const NewsDetail = () => {
   const location = useLocation()
@@ -14,7 +15,7 @@ const NewsDetail = () => {
   useEffect(() => {
     if (!token) return;
 
-    fetch('http://localhost:5000/api/auth/profile', {
+    fetch(`${API_BASE_URL}/api/auth/profile`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => {

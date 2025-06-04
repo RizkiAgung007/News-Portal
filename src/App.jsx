@@ -8,6 +8,7 @@ import LoginPage from './Pages/Login/LoginPage'
 import RegistPage from './Pages/Register/RegistPage'
 import ProfilePage from './Pages/ProfilePage/ProfilePage'
 import NewsDetail from './Pages/NewsDetail/NewsDetail'
+import Footer from './components/Footer/Footer'
 
 function App() {
   const location = useLocation();
@@ -27,6 +28,7 @@ function App() {
         <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="*" element={<p className="p-4">Halaman tidak ditemukan.</p>} />
       </Routes>
+      {!hideUI && <Footer />}
     </>
   );
 }
