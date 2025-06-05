@@ -25,5 +25,4 @@ dist-ssr
 
 # Konfigurasi dan file sensitif
 .env
-config.js
 
