@@ -32,7 +32,7 @@ const Navbar = () => {
   return (
     <div className="container mx-auto sticky top-0 z-50 flex justify-between items-center border-b border-gray-300 p-4 bg-white">
       {/* Logo */}
-      <Link to="/" className="lg:text-xl text-[16px] font-bold hover:text-blue-700 transition">
+      <Link to="/" className="lg:text-xl text-[16px] font-bold">
         Portal Berita
       </Link>
 
