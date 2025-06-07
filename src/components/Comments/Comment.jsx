@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../../config'; 
 
-const Comment = ({ newsId, token, username }) => {
+const Comment = ({ articleUrl, token, username }) => {
   const [comments, setComments] = useState([]);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // news_url di frontend kita ambil dari newsId sebagai parameter URL unik berita
-  const newsUrl = newsId || window.location.href;
+  const newsUrl = articleUrl;
 
   // Ambil komentar dari backend
   const fetchComments = () => {
@@ -88,7 +87,7 @@ const Comment = ({ newsId, token, username }) => {
       <div>
         {comments.length === 0 && <p>Belum ada komentar.</p>}
         {comments.map(({ id_comment, username, content, create_at }) => (
-          <div key={id_comment} className="mb-4 border-b pb-2">
+          <div key={id_comment} className="border-b pb-4">
             <div className="flex items-center space-x-3 mb-1">
               <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
                 {username.charAt(0).toUpperCase()}

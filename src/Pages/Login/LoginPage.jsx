@@ -27,8 +27,14 @@ const LoginPage = () => {
 
       localStorage.setItem('token', data.token);
       localStorage.setItem('username', data.username);
+      localStorage.setItem('role', data.role);
+
       alert('Login berhasil!');
-      navigate('/');
+      if (data.role === 'admin') {
+        navigate('/admin/dashboard')
+      } else {
+        navigate('/');
+      }
     } catch (error) {
       alert('Terjadi kesalahan saat login');
       console.error(error);

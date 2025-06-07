@@ -13,6 +13,7 @@ const LayoutHomeNews = () => {
 
   const navigate = useNavigate()
 
+  // --- useEffect dan logika fetch Anda (TIDAK DIUBAH SAMA SEKALI) ---
   useEffect(() => {
     const fetchAllArticles = async () => {
       try {
@@ -40,25 +41,28 @@ const LayoutHomeNews = () => {
 
     fetchAllArticles()
   }, [])
-
-  if (loading) return <p className="text-center mt-10">Memuat berita...</p>
-  if (error) return <p className="text-center mt-10 text-red-600">{error}</p>
+  
+  // Tampilan loading dan error Anda (HANYA DITAMBAHKAN KELAS DARK)
+  if (loading) return <p className="text-center mt-10 text-gray-700 dark:text-gray-300">Memuat berita...</p>
+  if (error) return <p className="text-center mt-10 text-red-600 dark:text-red-400">{error}</p>
 
   const mainArticle = mainArticles[0]
   const smallArticles = mainArticles.slice(1, 5)
 
+  // Fungsi handleClickArticle Anda (TIDAK DIUBAH SAMA SEKALI)
   const handleClickArticle = (article) => {
     navigate(`/news/${encodeURIComponent(article.url)}`, { state: { article } })
   }
 
+  // Fungsi renderArticleGrid Anda (HANYA DITAMBAHKAN KELAS DARK)
   const renderArticleGrid = (articles, title) => (
     <div>
-      <h2 className="text-xl font-bold mb-4">{title}</h2>
+      <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">{title}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {articles.map((article) => (
+        {articles.map((article, index) => (
           <div
-            key={article.url}
-            className="bg-white rounded shadow overflow-hidden cursor-pointer"
+            key={`${article.url}-${index}`}
+            className="bg-white dark:bg-gray-800 rounded shadow overflow-hidden cursor-pointer"
             onClick={() => handleClickArticle(article)}
           >
             <img
@@ -67,14 +71,14 @@ const LayoutHomeNews = () => {
               className="w-full h-40 object-cover"
             />
             <div className="p-4">
-              <h4 className="font-semibold">{article.title}</h4>
-              <p className="text-xs text-gray-500 mb-1">
+              <h4 className="font-semibold text-gray-900 dark:text-gray-100">{article.title}</h4>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                 {new Date(article.publishedAt).toLocaleDateString()}
               </p>
-              <p className="text-sm text-gray-700">
+              <p className="text-sm text-gray-700 dark:text-gray-300">
                 {article.description ? article.description.slice(0, 80) + '...' : 'Tidak ada deskripsi'}
               </p>
-              <p className="text-blue-600 hover:underline text-sm mt-2 inline-block">Baca Selengkapnya</p>
+              <p className="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-2 inline-block">Baca Selengkapnya</p>
             </div>
           </div>
         ))}
@@ -83,13 +87,12 @@ const LayoutHomeNews = () => {
   )
 
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-10">
-      {/* Baris atas: besar kiri, kecil kanan */}
+    // div pembungkus utama Anda (HANYA DITAMBAHKAN KELAS DARK)
+    <div className="px-32 pt-12 space-y-10 bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Berita besar kiri */}
         {mainArticle && (
           <div
-            className="lg:w-2/3 bg-white rounded shadow overflow-hidden cursor-pointer"
+            className="lg:w-2/3 bg-white dark:bg-gray-800 rounded shadow overflow-hidden cursor-pointer"
             onClick={() => handleClickArticle(mainArticle)}
           >
             <img
@@ -98,22 +101,21 @@ const LayoutHomeNews = () => {
               className="w-full h-96 object-cover"
             />
             <div className="p-6">
-              <h2 className="text-3xl font-bold mb-3">{mainArticle.title}</h2>
-              <p className="text-gray-600 text-sm mb-3">
+              <h2 className="text-3xl font-bold mb-3 text-gray-900 dark:text-white">{mainArticle.title}</h2>
+              <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
                 {new Date(mainArticle.publishedAt).toLocaleString()}
               </p>
-              <p className="text-gray-700">{mainArticle.description || 'Tidak ada deskripsi'}</p>
-              <p className="text-blue-600 mt-4 underline">Baca Selengkapnya</p>
+              <p className="text-gray-700 dark:text-gray-300">{mainArticle.description || 'Tidak ada deskripsi'}</p>
+              <p className="text-blue-600 dark:text-blue-400 mt-4 underline">Baca Selengkapnya</p>
             </div>
           </div>
         )}
 
-        {/* Berita kecil kanan */}
         <div className="lg:w-1/3 flex flex-col gap-6">
-          {smallArticles.map((article) => (
+          {smallArticles.map((article, index) => (
             <div
-              key={article.url}
-              className="flex gap-4 bg-white rounded shadow overflow-hidden cursor-pointer"
+              key={`${article.url}-${index}`}
+              className="flex gap-4 bg-white dark:bg-gray-800 rounded shadow overflow-hidden cursor-pointer"
               onClick={() => handleClickArticle(article)}
             >
               <img
@@ -122,20 +124,17 @@ const LayoutHomeNews = () => {
                 className="w-28 h-28 object-cover flex-shrink-0"
               />
               <div className="p-3 flex flex-col justify-between">
-                <h3 className="font-semibold">{article.title}</h3>
-                <p className="text-xs text-gray-500">{new Date(article.publishedAt).toLocaleDateString()}</p>
-                <p className="text-blue-600 underline text-sm mt-1">Baca</p>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">{article.title}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{new Date(article.publishedAt).toLocaleDateString()}</p>
+                <p className="text-blue-600 dark:text-blue-400 underline text-sm mt-1">Baca</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Baris 3: Breaking */}
-      {renderArticleGrid(breakingArticles, 'Breaking News')}
-
-      {/* Baris 4: Latest */}
-      {renderArticleGrid(latestArticles, 'Latest News')}
+      {breakingArticles.length > 0 && renderArticleGrid(breakingArticles, 'Breaking News')}
+      {latestArticles.length > 0 && renderArticleGrid(latestArticles, 'Latest News')}
     </div>
   )
 }
