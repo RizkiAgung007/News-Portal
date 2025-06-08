@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
-import Comment from '../../components/Comments/Comment';
-import { API_BASE_URL } from '../../config';
+import React, { useEffect, useState } from "react";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import Comment from "../../components/Comments/Comment";
+import { API_BASE_URL } from "../../config";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 
 const SearchDetail = () => {
@@ -14,7 +14,7 @@ const SearchDetail = () => {
   const [error, setError] = useState(null);
 
   const [userData, setUserData] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
 
   const [userLikeStatus, setUserLikeStatus] = useState(null);
   const [likeCount, setLikeCount] = useState(0);
@@ -24,12 +24,16 @@ const SearchDetail = () => {
   // --- Logika Anda (Tidak Diubah) ---
   useEffect(() => {
     if (!token) return;
-    fetch(`${API_BASE_URL}/api/auth/profile`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(res => res.ok ? res.json() : Promise.reject('Gagal autentikasi'))
-      .then(data => setUserData(data))
+    fetch(`${API_BASE_URL}/api/auth/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) =>
+        res.ok ? res.json() : Promise.reject("Gagal autentikasi")
+      )
+      .then((data) => setUserData(data))
       .catch(() => {
         localStorage.clear();
-        navigate('/login');
+        navigate("/login");
       });
   }, [token, navigate]);
 
@@ -39,7 +43,7 @@ const SearchDetail = () => {
     setError(null);
     fetch(`${API_BASE_URL}/api/news/${newsId}`)
       .then((res) => {
-        if (!res.ok) throw new Error('Berita tidak ditemukan');
+        if (!res.ok) throw new Error("Berita tidak ditemukan");
         return res.json();
       })
       .then((data) => {
@@ -51,23 +55,28 @@ const SearchDetail = () => {
         setLoading(false);
       });
   }, [newsId, article]);
-  
+
   useEffect(() => {
     if (!article || !token) {
-        setLoadingLike(false);
-        return;
+      setLoadingLike(false);
+      return;
     }
     const articleIdentifier = article.url || article.id_news || newsId;
     if (!articleIdentifier) return;
     setLoadingLike(true);
-    fetch(`${API_BASE_URL}/api/likes?id_news=${encodeURIComponent(articleIdentifier)}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Gagal ambil status like');
+    fetch(
+      `${API_BASE_URL}/api/likes?id_news=${encodeURIComponent(
+        articleIdentifier
+      )}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Gagal ambil status like");
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         setUserLikeStatus(data.userLikeStatus);
         setLikeCount(data.likeCount);
         setDislikeCount(data.dislikeCount);
@@ -78,23 +87,23 @@ const SearchDetail = () => {
 
   const handleLikeDislike = async (action) => {
     if (!token) {
-      alert('Silakan login terlebih dahulu untuk memberi like atau dislike');
+      alert("Silakan login terlebih dahulu untuk memberi like atau dislike");
       return;
     }
     setLoadingLike(true);
     const articleIdentifier = article.url || article.id_news || newsId;
     const isTogglingOff = userLikeStatus === action;
-    const method = isTogglingOff ? 'DELETE' : 'POST';
-    
+    const method = isTogglingOff ? "DELETE" : "POST";
+
     let body = { id_news: articleIdentifier };
-    if (method === 'POST') {
+    if (method === "POST") {
       body.value = action;
     }
     try {
       const res = await fetch(`${API_BASE_URL}/api/likes`, {
         method: method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
@@ -102,14 +111,19 @@ const SearchDetail = () => {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.error || 'Gagal memproses permintaan');
+        throw new Error(errorData.error || "Gagal memproses permintaan");
       }
 
-      const statusRes = await fetch(`${API_BASE_URL}/api/likes?id_news=${encodeURIComponent(articleIdentifier)}`, {
-         headers: { Authorization: `Bearer ${token}` }
-      });
+      const statusRes = await fetch(
+        `${API_BASE_URL}/api/likes?id_news=${encodeURIComponent(
+          articleIdentifier
+        )}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const newData = await statusRes.json();
-      
+
       setUserLikeStatus(newData.userLikeStatus);
       setLikeCount(newData.likeCount);
       setDislikeCount(newData.dislikeCount);
@@ -122,33 +136,51 @@ const SearchDetail = () => {
   // --- End of Logika Anda ---
 
   // [PERBAIKAN] Menambahkan kelas dark: pada teks status
-  if (loading) return <div className="p-10 text-center text-gray-700 dark:text-gray-300">Memuat berita...</div>;
+  if (loading)
+    return (
+      <div className="p-10 text-center text-gray-700 dark:text-gray-300">
+        Memuat berita...
+      </div>
+    );
   if (error) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center">
         <p className="text-red-600 dark:text-red-400">{error}</p>
-        <button onClick={() => navigate(-1)} className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Kembali</button>
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Kembali
+        </button>
       </div>
     );
   }
-  if (!article) return <div className="p-10 text-center text-gray-600 dark:text-gray-400">Data berita tidak tersedia.</div>;
+  if (!article)
+    return (
+      <div className="p-10 text-center text-gray-600 dark:text-gray-400">
+        Data berita tidak tersedia.
+      </div>
+    );
 
   return (
     // [PERBAIKAN] Menambahkan kelas dark: pada div pembungkus utama
     <div className="pt-6 px-32 bg-gray-50 dark:bg-gray-900">
-      <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">{article.title}</h1>
+      <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+        {article.title}
+      </h1>
       <p className="text-gray-600 dark:text-gray-400 mb-2">
         {article.create_at
-          ? new Date(article.create_at).toLocaleString('id-ID')
+          ? new Date(article.create_at).toLocaleString("id-ID")
           : article.publishedAt
-          ? new Date(article.publishedAt).toLocaleString('id-ID')
-          : 'Tanggal tidak tersedia'}
+          ? new Date(article.publishedAt).toLocaleString("id-ID")
+          : "Tanggal tidak tersedia"}
       </p>
       <img
         src={
           article.url_photo
             ? `${API_BASE_URL}${article.url_photo}`
-            : article.urlToImage || 'https://via.placeholder.com/800x450?text=No+Image'
+            : article.urlToImage ||
+              "https://via.placeholder.com/800x450?text=No+Image"
         }
         alt={article.title}
         className="w-1/2 h-auto mb-6 rounded-lg shadow-md"
@@ -157,26 +189,30 @@ const SearchDetail = () => {
       {/* [PERBAIKAN] Menambahkan kelas dark:prose-invert untuk konten artikel */}
       <div className="prose max-w-none mb-4 dark:prose-invert">
         {article.content
-          ? article.content.replace(/\[\+\d+ chars\]$/, '')
-          : article.description || 'Tidak ada konten'}
+          ? article.content.replace(/\[\+\d+ chars\]$/, "")
+          : article.description || "Tidak ada konten"}
       </div>
-      
+
       {article.category && (
         <button
-          onClick={() => navigate(`/category/${encodeURIComponent(article.category)}`)}
+          onClick={() =>
+            navigate(`/category/${encodeURIComponent(article.category)}`)
+          }
           className="text-sm text-blue-600 dark:text-blue-400 font-semibold mb-6 underline hover:text-blue-800"
         >
           Kategori: {article.category}
         </button>
       )}
-      
+
       {/* [PERBAIKAN] Menambahkan kelas dark: pada container dan tombol */}
       <div className="flex items-center space-x-6 mb-6 border-t border-b border-gray-200 dark:border-gray-700 py-4">
         <button
           disabled={loadingLike || !token}
           onClick={() => handleLikeDislike(true)}
           className={`flex items-center space-x-2 px-4 py-2 rounded transition-colors duration-200 ${
-            userLikeStatus === true ? 'bg-green-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+            userLikeStatus === true
+              ? "bg-green-500 text-white"
+              : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
           } hover:bg-green-600 dark:hover:bg-green-600 disabled:opacity-50`}
         >
           <FaThumbsUp />
@@ -186,14 +222,16 @@ const SearchDetail = () => {
           disabled={loadingLike || !token}
           onClick={() => handleLikeDislike(false)}
           className={`flex items-center space-x-2 px-4 py-2 rounded transition-colors duration-200 ${
-            userLikeStatus === false ? 'bg-red-500 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
+            userLikeStatus === false
+              ? "bg-red-500 text-white"
+              : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
           } hover:bg-red-600 dark:hover:bg-red-600 disabled:opacity-50`}
         >
           <FaThumbsDown />
           <span>{dislikeCount}</span>
         </button>
       </div>
-      
+
       <Comment
         articleUrl={article.url || article.id_news || newsId}
         token={token}

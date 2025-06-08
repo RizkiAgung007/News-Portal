@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { API_BASE_URL } from '../../config';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config";
 
 const CategoryPageNews = () => {
   const { category } = useParams();
@@ -16,7 +16,7 @@ const CategoryPageNews = () => {
 
     fetch(`${API_BASE_URL}/api/news?category=${encodeURIComponent(category)}`)
       .then((res) => {
-        if (!res.ok) throw new Error('Gagal memuat berita');
+        if (!res.ok) throw new Error("Gagal memuat berita");
         return res.json();
       })
       .then((data) => {
@@ -81,7 +81,7 @@ const CategoryPageNews = () => {
                 ? new Date(news.create_at).toLocaleString()
                 : news.publishedAt
                 ? new Date(news.publishedAt).toLocaleString()
-                : 'Tanggal tidak tersedia'}
+                : "Tanggal tidak tersedia"}
             </p>
           </li>
         ))}

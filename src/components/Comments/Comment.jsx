@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { API_BASE_URL } from '../../config'; 
+import React, { useEffect, useState } from "react";
+import { API_BASE_URL } from "../../config";
 
 const Comment = ({ articleUrl, token, username }) => {
   const [comments, setComments] = useState([]);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -11,10 +11,12 @@ const Comment = ({ articleUrl, token, username }) => {
 
   // Ambil komentar dari backend
   const fetchComments = () => {
-    fetch(`${API_BASE_URL}/api/comments?news_url=${encodeURIComponent(newsUrl)}`)
-      .then(res => res.json())
-      .then(data => setComments(data))
-      .catch(() => setError('Gagal mengambil komentar'));
+    fetch(
+      `${API_BASE_URL}/api/comments?news_url=${encodeURIComponent(newsUrl)}`
+    )
+      .then((res) => res.json())
+      .then((data) => setComments(data))
+      .catch(() => setError("Gagal mengambil komentar"));
   };
 
   useEffect(() => {
@@ -23,16 +25,16 @@ const Comment = ({ articleUrl, token, username }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!content.trim()) return alert('Komentar tidak boleh kosong');
+    if (!content.trim()) return alert("Komentar tidak boleh kosong");
 
     setLoading(true);
     setError(null);
 
     try {
-      const res = await fetch('http://localhost:5000/api/comments', {
-        method: 'POST',
+      const res = await fetch("http://localhost:5000/api/comments", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ content, news_url: newsUrl }),
@@ -40,10 +42,10 @@ const Comment = ({ articleUrl, token, username }) => {
 
       if (!res.ok) {
         const errData = await res.json();
-        throw new Error(errData.message || 'Gagal mengirim komentar');
+        throw new Error(errData.message || "Gagal mengirim komentar");
       }
 
-      setContent('');
+      setContent("");
       fetchComments();
     } catch (err) {
       setError(err.message);
@@ -70,7 +72,7 @@ const Comment = ({ articleUrl, token, username }) => {
           rows={3}
           placeholder="Tulis komentar kamu..."
           value={content}
-          onChange={e => setContent(e.target.value)}
+          onChange={(e) => setContent(e.target.value)}
           disabled={loading}
         />
         <button
@@ -78,7 +80,7 @@ const Comment = ({ articleUrl, token, username }) => {
           className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
           disabled={loading}
         >
-          {loading ? 'Mengirim...' : 'Kirim Komentar'}
+          {loading ? "Mengirim..." : "Kirim Komentar"}
         </button>
       </form>
 

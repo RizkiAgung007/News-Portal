@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { RxExit } from 'react-icons/rx';
-import { API_BASE_URL } from '../../config';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { RxExit } from "react-icons/rx";
+import { API_BASE_URL } from "../../config";
 
 const RegistPage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (password !== confirm) {
-      alert('Password dan konfirmasi tidak cocok!');
+      alert("Password dan konfirmasi tidak cocok!");
       return;
     }
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
 
@@ -30,26 +30,26 @@ const RegistPage = () => {
       try {
         data = text ? JSON.parse(text) : {};
       } catch (err) {
-        console.error('JSON parse error:', err);
-        alert('Response bukan JSON valid');
+        console.error("JSON parse error:", err);
+        alert("Response bukan JSON valid");
         return;
       }
 
       if (!res.ok) {
-        alert(data.message || 'Registrasi gagal');
+        alert(data.message || "Registrasi gagal");
         return;
       }
 
-      alert('Registrasi berhasil!');
-      navigate('/login');
+      alert("Registrasi berhasil!");
+      navigate("/login");
     } catch (error) {
-      alert('Terjadi kesalahan saat registrasi');
+      alert("Terjadi kesalahan saat registrasi");
       console.error(error);
     }
   };
 
   const handleExit = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -60,10 +60,13 @@ const RegistPage = () => {
         title="Kembali ke Beranda"
       />
       <div
-        style={{ boxShadow: '4px 8px 20px rgba(0,0,0,0.12)' }}
+        style={{ boxShadow: "4px 8px 20px rgba(0,0,0,0.12)" }}
         className="bg-white rounded-xl max-w-md w-full p-8"
       >
-        <h1 className="text-center text-3xl font-serif mb-6" style={{ letterSpacing: '1.5px' }}>
+        <h1
+          className="text-center text-3xl font-serif mb-6"
+          style={{ letterSpacing: "1.5px" }}
+        >
           Buat Akun Baru
         </h1>
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -71,7 +74,9 @@ const RegistPage = () => {
             <label
               htmlFor="username"
               className="block mb-1 text-sm font-semibold text-gray-600"
-              style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}
+              style={{
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              }}
             >
               Username
             </label>
@@ -83,7 +88,7 @@ const RegistPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition"
-              style={{ fontSize: '15px', fontWeight: '500' }}
+              style={{ fontSize: "15px", fontWeight: "500" }}
             />
           </div>
 
@@ -91,7 +96,9 @@ const RegistPage = () => {
             <label
               htmlFor="password"
               className="block mb-1 text-sm font-semibold text-gray-600"
-              style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}
+              style={{
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              }}
             >
               Password
             </label>
@@ -103,7 +110,7 @@ const RegistPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition"
-              style={{ fontSize: '15px', fontWeight: '500' }}
+              style={{ fontSize: "15px", fontWeight: "500" }}
             />
           </div>
 
@@ -111,7 +118,9 @@ const RegistPage = () => {
             <label
               htmlFor="confirm"
               className="block mb-1 text-sm font-semibold text-gray-600"
-              style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}
+              style={{
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              }}
             >
               Konfirmasi Password
             </label>
@@ -123,7 +132,7 @@ const RegistPage = () => {
               onChange={(e) => setConfirm(e.target.value)}
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition"
-              style={{ fontSize: '15px', fontWeight: '500' }}
+              style={{ fontSize: "15px", fontWeight: "500" }}
             />
           </div>
 
@@ -137,7 +146,10 @@ const RegistPage = () => {
 
         <div className="mt-6 text-center text-gray-600 text-sm font-sans">
           <p>Sudah punya akun?</p>
-          <Link to="/login" className="text-green-600 font-semibold hover:underline">
+          <Link
+            to="/login"
+            className="text-green-600 font-semibold hover:underline"
+          >
             Masuk Sekarang
           </Link>
         </div>

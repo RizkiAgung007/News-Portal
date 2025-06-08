@@ -1,48 +1,48 @@
-import './App.css';
-import Navbar from './components/Navbar/Navbar';
-import CategoriesBar from './components/CategoriesBar/CategoriesBar';
-import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import NewsPage from './Pages/NewsPages/NewsPages';
-import CategoryPage from './Pages/CategoryPage/CategoryPage';
-import LoginPage from './Pages/Login/LoginPage';
-import RegistPage from './Pages/Register/RegistPage';
-import ProfilePage from './Pages/ProfilePage/ProfilePage';
-import NewsDetail from './Pages/NewsDetail/NewsDetail';
-import SearchPage from './Pages/SearchPage/SearchPage';
-import Footer from './components/Footer/Footer';
+import "./App.css";
+import Navbar from "./components/Navbar/Navbar";
+import CategoriesBar from "./components/CategoriesBar/CategoriesBar";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import NewsPage from "./Pages/NewsPages/NewsPages";
+import CategoryPage from "./Pages/CategoryPage/CategoryPage";
+import LoginPage from "./Pages/Login/LoginPage";
+import RegistPage from "./Pages/Register/RegistPage";
+import ProfilePage from "./Pages/ProfilePage/ProfilePage";
+import NewsDetail from "./Pages/NewsDetail/NewsDetail";
+import SearchPage from "./Pages/SearchPage/SearchPage";
+import Footer from "./components/Footer/Footer";
 
 // Komponen Admin
-import AdminLayout from './Pages/AdminLayout/AdminLayout';
-import Dashboard from './Pages/AdminLayout/Dashboard/Dashboard';
-import Create from './Pages/AdminLayout/Create/Create';
-import UserManagement from './Pages/AdminLayout/UserManagement/UserManagement';
-import Category from './Pages/AdminLayout/Category/Category';
-import News from './Pages/AdminLayout/News/News';
-import SearchDetail from './Pages/SearchDetailPage/SearchDetailPage';
-import CategoryPageNews from './Pages/CategoryPageNews/CategoryPageNews';
-import AboutUsPage from './Pages/About/AboutUsPage';
-import ContactPage from './Pages/Contact/ContactPage';
-import { useTheme } from './components/Theme/Theme';
+import AdminLayout from "./Pages/AdminLayout/AdminLayout";
+import Dashboard from "./Pages/AdminLayout/Dashboard/Dashboard";
+import Create from "./Pages/AdminLayout/Create/Create";
+import UserManagement from "./Pages/AdminLayout/UserManagement/UserManagement";
+import Category from "./Pages/AdminLayout/Category/Category";
+import News from "./Pages/AdminLayout/News/News";
+import SearchDetail from "./Pages/SearchDetailPage/SearchDetailPage";
+import CategoryPageNews from "./Pages/CategoryPageNews/CategoryPageNews";
+import AboutUsPage from "./Pages/About/AboutUsPage";
+import ContactPage from "./Pages/Contact/ContactPage";
+import { useTheme } from "./components/Theme/Theme";
 
 const AdminRoutes = ({ children }) => {
-  const role = localStorage.getItem('role');
-  return role === 'admin' ? children : <Navigate to="/" />;
+  const role = localStorage.getItem("role");
+  return role === "admin" ? children : <Navigate to="/" />;
 };
 
 function App() {
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
   const hideNavbarOnPaths = [
-    '/login',
-    '/register',
-    '/profile',
-    '/news/:id',
-    '/admin',
-    '/admin/dashboard',
-    '/admin/create',
-    '/admin/users',
-    '/admin/category',
-    '/admin/news',
+    "/login",
+    "/register",
+    "/profile",
+    "/news/:id",
+    "/admin",
+    "/admin/dashboard",
+    "/admin/create",
+    "/admin/users",
+    "/admin/category",
+    "/admin/news",
   ];
   const hideUI = hideNavbarOnPaths.includes(location.pathname);
 
@@ -81,7 +81,10 @@ function App() {
           <Route path="news" element={<News />} />
         </Route>
 
-        <Route path="*" element={<p className="p-4">Halaman tidak ditemukan.</p>} />
+        <Route
+          path="*"
+          element={<p className="p-4">Halaman tidak ditemukan.</p>}
+        />
       </Routes>
 
       {!hideUI && <Footer />}

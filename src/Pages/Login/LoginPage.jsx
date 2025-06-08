@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { RxExit } from 'react-icons/rx';
-import { API_BASE_URL } from '../../config';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { RxExit } from "react-icons/rx";
+import { API_BASE_URL } from "../../config";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -13,36 +13,36 @@ const LoginPage = () => {
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: email, password }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || 'Login gagal');
+        alert(data.message || "Login gagal");
         return;
       }
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('role', data.role);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("username", data.username);
+      localStorage.setItem("role", data.role);
 
-      alert('Login berhasil!');
-      if (data.role === 'admin') {
-        navigate('/admin/dashboard')
+      alert("Login berhasil!");
+      if (data.role === "admin") {
+        navigate("/admin/dashboard");
       } else {
-        navigate('/');
+        navigate("/");
       }
     } catch (error) {
-      alert('Terjadi kesalahan saat login');
+      alert("Terjadi kesalahan saat login");
       console.error(error);
     }
   };
 
   const handleExitLogin = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -54,10 +54,13 @@ const LoginPage = () => {
       />
 
       <div
-        style={{ boxShadow: '4px 8px 20px rgba(0,0,0,0.12)' }}
+        style={{ boxShadow: "4px 8px 20px rgba(0,0,0,0.12)" }}
         className="bg-white rounded-xl max-w-md w-full p-8"
       >
-        <h1 className="text-center text-3xl font-serif mb-6" style={{ letterSpacing: '1.5px' }}>
+        <h1
+          className="text-center text-3xl font-serif mb-6"
+          style={{ letterSpacing: "1.5px" }}
+        >
           Masuk ke Akunmu
         </h1>
         <form onSubmit={handleLogin} className="space-y-5">
@@ -65,7 +68,9 @@ const LoginPage = () => {
             <label
               htmlFor="username"
               className="block mb-1 text-sm font-semibold text-gray-600"
-              style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}
+              style={{
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              }}
             >
               Username
             </label>
@@ -77,14 +82,16 @@ const LoginPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition"
-              style={{ fontSize: '15px', fontWeight: '500' }}
+              style={{ fontSize: "15px", fontWeight: "500" }}
             />
           </div>
           <div>
             <label
               htmlFor="password"
               className="block mb-1 text-sm font-semibold text-gray-600"
-              style={{ fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}
+              style={{
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+              }}
             >
               Password
             </label>
@@ -96,7 +103,7 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent transition"
-              style={{ fontSize: '15px', fontWeight: '500' }}
+              style={{ fontSize: "15px", fontWeight: "500" }}
             />
           </div>
           <button
@@ -108,8 +115,11 @@ const LoginPage = () => {
         </form>
 
         <p className="mt-6 text-center text-gray-600 text-sm">
-          Belum punya akun?{' '}
-          <Link to="/register" className="text-green-600 font-semibold hover:underline">
+          Belum punya akun?{" "}
+          <Link
+            to="/register"
+            className="text-green-600 font-semibold hover:underline"
+          >
             Daftar sekarang
           </Link>
         </p>
