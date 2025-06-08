@@ -1,17 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import SidebarAdmin from '../../components/SidebarAdmin/SidebarAdmin';
+import { FaBars } from 'react-icons/fa';
 
 const AdminLayout = () => {
-  return (
-    <div className="flex">
-      {/* Sidebar yang posisinya sudah fixed */}
-      <SidebarAdmin />
+  // State untuk mengontrol sidebar di mode mobile
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  
+  // State untuk sidebar di mode desktop (collapsible)
+  const [isDesktopCollapsed, setDesktopCollapsed] = useState(false);
 
-      {/* [PERUBAHAN UTAMA DI SINI] */}
-      <main className="flex-1 ml-64 bg-gray-100 dark:bg-gray-900 min-h-screen transition-colors duration-300">
+  return (
+    <div className="relative min-h-screen md:flex">
+
+      {/* Backdrop untuk mobile (area gelap di belakang sidebar) */}
+      {isMobileSidebarOpen && (
+        <div 
+          onClick={() => setMobileSidebarOpen(false)}
+          className="fixed inset-0 bg-black/50 z-20 lg:hidden"
+        ></div>
+      )}
+
+      {/* Sidebar */}
+      <SidebarAdmin 
+        isDesktopCollapsed={isDesktopCollapsed} 
+        setDesktopCollapsed={setDesktopCollapsed}
+        isMobileOpen={isMobileSidebarOpen}
+        setMobileOpen={setMobileSidebarOpen}
+      />
+
+      {/* Konten Utama */}
+      <main className={`flex-1 min-h-screen bg-gray-100 dark:bg-gray-900 transition-all duration-300 ${
+          isDesktopCollapsed ? 'lg:ml-20' : 'lg:ml-64'
+      }`}>
+        
+        {/* Header Konten dengan Tombol Hamburger untuk Mobile */}
+        <div className="sticky top-0 bg-white dark:bg-gray-800 shadow-sm p-4 flex items-center lg:hidden z-10">
+            <button onClick={() => setMobileSidebarOpen(true)} className="text-gray-700 dark:text-gray-200">
+                <FaBars size={24} />
+            </button>
+            <h1 className="text-lg font-semibold ml-4 text-gray-800 dark:text-gray-100">Admin Panel</h1>
+        </div>
+
+        {/* Outlet untuk menampilkan konten halaman (Dashboard, Create, dll) */}
         <div className="p-6 max-w-7xl mx-auto">
-          <Outlet /> 
+          <Outlet />
         </div>
       </main>
     </div>

@@ -22,6 +22,7 @@ import SearchDetail from './Pages/SearchDetailPage/SearchDetailPage';
 import CategoryPageNews from './Pages/CategoryPageNews/CategoryPageNews';
 import AboutUsPage from './Pages/About/AboutUsPage';
 import ContactPage from './Pages/Contact/ContactPage';
+import { useTheme } from './components/Theme/Theme';
 
 const AdminRoutes = ({ children }) => {
   const role = localStorage.getItem('role');
@@ -30,6 +31,7 @@ const AdminRoutes = ({ children }) => {
 
 function App() {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const hideNavbarOnPaths = [
     '/login',
     '/register',
@@ -46,7 +48,7 @@ function App() {
 
   return (
     <>
-      {!hideUI && <Navbar />}
+      {!hideUI && <Navbar toggleTheme={toggleTheme} theme={theme} />}
       {!hideUI && <CategoriesBar />}
 
       <Routes>

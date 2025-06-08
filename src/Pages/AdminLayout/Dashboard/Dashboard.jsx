@@ -115,7 +115,7 @@ const Dashboard = () => {
           <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">Selamat Datang, {username || 'Admin'}!</h1>
           <p className="text-gray-500 dark:text-gray-400">Berikut adalah ringkasan aktivitas di website Anda.</p>
         </div>
-        <button onClick={toggleTheme} className="p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+        <button onClick={toggleTheme} className="p-3 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
             {theme === 'light' ? <FaMoon /> : <FaSun />}
         </button>
       </div>

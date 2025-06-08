@@ -5,7 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { FaSun, FaMoon, FaTachometerAlt } from 'react-icons/fa'; // Ditambahkan FaTachometerAlt
 
-const Navbar = () => {
+const Navbar = ({ theme, toggleTheme }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
@@ -14,7 +14,7 @@ const Navbar = () => {
   const avatarMenuRef = useRef();
 
   // --- Logika Dark Mode Anda (Tidak Diubah) ---
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
+  // const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -26,9 +26,9 @@ const Navbar = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
-  };
+  // const toggleTheme = () => {
+  //   setTheme(theme === 'light' ? 'dark' : 'light');
+  // };
 
   // --- Logika Lainnya Anda (Tidak Diubah) ---
   useEffect(() => {

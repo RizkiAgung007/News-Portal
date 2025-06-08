@@ -104,7 +104,7 @@ const Create = () => {
     <div className="">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">Buat Berita Baru</h2>
-        <button onClick={toggleTheme} className="p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+        <button onClick={toggleTheme} className="p-3 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
             {theme === 'light' ? <FaMoon /> : <FaSun />}
         </button>
       </div>
@@ -166,7 +166,7 @@ const Create = () => {
         <div className="text-right">
           <button
             type="submit" disabled={submitting}
-            className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-8 rounded-lg transition-colors disabled:bg-green-400"
+            className="w-full cursor-pointer md:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-8 rounded-lg transition-colors disabled:bg-green-400"
           >
             {submitting ? 'Menyimpan...' : 'Simpan Berita'}
           </button>
