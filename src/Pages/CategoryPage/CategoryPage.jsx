@@ -10,7 +10,6 @@ const CategoryPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // --- LOGIKA ANDA, TIDAK DIUBAH SAMA SEKALI ---
   useEffect(() => {
     const fetchAllArticles = async () => {
       setLoading(true);
@@ -71,13 +70,11 @@ const CategoryPage = () => {
   // --- END OF LOGIKA ANDA ---
 
   return (
-    // [PERBAIKAN] Menambahkan kelas dark: pada div pembungkus utama
     <div className="pt-4 px-32 min-h-screen bg-gray-50 dark:bg-gray-900">
       <h2 className="text-2xl font-bold mb-4 capitalize text-gray-900 dark:text-gray-100">
         Berita {categoryName}
       </h2>
 
-      {/* [PERBAIKAN] Menambahkan kelas dark: pada teks status */}
       {loading ? (
         <p className="text-gray-600 dark:text-gray-400">Memuat berita...</p>
       ) : articles.length === 0 ? (
@@ -87,7 +84,6 @@ const CategoryPage = () => {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {articles.map((article, i) => (
-            // [PERBAIKAN] Menambahkan kelas dark: pada setiap kartu
             <div
               key={article.url || article.id_news || i}
               className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow cursor-pointer hover:shadow-xl transition-shadow"

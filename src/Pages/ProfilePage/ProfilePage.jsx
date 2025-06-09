@@ -7,7 +7,6 @@ import { FaThumbsUp, FaCommentDots } from "react-icons/fa";
 const ProfilePage = () => {
   const [username, setUsername] = useState("");
   const [createdAt, setCreatedAt] = useState("");
-  // 1. State baru untuk statistik aktivitas
   const [stats, setStats] = useState({ totalLikes: 0, totalComments: 0 });
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +23,6 @@ const ProfilePage = () => {
 
     const fetchAllData = async (token) => {
       try {
-        // 2. Menggunakan Promise.all untuk mengambil semua data secara paralel
         const [profileRes, statsRes] = await Promise.all([
           fetch(`${API_BASE_URL}/api/auth/profile`, {
             headers: { Authorization: `Bearer ${token}` },
@@ -51,7 +49,6 @@ const ProfilePage = () => {
         setStats(statsData);
       } catch (error) {
         alert("Gagal mengambil data: " + error.message);
-        // Jika gagal, mungkin token tidak valid, logout pengguna
         handleLogout();
       } finally {
         setLoading(false);
@@ -64,7 +61,7 @@ const ProfilePage = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    localStorage.removeItem("role"); // Jangan lupa hapus role juga
+    localStorage.removeItem("role");
     navigate("/login");
   };
 
@@ -104,7 +101,6 @@ const ProfilePage = () => {
               </div>
             </section>
 
-            {/* 3. Kartu Statistik Aktivitas Pengguna */}
             <div className="grid grid-cols-2 gap-4 text-center">
               <div className="bg-green-100 p-4 rounded-xl">
                 <FaThumbsUp className="text-green-600 text-3xl mx-auto mb-2" />

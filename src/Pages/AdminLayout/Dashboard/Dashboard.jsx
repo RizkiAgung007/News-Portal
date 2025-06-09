@@ -343,7 +343,7 @@ const Dashboard = () => {
                       </p>
                       <p className="text-gray-500 dark:text-gray-400 mt-1">
                         oleh <strong>{comment.username}</strong> pada
-                        {/* [PERBAIKAN] Arahkan tautan ke /searchdetail/ yang ada di App.jsx Anda */}
+                        
                         <Link
                           to={`/searchdetail/${comment.id_news}`}
                           className="text-blue-500 hover:underline dark:text-blue-400 ml-1"
@@ -405,7 +405,7 @@ const Dashboard = () => {
                           {news.like_count} Likes
                         </p>
                       </div>
-                      {/* [PERBAIKAN] Arahkan tautan ke /searchdetail/ yang ada di App.jsx */}
+                      
                       <Link
                         to={`/searchdetail/${news.id_news}`}
                         className="flex-shrink-0 px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-semibold rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"

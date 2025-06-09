@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_BASE_URL } from "../../../config";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { FaEdit, FaSun, FaMoon } from "react-icons/fa"; // Ditambahkan
+import { FaEdit, FaSun, FaMoon } from "react-icons/fa"; 
 
 const News = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // --- [DITAMBAHKAN] LOGIKA DARK MODE ---
   const [theme, setTheme] = useState(() => {
     if (localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -32,9 +31,7 @@ const News = () => {
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
-  // --- END OF LOGIKA DARK MODE ---
 
-  // Logika fetch Anda (tidak diubah)
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/news`)
       .then((res) => {
@@ -54,7 +51,6 @@ const News = () => {
       });
   }, []);
 
-  // Logika handleDelete Anda (tidak diubah)
   const handleDelete = async (id) => {
     if (!window.confirm("Yakin ingin menghapus berita ini?")) return;
     try {
@@ -71,14 +67,11 @@ const News = () => {
     }
   };
 
-  // Tampilan loading dan error Anda (tidak diubah)
   if (loading) return <p className="p-6">Loading...</p>;
   if (error) return <p className="p-6 text-red-500">{error}</p>;
 
   return (
-    // [PERBAIKAN] Mengubah div ini menjadi kartu yang konsisten
     <div className="">
-      {/* [DITAMBAHKAN] Wrapper untuk judul dan tombol agar sejajar */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
           Manajemen Berita
@@ -97,7 +90,6 @@ const News = () => {
         </strong>
       </p>
 
-      {/* Tabel dengan styling dark mode */}
       <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
         <table className="w-full min-w-[600px] table-auto text-left">
           <thead className="bg-green-50 dark:bg-gray-700/50 text-green-800 dark:text-green-300">
@@ -138,8 +130,6 @@ const News = () => {
                   {new Date(item.create_at).toLocaleDateString()}
                 </td>
                 <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-center justify-center text-xl">
-                  {/* Di sini Anda bisa menambahkan tombol Edit jika perlu */}
-                  {/* <Link to={`/admin/edit/${item.id_news}`} className="text-blue-500 hover:text-blue-700 transition mr-4"><FaEdit /></Link> */}
                   <button
                     onClick={() => handleDelete(item.id_news)}
                     className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"

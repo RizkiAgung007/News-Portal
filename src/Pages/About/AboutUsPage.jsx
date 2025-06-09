@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaBullseye, FaUsers, FaHistory } from 'react-icons/fa';
 
-// Data tim fiktif untuk contoh
+// Data dummy untuk contoh
 const teamMembers = [
   {
     name: "Andi Wijaya",
@@ -24,7 +24,6 @@ const teamMembers = [
 ];
 
 const AboutUsPage = () => {
-  // Logika untuk sinkronisasi tema saat halaman dimuat
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
@@ -40,7 +39,7 @@ const AboutUsPage = () => {
     <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
       <div className="container mx-auto px-6 py-16">
         
-        {/* Bagian Header */}
+        {/* Header */}
         <header className="text-center mb-16">
           <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-4">Tentang Portal Berita</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
@@ -48,7 +47,7 @@ const AboutUsPage = () => {
           </p>
         </header>
 
-        {/* Bagian Misi & Sejarah */}
+        {/* Misi & Sejarah */}
         <div className="grid md:grid-cols-2 gap-12 mb-20">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
             <FaBullseye className="text-4xl text-green-500 mb-4" />
@@ -66,7 +65,7 @@ const AboutUsPage = () => {
           </div>
         </div>
         
-        {/* Bagian Tim */}
+        {/* Tim */}
         <section className="text-center">
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Tim Kami</h2>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-12">Di balik layar, ada tim profesional yang berdedikasi.</p>
@@ -74,7 +73,7 @@ const AboutUsPage = () => {
             {teamMembers.map(member => (
               <div key={member.name} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
                 <img 
-                  src={member.imageUrl} // Ganti dengan gambar tim Anda
+                  src={member.imageUrl}
                   alt={`Foto ${member.name}`}
                   className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-green-500"
                 />

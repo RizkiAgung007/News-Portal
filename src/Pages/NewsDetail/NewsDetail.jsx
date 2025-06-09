@@ -18,7 +18,6 @@ const NewsDetail = () => {
   const [dislikeCount, setDislikeCount] = useState(0);
   const [loadingLike, setLoadingLike] = useState(true);
 
-  // --- Logika Anda (Tidak Diubah Sama Sekali) ---
   useEffect(() => {
     if (!token) return;
     fetch(`${API_BASE_URL}/api/auth/profile`, {
@@ -111,11 +110,9 @@ const NewsDetail = () => {
       setLoadingLike(false);
     }
   };
-  // --- End Of Logika Anda ---
-
+  
   if (!article) {
     return (
-      // [PERBAIKAN] Menambahkan kelas dark:
       <div className="max-w-4xl mx-auto p-6 text-center bg-gray-50 dark:bg-gray-900 min-h-screen">
         <p className="text-xl text-gray-800 dark:text-gray-100">
           Data berita tidak tersedia.
@@ -134,7 +131,6 @@ const NewsDetail = () => {
   }
 
   return (
-    // [PERBAIKAN] Menambahkan kelas dark: pada div pembungkus utama
     <div className="pt-6 px-32 bg-gray-50 dark:bg-gray-900">
       <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         {article.title}
@@ -151,7 +147,6 @@ const NewsDetail = () => {
         className="w-1/2 h-auto mb-6 rounded-lg shadow-md"
       />
 
-      {/* [PERBAIKAN] Menambahkan kelas dark:prose-invert untuk konten artikel */}
       <div className="prose max-w-none mb-4 dark:prose-invert">
         {article.description || "Tidak ada konten."}
       </div>
@@ -164,7 +159,6 @@ const NewsDetail = () => {
         Baca selengkapnya di sumber asli...
       </a>
 
-      {/* [PERBAIKAN] Menambahkan kelas dark: pada container tombol dan tombol itu sendiri */}
       <div className="flex items-center space-x-6 my-6 border-t border-b border-gray-200 dark:border-gray-700 py-4">
         <button
           onClick={() => handleLikeDislike(true)}

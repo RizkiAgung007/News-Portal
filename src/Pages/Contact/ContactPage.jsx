@@ -10,7 +10,6 @@ const ContactPage = () => {
   });
   const [submitting, setSubmitting] = useState(false);
 
-  // Logika untuk sinkronisasi tema saat halaman dimuat
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   useEffect(() => {
@@ -29,7 +28,6 @@ const ContactPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitting(true);
-    // Simulasi pengiriman form
     setTimeout(() => {
       alert(`Terima kasih, ${formData.name}! Pesan Anda telah kami terima.`);
       setFormData({ name: "", email: "", subject: "", message: "" });
@@ -50,7 +48,6 @@ const ContactPage = () => {
         </header>
 
         <div className="grid lg:grid-cols-2 gap-12 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl">
-          {/* Kolom Kiri: Informasi Kontak & Peta */}
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
@@ -74,7 +71,6 @@ const ContactPage = () => {
                 </p>
               </div>
             </div>
-            {/* Peta (Ganti dengan embed Google Maps Anda) */}
             <div className="h-64 rounded-lg overflow-hidden">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.011993510563!2d106.7864338147864!3d-6.262177795466858!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f1a2613e316d%3A0x2474bb442525697d!2sBintaro%20Jaya%20Xchange%20Mall!5e0!3m2!1sen!2sid!4v1672895690123!5m2!1sen!2sid"
@@ -89,7 +85,6 @@ const ContactPage = () => {
             </div>
           </div>
 
-          {/* Kolom Kanan: Formulir Kontak */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label

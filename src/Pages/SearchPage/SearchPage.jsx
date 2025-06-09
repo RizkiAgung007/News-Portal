@@ -11,7 +11,6 @@ const SearchPage = () => {
 
   const navigate = useNavigate();
 
-  // --- Logika Anda (Tidak Diubah Sama Sekali) ---
   useEffect(() => {
     if (title.trim() === "") {
       setResults([]);
@@ -35,17 +34,14 @@ const SearchPage = () => {
         setLoading(false);
       });
   }, [title]);
-  // --- End of Logika Anda ---
-
+  
   return (
-    // [PERBAIKAN] Menambahkan kelas dark: pada div pembungkus utama
     <div className="pt-4 px-32 min-h-screen bg-gray-50 dark:bg-gray-900">
       <h1 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         Hasil Pencarian:{" "}
         <span className="text-green-600 dark:text-green-400">"{title}"</span>
       </h1>
 
-      {/* [PERBAIKAN] Menambahkan kelas dark: pada teks status */}
       {loading && (
         <p className="text-gray-600 dark:text-gray-400">Loading...</p>
       )}
@@ -56,7 +52,6 @@ const SearchPage = () => {
         </p>
       )}
 
-      {/* [PERBAIKAN] Menambahkan kelas dark: pada kartu berita */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {results.map((news) => (
           <div

@@ -12,7 +12,6 @@ import {
   FaTimes,
 } from "react-icons/fa";
 
-// Menerima 4 props untuk mengontrol semua kondisi
 const SidebarAdmin = ({
   isDesktopCollapsed,
   setDesktopCollapsed,
@@ -36,7 +35,6 @@ const SidebarAdmin = ({
   };
 
   return (
-    // [PERBAIKAN UTAMA] Logika kelas untuk responsive
     <aside
       className={`fixed top-0 left-0 h-full flex flex-col z-30 
                    bg-white text-gray-800 border-r border-gray-200
@@ -46,7 +44,6 @@ const SidebarAdmin = ({
                    ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}
                    lg:translate-x-0`}
     >
-      {/* Header Sidebar */}
       <div
         className={`p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center ${
           isDesktopCollapsed && "p-4"
@@ -62,7 +59,6 @@ const SidebarAdmin = ({
             Admin Panel
           </span>
         </Link>
-        {/* Tombol Close untuk Mobile */}
         <button
           onClick={() => setMobileOpen(false)}
           className="lg:hidden text-gray-500 dark:text-gray-400"
@@ -71,7 +67,6 @@ const SidebarAdmin = ({
         </button>
       </div>
 
-      {/* Menu Utama */}
       <nav className="flex-grow p-4 overflow-y-auto">
         <ul className="space-y-2">
           {menus.map((menu) => {
@@ -81,7 +76,7 @@ const SidebarAdmin = ({
                 <Link
                   to={menu.path}
                   title={menu.name}
-                  onClick={() => setMobileOpen(false)} // Tutup sidebar saat item menu diklik di mobile
+                  onClick={() => setMobileOpen(false)} 
                   className={`flex items-center space-x-4 p-3 rounded-lg font-medium transition-all duration-200 ${
                     isDesktopCollapsed && ""
                   } ${
@@ -103,9 +98,7 @@ const SidebarAdmin = ({
         </ul>
       </nav>
 
-      {/* Tombol Ciutkan & Logout */}
       <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2">
-        {/* Tombol untuk collapse di desktop */}
         <button
           onClick={() => setDesktopCollapsed(!isDesktopCollapsed)}
           title={isDesktopCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}

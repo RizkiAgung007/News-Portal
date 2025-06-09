@@ -9,7 +9,6 @@ const Comment = ({ articleUrl, token, username }) => {
 
   const newsUrl = articleUrl;
 
-  // Ambil komentar dari backend
   const fetchComments = () => {
     fetch(
       `${API_BASE_URL}/api/comments?news_url=${encodeURIComponent(newsUrl)}`

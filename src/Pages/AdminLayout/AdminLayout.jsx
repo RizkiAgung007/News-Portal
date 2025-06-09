@@ -4,15 +4,12 @@ import SidebarAdmin from "../../components/SidebarAdmin/SidebarAdmin";
 import { FaBars } from "react-icons/fa";
 
 const AdminLayout = () => {
-  // State untuk mengontrol sidebar di mode mobile
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  // State untuk sidebar di mode desktop (collapsible)
   const [isDesktopCollapsed, setDesktopCollapsed] = useState(false);
 
   return (
     <div className="relative min-h-screen md:flex">
-      {/* Backdrop untuk mobile (area gelap di belakang sidebar) */}
       {isMobileSidebarOpen && (
         <div
           onClick={() => setMobileSidebarOpen(false)}
@@ -20,7 +17,6 @@ const AdminLayout = () => {
         ></div>
       )}
 
-      {/* Sidebar */}
       <SidebarAdmin
         isDesktopCollapsed={isDesktopCollapsed}
         setDesktopCollapsed={setDesktopCollapsed}
@@ -28,13 +24,11 @@ const AdminLayout = () => {
         setMobileOpen={setMobileSidebarOpen}
       />
 
-      {/* Konten Utama */}
       <main
         className={`flex-1 min-h-screen bg-gray-100 dark:bg-gray-900 transition-all duration-300 ${
           isDesktopCollapsed ? "lg:ml-20" : "lg:ml-64"
         }`}
       >
-        {/* Header Konten dengan Tombol Hamburger untuk Mobile */}
         <div className="sticky top-0 bg-white dark:bg-gray-800 shadow-sm p-4 flex items-center lg:hidden z-10">
           <button
             onClick={() => setMobileSidebarOpen(true)}
@@ -47,7 +41,6 @@ const AdminLayout = () => {
           </h1>
         </div>
 
-        {/* Outlet untuk menampilkan konten halaman (Dashboard, Create, dll) */}
         <div className="p-6 max-w-7xl mx-auto">
           <Outlet />
         </div>

@@ -13,7 +13,6 @@ const LayoutHomeNews = () => {
 
   const navigate = useNavigate();
 
-  // --- useEffect dan logika fetch Anda (TIDAK DIUBAH SAMA SEKALI) ---
   useEffect(() => {
     const fetchAllArticles = async () => {
       try {
@@ -48,7 +47,6 @@ const LayoutHomeNews = () => {
     fetchAllArticles();
   }, []);
 
-  // Tampilan loading dan error Anda (HANYA DITAMBAHKAN KELAS DARK)
   if (loading)
     return (
       <p className="text-center mt-10 text-gray-700 dark:text-gray-300">
@@ -65,14 +63,12 @@ const LayoutHomeNews = () => {
   const mainArticle = mainArticles[0];
   const smallArticles = mainArticles.slice(1, 5);
 
-  // Fungsi handleClickArticle Anda (TIDAK DIUBAH SAMA SEKALI)
   const handleClickArticle = (article) => {
     navigate(`/news/${encodeURIComponent(article.url)}`, {
       state: { article },
     });
   };
 
-  // Fungsi renderArticleGrid Anda (HANYA DITAMBAHKAN KELAS DARK)
   const renderArticleGrid = (articles, title) => (
     <div>
       <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -116,8 +112,7 @@ const LayoutHomeNews = () => {
   );
 
   return (
-    // div pembungkus utama Anda (HANYA DITAMBAHKAN KELAS DARK)
-    <div className="px-32 pt-12 space-y-10 bg-gray-50 dark:bg-gray-900">
+  <div className="px-32 pt-12 space-y-10 bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col lg:flex-row gap-8">
         {mainArticle && (
           <div

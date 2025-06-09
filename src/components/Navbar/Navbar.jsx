@@ -3,7 +3,7 @@ import { Link, useNavigate, NavLink } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import { CiSearch } from "react-icons/ci";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
-import { FaSun, FaMoon, FaTachometerAlt } from "react-icons/fa"; // Ditambahkan FaTachometerAlt
+import { FaSun, FaMoon, FaTachometerAlt } from "react-icons/fa"; 
 
 const Navbar = ({ theme, toggleTheme }) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -15,8 +15,6 @@ const Navbar = ({ theme, toggleTheme }) => {
   const navigate = useNavigate();
   const avatarMenuRef = useRef();
 
-  // --- Logika Dark Mode Anda (Tidak Diubah) ---
-  // const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -32,7 +30,6 @@ const Navbar = ({ theme, toggleTheme }) => {
   //   setTheme(theme === 'light' ? 'dark' : 'light');
   // };
 
-  // --- Logika Lainnya Anda (Tidak Diubah) ---
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -63,7 +60,7 @@ const Navbar = ({ theme, toggleTheme }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    localStorage.removeItem("role"); // [DITAMBAHKAN] Penting untuk menghapus role saat logout
+    localStorage.removeItem("role"); 
     setUsername("");
     setAvatarMenuOpen(false);
     navigate("/login");
@@ -124,7 +121,6 @@ const Navbar = ({ theme, toggleTheme }) => {
             <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 z-50">
               {username ? (
                 <>
-                  {/* [DITAMBAHKAN] Opsi Dashboard hanya untuk admin */}
                   {localStorage.getItem("role") === "admin" && (
                     <button
                       onClick={() => {
@@ -169,7 +165,7 @@ const Navbar = ({ theme, toggleTheme }) => {
         </div>
       </div>
 
-      {/* Hamburger icon for mobile */}
+      {/* Hamburger icon untuk mobile */}
       <div className="lg:hidden flex items-center ml-6">
         <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
           {menuOpen ? (
@@ -201,7 +197,6 @@ const Navbar = ({ theme, toggleTheme }) => {
 
           {username ? (
             <>
-              {/* [DITAMBAHKAN] Opsi Dashboard hanya untuk admin di mobile */}
               {localStorage.getItem("role") === "admin" && (
                 <Link
                   to="/admin/dashboard"

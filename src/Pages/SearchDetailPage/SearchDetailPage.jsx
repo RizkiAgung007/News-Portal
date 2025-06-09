@@ -21,7 +21,6 @@ const SearchDetail = () => {
   const [dislikeCount, setDislikeCount] = useState(0);
   const [loadingLike, setLoadingLike] = useState(true);
 
-  // --- Logika Anda (Tidak Diubah) ---
   useEffect(() => {
     if (!token) return;
     fetch(`${API_BASE_URL}/api/auth/profile`, {
@@ -133,9 +132,7 @@ const SearchDetail = () => {
       setLoadingLike(false);
     }
   };
-  // --- End of Logika Anda ---
-
-  // [PERBAIKAN] Menambahkan kelas dark: pada teks status
+  
   if (loading)
     return (
       <div className="p-10 text-center text-gray-700 dark:text-gray-300">
@@ -163,7 +160,6 @@ const SearchDetail = () => {
     );
 
   return (
-    // [PERBAIKAN] Menambahkan kelas dark: pada div pembungkus utama
     <div className="pt-6 px-32 bg-gray-50 dark:bg-gray-900">
       <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         {article.title}
@@ -186,7 +182,6 @@ const SearchDetail = () => {
         className="w-1/2 h-auto mb-6 rounded-lg shadow-md"
       />
 
-      {/* [PERBAIKAN] Menambahkan kelas dark:prose-invert untuk konten artikel */}
       <div className="prose max-w-none mb-4 dark:prose-invert">
         {article.content
           ? article.content.replace(/\[\+\d+ chars\]$/, "")
@@ -204,7 +199,6 @@ const SearchDetail = () => {
         </button>
       )}
 
-      {/* [PERBAIKAN] Menambahkan kelas dark: pada container dan tombol */}
       <div className="flex items-center space-x-6 mb-6 border-t border-b border-gray-200 dark:border-gray-700 py-4">
         <button
           disabled={loadingLike || !token}

@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-// [PERBAIKAN]: Memperbaiki path impor untuk ikon
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt, FaSave, FaTimes, FaSun, FaMoon } from "react-icons/fa";
 import { API_BASE_URL } from "../../../config";
 
 const Category = () => {
-  // State dari kode asli Anda, ditambah state yang dibutuhkan untuk fitur baru
   const [categories, setCategories] = useState([]);
   const [newCategory, setNewCategory] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [topCategories, setTopCategories] = useState([]); // <-- STATE BARU UNTUK TOP 5
-  const [editingCategoryId, setEditingCategoryId] = useState(null); // <-- STATE BARU: ID kategori yang sedang diedit
-  const [editingText, setEditingText] = useState(""); // <-- STATE BARU: Teks baru saat mengedit
+  const [topCategories, setTopCategories] = useState([]); 
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
+  const [editingText, setEditingText] = useState(""); 
 
-  // --- Logika Dark Mode Anda (Tidak diubah) ---
+  // Membuat theme Dark Mode dan light  
   const [theme, setTheme] = useState(() => {
     if (localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -38,14 +36,12 @@ const Category = () => {
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
-  // --- Akhir dari Logika Dark Mode Anda ---
 
   const token = localStorage.getItem("token");
 
-  // [MODIFIKASI]: Fungsi fetchCategories diubah untuk mengambil semua data yang dibutuhkan
   const fetchData = async () => {
     try {
-      // Ambil data semua kategori dan statistik top 5 secara bersamaan
+      // Mengambil data semua kategori dari db dan statistik top 5
       const [categoriesRes, topCategoriesRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/api/category/all`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -66,7 +62,6 @@ const Category = () => {
     fetchData();
   }, []);
 
-  // Fungsi handleSubmit asli Anda (hanya diubah untuk memanggil fetchData)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -82,7 +77,7 @@ const Category = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.status === 201) {
-        fetchData(); // Memanggil fetchData agar semua data sinkron
+        fetchData(); 
       } else if (res.status === 200) {
         alert("Category already exists");
       }
@@ -95,19 +90,16 @@ const Category = () => {
     }
   };
 
-  // [PENAMBAHAN]: Fungsi untuk memulai mode edit
   const handleEditClick = (category) => {
     setEditingCategoryId(category.id_category);
     setEditingText(category.name);
   };
 
-  // [PENAMBAHAN]: Fungsi untuk membatalkan edit
   const handleCancelClick = () => {
     setEditingCategoryId(null);
     setEditingText("");
   };
 
-  // [PENAMBAHAN]: Fungsi untuk menyimpan hasil edit
   const handleSaveClick = async (id) => {
     if (!editingText.trim()) {
       alert("Nama kategori tidak boleh kosong.");
@@ -119,8 +111,8 @@ const Category = () => {
         { name: editingText.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      handleCancelClick(); // Keluar dari mode edit
-      fetchData(); // Ambil data terbaru
+      handleCancelClick(); 
+      fetchData(); 
     } catch (err) {
       if (err.response && err.response.status === 409) {
         alert("Nama kategori tersebut sudah digunakan.");
@@ -131,7 +123,6 @@ const Category = () => {
     }
   };
 
-  // Fungsi handleDelete asli Anda (diubah untuk memanggil fetchData)
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this category?"))
       return;
@@ -139,7 +130,7 @@ const Category = () => {
       await axios.delete(`${API_BASE_URL}/api/category/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      fetchData(); // Memanggil fetchData agar Top 5 juga ter-update
+      fetchData(); 
     } catch (err) {
       console.error("Error deleting category:", err);
       alert("Failed to delete category");
@@ -147,11 +138,8 @@ const Category = () => {
   };
 
   return (
-    // [MODIFIKASI MINIMAL]: Div pembungkus utama diubah menjadi flex untuk layout 2 kolom
     <div className="flex flex-col lg:flex-row gap-8">
-      {/* Kolom Kiri: Berisi semua kode Tampilan Asli Anda */}
       <div className="flex-grow">
-        {/* Kode header Anda, tidak diubah */}
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
             Manajemen Kategori
@@ -170,7 +158,7 @@ const Category = () => {
           </span>
         </p>
 
-        {/* Kode form Anda, tidak diubah */}
+        {/* Form untuk nambah kategori */}
         <div className="border-t border-b border-gray-200 dark:border-gray-700 py-6 mb-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
             Tambah Kategori Baru
@@ -204,7 +192,7 @@ const Category = () => {
           )}
         </div>
 
-        {/* Kode tabel Anda, dimodifikasi untuk inline editing */}
+        {/* Tampilan untuk tabel */}
         <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
           Semua Kategori
         </h2>
@@ -244,7 +232,6 @@ const Category = () => {
                         {i + 1}
                       </td>
 
-                      {/* [MODIFIKASI]: Kolom nama bisa berubah jadi input */}
                       <td className="px-5 py-4 font-semibold text-gray-900 dark:text-white">
                         {editingCategoryId === cat.id_category ? (
                           <input
@@ -259,7 +246,6 @@ const Category = () => {
                         )}
                       </td>
 
-                      {/* [MODIFIKASI]: Kolom aksi bisa berubah tombolnya */}
                       <td className="px-5 py-4 text-center">
                         {editingCategoryId === cat.id_category ? (
                           <>
@@ -303,7 +289,7 @@ const Category = () => {
               </tbody>
             </table>
           </div>
-          {/* [PERBAIKAN]: Tag <aside> diubah menjadi <div> agar sesuai dengan aturan JSX */}
+          
           <div className="lg:w-1/3 mt-8 lg:mt-0">
             <div className="sticky top-6 bg-white dark:bg-gray-800/50 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
               <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">

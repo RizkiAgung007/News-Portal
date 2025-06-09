@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 
-// Kategori yang sama dengan yang ada di CategoriesBar Anda untuk konsistensi
 const categories = [
   "sport",
   "health",
@@ -17,7 +16,6 @@ const Footer = () => {
     <footer className="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
-          {/* Kolom 1: Logo dan Deskripsi Singkat */}
           <div className="md:col-span-2 lg:col-span-2">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               Portal Berita
@@ -28,7 +26,6 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Kolom 2: Kategori */}
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
               Kategori
@@ -47,7 +44,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Kolom 3: Jelajahi */}
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
               Jelajahi
@@ -80,7 +76,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Kolom 4: Ikuti Kami */}
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
               Ikuti Kami
@@ -118,7 +113,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bagian Bawah Footer: Copyright */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-500 dark:text-gray-400">
           <p>
             &copy; {new Date().getFullYear()} Portal Berita. Semua Hak Cipta

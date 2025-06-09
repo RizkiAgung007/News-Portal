@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { API_BASE_URL } from "../../../config";
-import { FaSun, FaMoon, FaArrowDown, FaArrowUp } from "react-icons/fa"; // Ditambahkan ikon sorting
+import { FaSun, FaMoon, FaArrowDown, FaArrowUp } from "react-icons/fa"; 
 
 const UserManagement = () => {
-  // State asli Anda
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,10 +12,8 @@ const UserManagement = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
 
-  // [DITAMBAHKAN] State untuk sorting
   const [sortOrder, setSortOrder] = useState("desc"); // default: terbaru dulu
 
-  // Logika Dark Mode Anda (tidak diubah)
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "light"
   );
@@ -30,7 +27,6 @@ const UserManagement = () => {
 
   const token = localStorage.getItem("token");
 
-  // [DIUBAH] Fungsi fetchUsers sekarang menerima parameter order
   const fetchUsers = async (page = 1, order = "desc") => {
     setLoading(true);
     setError(null);
@@ -53,12 +49,10 @@ const UserManagement = () => {
     }
   };
 
-  // [DIUBAH] useEffect sekarang juga bergantung pada sortOrder
   useEffect(() => {
     fetchUsers(currentPage, sortOrder);
   }, [currentPage, sortOrder]);
 
-  // [DIUBAH] handleDelete sekarang menyertakan sortOrder saat memuat ulang
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     const originalUsers = [...users];
@@ -82,18 +76,15 @@ const UserManagement = () => {
     }
   };
 
-  // [DITAMBAHKAN] Fungsi untuk mengganti urutan sorting
   const handleSortToggle = () => {
     const newOrder = sortOrder === "desc" ? "asc" : "desc";
     setSortOrder(newOrder);
-    // Kembali ke halaman 1 setiap kali urutan diubah
     if (currentPage !== 1) {
       setCurrentPage(1);
     }
   };
 
   return (
-    // Struktur div pembungkus asli Anda
     <div className="">
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -107,7 +98,6 @@ const UserManagement = () => {
             </span>
           </p>
         </div>
-        {/* [DITAMBAHKAN] Tombol sorting di sebelah tombol tema */}
         <div className="flex items-center space-x-2">
           <button
             onClick={handleSortToggle}
@@ -127,7 +117,6 @@ const UserManagement = () => {
 
       {error && <p className="text-red-600 dark:text-red-400 mb-6">{error}</p>}
 
-      {/* Struktur tabel asli Anda */}
       <div className="overflow-x-auto rounded-lg border border-gray-300 dark:border-gray-700 shadow-sm">
         <table className="min-w-full text-left table-auto">
           <thead className="bg-green-50 dark:bg-gray-700/50 text-green-800 dark:text-green-300 font-medium">
@@ -196,7 +185,6 @@ const UserManagement = () => {
         </table>
       </div>
 
-      {/* Komponen Paginasi Anda */}
       {!loading && totalPages > 1 && (
         <div className="flex justify-center items-center mt-6 space-x-2">
           <button
