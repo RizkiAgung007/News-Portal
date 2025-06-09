@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Mengambil API key dari env
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 
 const LayoutHomeNews = () => {
+  // State untuk menyimpan artikel utama, breaking news, dan berita terbaru
   const [mainArticles, setMainArticles] = useState([]);
   const [breakingArticles, setBreakingArticles] = useState([]);
   const [latestArticles, setLatestArticles] = useState([]);
 
+  // State untuk loading dan error handling
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Hook untuk navigasi ke halaman detail artikel
   const navigate = useNavigate();
 
+  // Hook untuk mem-fetch data artikel saat komponen pertama kali dirender
   useEffect(() => {
+    // Fungsi async untuk mengambil semua artikel dari API
     const fetchAllArticles = async () => {
       try {
+        // Mengambil 3 jenis artikel secara paralel
         const [mainRes, breakingRes, latestRes] = await Promise.all([
           fetch(`https://newsapi.org/v2/everything?q=news&apiKey=${API_KEY}`),
           fetch(
@@ -26,33 +33,41 @@ const LayoutHomeNews = () => {
           ),
         ]);
 
+        // Parsing hasil response ke bentuk JSON
         const [mainData, breakingData, latestData] = await Promise.all([
           mainRes.json(),
           breakingRes.json(),
           latestRes.json(),
         ]);
 
+        // Set data ke state jika response sukses
         if (mainData.status === "ok") setMainArticles(mainData.articles);
         if (breakingData.status === "ok")
-          setBreakingArticles(breakingData.articles.slice(0, 4));
+          setBreakingArticles(breakingData.articles.slice(0, 4)); // Menampilkan 4 berita breaking news
         if (latestData.status === "ok")
-          setLatestArticles(latestData.articles.slice(0, 4));
+          setLatestArticles(latestData.articles.slice(0, 4)); // Menampilkan 4 berita terbaru
       } catch (err) {
+        // Error jika fetch gagal
         setError("Gagal memuat berita.");
       } finally {
+        // Set loading ke false setelah fetch selesai
         setLoading(false);
       }
     };
 
+    // Panggil fungsi untuk fetch artikel
     fetchAllArticles();
   }, []);
 
+  // Tampilkan pesan loading jika data masih loading
   if (loading)
     return (
       <p className="text-center mt-10 text-gray-700 dark:text-gray-300">
         Memuat berita...
       </p>
     );
+
+  // Tampilkan pesan error jika ada kesalahan saat fetch data
   if (error)
     return (
       <p className="text-center mt-10 text-red-600 dark:text-red-400">
@@ -60,15 +75,18 @@ const LayoutHomeNews = () => {
       </p>
     );
 
+  // Ambil artikel utama (pertama) dan sisanya untuk tampilan kecil
   const mainArticle = mainArticles[0];
   const smallArticles = mainArticles.slice(1, 5);
 
+  // Fungsi untuk menangani klik artikel, arahkan ke halaman detail
   const handleClickArticle = (article) => {
     navigate(`/news/${encodeURIComponent(article.url)}`, {
       state: { article },
     });
   };
 
+  // Fungsi untuk render grid artikel berdasarkan daftar artikel dan judul section
   const renderArticleGrid = (articles, title) => (
     <div>
       <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -111,8 +129,10 @@ const LayoutHomeNews = () => {
     </div>
   );
 
+  // Tampilan utama komponen
   return (
-  <div className="px-32 pt-12 space-y-10 bg-gray-50 dark:bg-gray-900">
+    <div className="px-32 pt-12 space-y-10 bg-gray-50 dark:bg-gray-900">
+      {/* Bagian utama yang menampilkan 1 artikel besar dan 4 kecil */}
       <div className="flex flex-col lg:flex-row gap-8">
         {mainArticle && (
           <div
@@ -144,6 +164,7 @@ const LayoutHomeNews = () => {
           </div>
         )}
 
+        {/* Artikel kecil di samping artikel utama */}
         <div className="lg:w-1/3 flex flex-col gap-6">
           {smallArticles.map((article, index) => (
             <div
@@ -175,6 +196,7 @@ const LayoutHomeNews = () => {
         </div>
       </div>
 
+      {/* Tampilkan breaking news dan latest news jika ada */}
       {breakingArticles.length > 0 &&
         renderArticleGrid(breakingArticles, "Breaking News")}
       {latestArticles.length > 0 &&

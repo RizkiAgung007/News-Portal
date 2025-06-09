@@ -1,9 +1,13 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
+// Membuat context untuk tema, agar bisa digunakan secara global di seluruh komponen.
 const ThemeContext = createContext();
 
+// Komponen provider yang akan membungkus seluruh aplikasi agar tema bisa diakses dari mana saja.
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
+
+  // Inisialisasi tema dari localStorage atau preferensi sistem
+  const [theme, setTheme] = useState(() => { 
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       return savedTheme;
@@ -23,6 +27,7 @@ export const ThemeProvider = ({ children }) => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Fungsi untuk toggle tema
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
@@ -34,6 +39,7 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
+// Hook untuk menggunakan tema di komponen lain
 export const useTheme = () => {
   return useContext(ThemeContext);
 };

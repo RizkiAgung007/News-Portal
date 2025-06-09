@@ -5,15 +5,15 @@ import { FaPencilAlt, FaSave, FaTimes, FaSun, FaMoon } from "react-icons/fa";
 import { API_BASE_URL } from "../../../config";
 
 const Category = () => {
-  const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [topCategories, setTopCategories] = useState([]); 
-  const [editingCategoryId, setEditingCategoryId] = useState(null);
-  const [editingText, setEditingText] = useState(""); 
+  const [categories, setCategories] = useState([]); // Menyimpan daftar semua kategori.
+  const [newCategory, setNewCategory] = useState(""); // State untuk input form tambah kategori.
+  const [error, setError] = useState(null); // Menyimpan pesan error untuk UI.
+  const [loading, setLoading] = useState(false); // Flag untuk status request API.
+  const [topCategories, setTopCategories] = useState([]); // Menyimpan data statistik top kategori.
+  const [editingCategoryId, setEditingCategoryId] = useState(null); // ID kategori yang sedang diedit.
+  const [editingText, setEditingText] = useState(""); // Teks untuk input saat mode edit.
 
-  // Membuat theme Dark Mode dan light  
+  // State untuk tema (light/dark), default dari localStorage atau sistem.
   const [theme, setTheme] = useState(() => {
     if (localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -33,15 +33,17 @@ const Category = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Fungsi untuk beralih antara tema terang dan gelap.
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  // Mengambil token otentikasi dari localStorage.
   const token = localStorage.getItem("token");
 
+  // Mengambil semua data kategori dan statistik secara paralel dari API.
   const fetchData = async () => {
     try {
-      // Mengambil data semua kategori dari db dan statistik top 5
       const [categoriesRes, topCategoriesRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/api/category/all`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -58,10 +60,12 @@ const Category = () => {
     }
   };
 
+  // Memanggil `fetchData` sekali saat komponen pertama kali dimuat.
   useEffect(() => {
     fetchData();
   }, []);
 
+  // Menangani submit form untuk membuat kategori baru dan memuat ulang data.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -77,7 +81,7 @@ const Category = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.status === 201) {
-        fetchData(); 
+        fetchData();
       } else if (res.status === 200) {
         alert("Category already exists");
       }
@@ -90,16 +94,19 @@ const Category = () => {
     }
   };
 
+  // Menangani edit untuk sebuah kategori.
   const handleEditClick = (category) => {
     setEditingCategoryId(category.id_category);
     setEditingText(category.name);
   };
 
+  // Menangani cancel saat edit untuk sebuah kategori.
   const handleCancelClick = () => {
     setEditingCategoryId(null);
     setEditingText("");
   };
 
+  // Mengirim perubahan kategori ke API dan memuat ulang data.
   const handleSaveClick = async (id) => {
     if (!editingText.trim()) {
       alert("Nama kategori tidak boleh kosong.");
@@ -111,8 +118,8 @@ const Category = () => {
         { name: editingText.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      handleCancelClick(); 
-      fetchData(); 
+      handleCancelClick();
+      fetchData();
     } catch (err) {
       if (err.response && err.response.status === 409) {
         alert("Nama kategori tersebut sudah digunakan.");
@@ -123,6 +130,7 @@ const Category = () => {
     }
   };
 
+  // Menghapus kategori setelah konfirmasi dan memuat ulang data.
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this category?"))
       return;
@@ -130,7 +138,7 @@ const Category = () => {
       await axios.delete(`${API_BASE_URL}/api/category/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      fetchData(); 
+      fetchData();
     } catch (err) {
       console.error("Error deleting category:", err);
       alert("Failed to delete category");
@@ -144,6 +152,7 @@ const Category = () => {
           <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
             Manajemen Kategori
           </h1>
+          {/* Tombol untuk theme  */}
           <button
             onClick={toggleTheme}
             className="p-3 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
@@ -232,6 +241,7 @@ const Category = () => {
                         {i + 1}
                       </td>
 
+                      {/* Edit teks secara inline didalam table kategori */}
                       <td className="px-5 py-4 font-semibold text-gray-900 dark:text-white">
                         {editingCategoryId === cat.id_category ? (
                           <input
@@ -245,10 +255,11 @@ const Category = () => {
                           cat.name
                         )}
                       </td>
-
+                      
                       <td className="px-5 py-4 text-center">
                         {editingCategoryId === cat.id_category ? (
                           <>
+                            {/* Tombol untuk menyimpan edit kategori */}
                             <button
                               onClick={() => handleSaveClick(cat.id_category)}
                               className="text-green-500 cursor-pointer hover:text-green-700 dark:text-green-400 dark:hover:text-green-500 transition mr-4"
@@ -256,6 +267,7 @@ const Category = () => {
                             >
                               <FaSave className="inline-block text-lg" />
                             </button>
+                            {/* Tombol untuk membatalkan edit kategori */}
                             <button
                               onClick={handleCancelClick}
                               className="text-gray-500 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-500 transition"
@@ -266,6 +278,7 @@ const Category = () => {
                           </>
                         ) : (
                           <>
+                            {/* Tombol untuk edit kategori */}
                             <button
                               onClick={() => handleEditClick(cat)}
                               className="text-blue-500 cursor-pointer hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 transition mr-4"
@@ -273,6 +286,7 @@ const Category = () => {
                             >
                               <FaPencilAlt className="inline-block text-lg" />
                             </button>
+                            {/* Tombol untuk menghapus kategori */}
                             <button
                               onClick={() => handleDelete(cat.id_category)}
                               className="text-red-500 cursor-pointer hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"
@@ -289,7 +303,8 @@ const Category = () => {
               </tbody>
             </table>
           </div>
-          
+
+          {/* Sidebar Top 5 Kategori */}
           <div className="lg:w-1/3 mt-8 lg:mt-0">
             <div className="sticky top-6 bg-white dark:bg-gray-800/50 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
               <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">

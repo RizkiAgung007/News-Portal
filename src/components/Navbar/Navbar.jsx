@@ -6,16 +6,16 @@ import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { FaSun, FaMoon, FaTachometerAlt } from "react-icons/fa"; 
 
 const Navbar = ({ theme, toggleTheme }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // State untuk mengatur apakah menu mobile terbuka atau tidak
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false); // State untuk mengatur apakah dropdown menu pada avatar terbuka atau tidak
   const [username, setUsername] = useState(
     localStorage.getItem("username") || ""
-  );
-  const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate();
-  const avatarMenuRef = useRef();
+  );   // State untuk menyimpan nama pengguna dari localStorage jika tersedia
+  const [searchTerm, setSearchTerm] = useState(""); // State untuk menyimpan input dari kolom pencarian
+  const navigate = useNavigate(); // Hook untuk navigasi antar halaman
+  const avatarMenuRef = useRef(); // Ref digunakan untuk mendeteksi klik di luar menu avatar
 
-
+  // useEffect untuk mengatur kelas tema pada elemen root dan menyimpannya di localStorage
   useEffect(() => {
     const root = window.document.documentElement;
     if (theme === "dark") {
@@ -30,6 +30,7 @@ const Navbar = ({ theme, toggleTheme }) => {
   //   setTheme(theme === 'light' ? 'dark' : 'light');
   // };
 
+  // useEffect untuk menutup menu avatar jika user mengklik di luar elemen tersebut
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -43,20 +44,24 @@ const Navbar = ({ theme, toggleTheme }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Fungsi untuk menangani pencarian ketika user menekan ikon cari
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
+      // Mengarahkan ke halaman hasil pencarian jika input tidak kosong
       navigate(`/search?title=${encodeURIComponent(searchTerm.trim())}`);
       setSearchTerm("");
     }
   };
 
+  // Fungsi untuk mendeteksi tombol Enter saat mengetik di kolom pencarian
   const onKeyDown = (e) => {
     if (e.key === "Enter") {
       handleSearch(e);
     }
   };
 
+  // Fungsi untuk logout pengguna dan menghapus data dari localStorage
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
@@ -66,6 +71,7 @@ const Navbar = ({ theme, toggleTheme }) => {
     navigate("/login");
   };
 
+  // Fungsi untuk mengatur gaya NavLink berdasarkan apakah aktif atau tidak
   const navLinkStyles = ({ isActive }) =>
     `text-lg text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition ${
       isActive ? "font-bold text-green-600 dark:text-green-400" : ""

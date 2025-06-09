@@ -3,6 +3,7 @@ import { API_BASE_URL } from "../../../config";
 import { FaSun, FaMoon } from "react-icons/fa";
 
 const Create = () => {
+  // State untuk menampung semua data dari input form.
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -11,10 +12,11 @@ const Create = () => {
     photo: null,
   });
 
-  const [categories, setCategories] = useState([]);
-  const [error, setError] = useState(null);
-  const [submitting, setSubmitting] = useState(false);
+  const [categories, setCategories] = useState([]); // Menyimpan daftar kategori.
+  const [error, setError] = useState(null); // Menyimpan pesan error jika terjadi kesalahan.
+  const [submitting, setSubmitting] = useState(false); // Flag untuk status proses pengiriman form.
 
+  // State untuk tema (light/dark), default dari localStorage atau sistem.
   const [theme, setTheme] = useState(() => {
     if (localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -34,10 +36,12 @@ const Create = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Fungsi untuk mengubah tema.
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  // Mengambil daftar kategori dari API saat komponen dimuat.
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -59,6 +63,7 @@ const Create = () => {
     fetchCategories();
   }, []);
 
+  // Memperbarui state form setiap kali ada perubahan pada input, baik teks maupun file.
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "photo") {
@@ -68,6 +73,7 @@ const Create = () => {
     }
   };
 
+  // Menangani pengiriman form, membuat FormData, dan mengirim data (termasuk file) ke API.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -114,6 +120,7 @@ const Create = () => {
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
           Buat Berita Baru
         </h2>
+        {/* Tombol Theme */}
         <button
           onClick={toggleTheme}
           className="p-3 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
@@ -126,6 +133,7 @@ const Create = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
+          {/* Judul konten */}
           <label
             htmlFor="title"
             className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -144,6 +152,7 @@ const Create = () => {
           />
         </div>
 
+        {/* Deskripsi */}
         <div>
           <label
             htmlFor="description"
@@ -163,6 +172,7 @@ const Create = () => {
           />
         </div>
 
+        {/* Kategori */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label
@@ -189,6 +199,8 @@ const Create = () => {
               ))}
             </select>
           </div>
+
+          {/* Kreator */}
           <div>
             <label
               htmlFor="create_by"
@@ -209,6 +221,7 @@ const Create = () => {
           </div>
         </div>
 
+        {/* File */}
         <div>
           <label
             htmlFor="photo"
@@ -227,6 +240,7 @@ const Create = () => {
           />
         </div>
 
+        {/* Mengirim */}
         <div className="text-right">
           <button
             type="submit"
