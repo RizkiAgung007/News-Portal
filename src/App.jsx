@@ -1,7 +1,7 @@
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import CategoriesBar from "./components/CategoriesBar/CategoriesBar";
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate, matchPath } from "react-router-dom";
 import NewsPage from "./Pages/NewsPages/NewsPages";
 import CategoryPage from "./Pages/CategoryPage/CategoryPage";
 import LoginPage from "./Pages/Login/LoginPage";
@@ -18,6 +18,8 @@ import Create from "./Pages/AdminLayout/Create/Create";
 import UserManagement from "./Pages/AdminLayout/UserManagement/UserManagement";
 import Category from "./Pages/AdminLayout/Category/Category";
 import News from "./Pages/AdminLayout/News/News";
+import NewsEdit from "./Pages/AdminLayout/News/NewsEdit";
+import NewsView from "./Pages/AdminLayout/News/NewsView";
 import SearchDetail from "./Pages/SearchDetailPage/SearchDetailPage";
 import CategoryPageNews from "./Pages/CategoryPageNews/CategoryPageNews";
 import AboutUsPage from "./Pages/About/AboutUsPage";
@@ -32,7 +34,8 @@ const AdminRoutes = ({ children }) => {
 function App() {
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
-  const hideNavbarOnPaths = [
+
+  const pathsToHideUI = [
     "/login",
     "/register",
     "/profile",
@@ -43,8 +46,13 @@ function App() {
     "/admin/users",
     "/admin/category",
     "/admin/news",
+    "/admin/edit/:id",
+    "/admin/view/:id",
   ];
-  const hideUI = hideNavbarOnPaths.includes(location.pathname);
+
+  const hideUI = pathsToHideUI.some((path) =>
+    matchPath({ path, end: true }, location.pathname)
+  );
 
   return (
     <>
@@ -79,6 +87,10 @@ function App() {
           <Route path="users" element={<UserManagement />} />
           <Route path="category" element={<Category />} />
           <Route path="news" element={<News />} />
+          <Route path="edit/:id" element={<NewsEdit />} />
+          <Route path="edit" element={<NewsEdit />} />
+          <Route path="view/:id" element={<NewsView />} />
+          <Route path="searchdetail/:id" element={<SearchDetail />} />
         </Route>
 
         <Route

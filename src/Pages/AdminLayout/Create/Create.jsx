@@ -236,7 +236,7 @@ const Create = () => {
             accept="image/*"
             onChange={handleChange}
             required
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
           />
         </div>
 

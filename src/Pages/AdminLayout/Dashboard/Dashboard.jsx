@@ -15,6 +15,7 @@ import {
   FaEye,
   FaSun,
   FaMoon,
+  FaHome,
 } from "react-icons/fa";
 import {
   Chart as ChartJS,
@@ -257,7 +258,7 @@ const Dashboard = () => {
 
   return (
     <div className="">
-      <div className="mb-8 flex justify-between items-center">
+      <div className="mb-8 flex justify-between items-start">
         <div>
           <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
             Selamat Datang, {username || "Admin"}!
@@ -266,12 +267,28 @@ const Dashboard = () => {
             Berikut adalah ringkasan aktivitas di website Anda.
           </p>
         </div>
-        <button
-          onClick={toggleTheme}
-          className="p-3 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-        >
-          {theme === "light" ? <FaMoon /> : <FaSun />}
-        </button>
+
+        <div className="flex items-center gap-3">
+          {/* Tombol Home  */}
+          <div className="relative group">
+            <Link
+              to="/"
+              className="p-3 block cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-yellow-300 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            >
+              <FaHome />
+            </Link>
+          </div>
+
+          {/* Tombol Theme dengan Tooltip */}
+          <div className="relative group">
+            <button
+              onClick={toggleTheme}
+              className="p-3 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            >
+              {theme === "light" ? <FaMoon size={16} /> : <FaSun size={16} />}
+            </button>
+          </div>
+        </div>
       </div>
 
       {error && (
@@ -287,8 +304,7 @@ const Dashboard = () => {
       ) : (
         <>
           <div className="mb-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-          
-          {/* Membuat berita */}
+            {/* Membuat berita */}
             <Link
               to="/admin/create"
               className="flex flex-col items-center justify-center p-4 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition"
@@ -373,7 +389,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-            {/* Chart untuk pertumbuhan berita dan komentar */}
+              {/* Chart untuk pertumbuhan berita dan komentar */}
               <div className="md:flex md:flex-row flex-col gap-8 md:space-y-0 space-y-4">
                 <div className="bg-white md:w-1/2 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                   <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
@@ -408,7 +424,7 @@ const Dashboard = () => {
                 </h3>
                 {categoryDist.labels.length > 0 ? (
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-                  {/* Label untuk kategori */}
+                    {/* Label untuk kategori */}
                     <div className="flex-shrink-0">
                       <ul className="space-y-2 sm:space-x-0 space-x-4 grid sm:grid-cols-1 grid-cols-2">
                         {categoryDist.labels.map((label, index) => (
@@ -464,7 +480,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="space-y-8">
-            {/* Komentar terbaru */}
+              {/* Komentar terbaru */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300 flex items-center">
                   <FaComment className="mr-2" />

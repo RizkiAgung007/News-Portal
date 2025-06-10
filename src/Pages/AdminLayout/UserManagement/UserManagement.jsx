@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { API_BASE_URL } from "../../../config";
-import { FaSun, FaMoon, FaArrowDown, FaArrowUp } from "react-icons/fa"; 
+import { FaSun, FaMoon, FaArrowDown, FaArrowUp } from "react-icons/fa";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -12,6 +12,7 @@ const UserManagement = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
   const [sortOrder, setSortOrder] = useState("desc"); // default: terbaru dulu
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "light"
@@ -27,13 +28,13 @@ const UserManagement = () => {
   // Menyimpan token pada localstorage
   const token = localStorage.getItem("token");
 
-  // Mengamil API melalui endpoint pada databade 
-  const fetchUsers = async (page = 1, order = "desc") => {
+  // Mengamil API melalui endpoint pada databade
+  const fetchUsers = async (page = 1, order = "desc", search = "") => {
     setLoading(true);
     setError(null);
     try {
       const res = await axios.get(
-        `${API_BASE_URL}/api/auth/all-users?page=${page}&limit=20&sortOrder=${order}`,
+        `${API_BASE_URL}/api/auth/all-users?page=${page}&limit=20&sortOrder=${order}&search=${search}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -53,6 +54,16 @@ const UserManagement = () => {
   useEffect(() => {
     fetchUsers(currentPage, sortOrder);
   }, [currentPage, sortOrder]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      fetchUsers(1, sortOrder, searchQuery);
+    }, 500);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery, sortOrder]);
 
   // Menangani tombol delete by id
   const handleDelete = async (id) => {
@@ -89,9 +100,9 @@ const UserManagement = () => {
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       <div className="flex justify-between items-center mb-6">
-        <div>
+        <div className="">
           <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
             Manajemen Pengguna
           </h1>
@@ -101,6 +112,16 @@ const UserManagement = () => {
               {totalUsers}
             </span>
           </p>
+
+          <div className="md:w-full w-1/3 pt-4">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Cari pengguna..."
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500"
+            />
+          </div>
         </div>
         <div className="flex items-center space-x-2">
           <button

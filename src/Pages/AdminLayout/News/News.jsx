@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../../config";
 import { FaRegTrashCan } from "react-icons/fa6";
-import { FaEdit, FaSun, FaMoon } from "react-icons/fa"; 
+import { FaEdit, FaSun, FaMoon, FaEye } from "react-icons/fa"; 
 
 const News = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
 
   // State untuk menangani pergantian theme
   const [theme, setTheme] = useState(() => {
@@ -71,6 +73,14 @@ const News = () => {
     }
   };
 
+  const handleEdit = async (id) => {
+    navigate(`/admin/edit/${id}`)
+  }
+
+  const handleView = async (id) => {
+    navigate(`/admin/view/${id}`)
+  }
+
   if (loading) return <p className="p-6">Loading...</p>;
   if (error) return <p className="p-6 text-red-500">{error}</p>;
 
@@ -80,7 +90,7 @@ const News = () => {
         <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
           Manajemen Berita
         </h1>
-        
+
         {/* Tombol theme */}
         <button
           onClick={toggleTheme}
@@ -100,19 +110,19 @@ const News = () => {
         <table className="w-full min-w-[600px] table-auto text-left">
           <thead className="bg-green-50 dark:bg-gray-700/50 text-green-800 dark:text-green-300">
             <tr>
-              <th className="p-3 border-b border-gray-300 dark:border-gray-600 text-center font-medium">
+              <th className="p-3 border-b border-gray-300 dark:border-gray-600 font-medium">
                 No
               </th>
-              <th className="p-3 border-b border-gray-300 dark:border-gray-600 text-center font-medium">
+              <th className="p-3 border-b border-gray-300 dark:border-gray-600 font-medium">
                 News
               </th>
-              <th className="p-3 border-b border-gray-300 dark:border-gray-600 text-center font-medium">
+              <th className="p-3 border-b border-gray-300 dark:border-gray-600 font-medium">
                 Category
               </th>
-              <th className="p-3 border-b border-gray-300 dark:border-gray-600 text-center font-medium">
+              <th className="p-3 border-b border-gray-300 dark:border-gray-600 font-medium">
                 Created At
               </th>
-              <th className="p-3 border-b border-gray-300 dark:border-gray-600 text-center font-medium">
+              <th className="p-3 border-b border-gray-300 dark:border-gray-600 font-medium">
                 Action
               </th>
             </tr>
@@ -123,25 +133,39 @@ const News = () => {
                 key={item.id_news}
                 className="odd:bg-white even:bg-green-50 hover:bg-green-100 dark:odd:bg-gray-800 dark:even:bg-gray-800/50 dark:hover:bg-gray-700/60 transition-colors duration-200"
               >
-                <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-center text-gray-700 dark:text-gray-300">
+                <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300">
                   {index + 1}
                 </td>
-                <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-center font-semibold text-gray-900 dark:text-white">
+                <td className="p-3 border-b border-gray-200 dark:border-gray-700 w-96 font-semibold text-gray-900 dark:text-white">
                   {item.title}
                 </td>
-                <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-center text-gray-700 dark:text-gray-400">
+                <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-400">
                   {item.category}
                 </td>
-                <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-center text-gray-700 dark:text-gray-400">
+                <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-400">
                   {new Date(item.create_at).toLocaleDateString()}
                 </td>
-                <td className="p-3 border-b border-gray-200 dark:border-gray-700 text-center justify-center text-xl">
+                <td className="p-3 border-b border-gray-200 dark:border-gray-700 justify-center text-xl space-x-4">
                   <button
                     onClick={() => handleDelete(item.id_news)}
-                    className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"
+                    className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 cursor-pointer transition"
                     aria-label="Delete News"
                   >
                     <FaRegTrashCan />
+                  </button>
+                  <button
+                    onClick={() => handleEdit(item.id_news)}
+                    className="text-yellow-500 hover:text-yellow-700 dark:text-yellow-400 dark:hover:text-yellow-500 cursor-pointer transition"
+                    aria-label="Edit News"
+                  >
+                    <FaEdit />
+                  </button>
+                  <button
+                    onClick={() => handleView(item.id_news)}
+                    className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 cursor-pointer transition"
+                    aria-label="Edit News"
+                  >
+                    <FaEye />
                   </button>
                 </td>
               </tr>
