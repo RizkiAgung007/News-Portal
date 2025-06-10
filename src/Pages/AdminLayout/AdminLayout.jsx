@@ -5,7 +5,6 @@ import { FaBars } from "react-icons/fa";
 
 const AdminLayout = () => {
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-
   const [isDesktopCollapsed, setDesktopCollapsed] = useState(false);
 
   return (

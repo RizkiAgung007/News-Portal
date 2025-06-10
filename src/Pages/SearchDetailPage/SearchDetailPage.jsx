@@ -182,7 +182,7 @@ const SearchDetail = () => {
         className="w-1/2 h-auto mb-6 rounded-lg shadow-md"
       />
 
-      <div className="prose max-w-none mb-4 dark:prose-invert">
+      <div className="prose max-w-none mb-4 dark:prose-invert dark:text-gray-200">
         {article.content
           ? article.content.replace(/\[\+\d+ chars\]$/, "")
           : article.description || "Tidak ada konten"}
@@ -193,7 +193,7 @@ const SearchDetail = () => {
           onClick={() =>
             navigate(`/category/${encodeURIComponent(article.category)}`)
           }
-          className="text-sm text-blue-600 dark:text-blue-400 font-semibold mb-6 underline hover:text-blue-800"
+          className="text-sm text-blue-600 dark:text-blue-400 font-semibold mb-6 hover:text-blue-800"
         >
           Kategori: {article.category}
         </button>

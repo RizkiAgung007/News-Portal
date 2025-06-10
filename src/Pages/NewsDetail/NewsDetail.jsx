@@ -156,7 +156,6 @@ const NewsDetail = () => {
         rel="noopener noreferrer"
         className="text-blue-600 dark:text-blue-400 hover:underline"
       >
-        Baca selengkapnya di sumber asli...
       </a>
 
       <div className="flex items-center space-x-6 my-6 border-t border-b border-gray-200 dark:border-gray-700 py-4">

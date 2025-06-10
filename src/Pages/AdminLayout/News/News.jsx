@@ -9,6 +9,7 @@ const News = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // State untuk menangani pergantian theme
   const [theme, setTheme] = useState(() => {
     if (localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -28,10 +29,12 @@ const News = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Menangani toggle untuk theme
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  // Mengamil API melalui endpoint pada databade 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/news`)
       .then((res) => {
@@ -51,6 +54,7 @@ const News = () => {
       });
   }, []);
 
+  // Menangani tombol untuk delete by id
   const handleDelete = async (id) => {
     if (!window.confirm("Yakin ingin menghapus berita ini?")) return;
     try {
@@ -76,6 +80,8 @@ const News = () => {
         <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
           Manajemen Berita
         </h1>
+        
+        {/* Tombol theme */}
         <button
           onClick={toggleTheme}
           className="p-3 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-yellow-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"

@@ -50,12 +50,17 @@ const Dashboard = () => {
   const [recentUsers, setRecentUsers] = useState([]);
   const [favoriteNews, setFavoriteNews] = useState([]);
   const [newsGrowth, setNewsGrowth] = useState({ labels: [], datasets: [] });
+  const [commentGrowth, setCommentGrowth] = useState({
+    labels: [],
+    datasets: [],
+  });
   const [categoryDist, setCategoryDist] = useState({
     labels: [],
     datasets: [],
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [categoryVisibility, setCategoryVisibility] = useState({});
 
   const [theme, setTheme] = useState(() => {
     if (localStorage.getItem("theme")) return localStorage.getItem("theme");
@@ -63,6 +68,14 @@ const Dashboard = () => {
       ? "dark"
       : "light";
   });
+
+  // Menangani ketika label kategori diklik
+  const handleLegendClick = (label) => {
+    setCategoryVisibility((prevVisibility) => ({
+      ...prevVisibility,
+      [label]: !prevVisibility[label],
+    }));
+  };
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -74,13 +87,17 @@ const Dashboard = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  // Menangani toggle untuk theme
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
 
+  // Menyimpan username pada localstorage
   const username = localStorage.getItem("username");
+  // Menyimpan token pada localstorage
   const token = localStorage.getItem("token");
 
+  // Mengamil API melalui endpoint pada databade
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -92,45 +109,51 @@ const Dashboard = () => {
           `${API_BASE_URL}/api/comments/recent`,
           `${API_BASE_URL}/api/auth/recent-users`,
           `${API_BASE_URL}/api/news/stats/growth`,
+          `${API_BASE_URL}/api/comments/stats/growth`,
           `${API_BASE_URL}/api/category/stats/category-distribution`,
           `${API_BASE_URL}/api/news/favorites/top`,
         ];
 
+        // Melakukan mapping request API dalam sebuah daftar.
         const requests = endpoints.map((url) =>
           axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
         );
 
+        // Memproses semua permintaan secara paralel dan tunggu hingga semua data diterima.
         const [
           newsRes,
           categoryRes,
           userRes,
           recentCommentsRes,
           recentUsersRes,
-          growthRes,
+          growthNewRes,
+          growthComRes,
           categoryDistRes,
           favNewsRes,
         ] = await Promise.all(requests);
 
+        // Memperbarui state komponen dengan data yang sudah diterima dari API.
         setNewsCount(newsRes.data.length);
         setCategoryCount(categoryRes.data.length);
-        setUserCount(userRes.data.length);
+        setUserCount(userRes.data.totalUsers);
         setRecentComments(recentCommentsRes.data);
         setRecentUsers(recentUsersRes.data);
         setFavoriteNews(favNewsRes.data);
 
-        const growthLabels = growthRes.data.map((d) =>
+        // Membuat chart untuk pertumbuhan berita
+        const growthNews = growthNewRes.data.map((d) =>
           new Date(d.date).toLocaleDateString("id-ID", {
             day: "numeric",
             month: "short",
           })
         );
-        const growthValues = growthRes.data.map((d) => d.count);
+        const growthNewsVal = growthNewRes.data.map((d) => d.count);
         setNewsGrowth({
-          labels: growthLabels,
+          labels: growthNews,
           datasets: [
             {
               label: "Berita Dibuat",
-              data: growthValues,
+              data: growthNewsVal,
               borderColor: "rgb(34, 197, 94)",
               backgroundColor: "rgba(34, 197, 94, 0.5)",
               tension: 0.1,
@@ -138,8 +161,38 @@ const Dashboard = () => {
           ],
         });
 
+        // Membuat chart untuk pertumbuhan komentar
+        const growthComment = growthComRes.data.map((d) =>
+          new Date(d.date).toLocaleDateString("id-ID", {
+            day: "numeric",
+            month: "short",
+          })
+        );
+        const growthComVal = growthComRes.data.map((d) => d.count);
+        setCommentGrowth({
+          labels: growthComment,
+          datasets: [
+            {
+              label: "Komentar Dibuat",
+              data: growthComVal,
+              borderColor: "rgb(59, 130, 246)",
+              backgroundColor: "rgba(59, 130, 246, 0.5)",
+              tension: 0.1,
+            },
+          ],
+        });
+
+        // Membuat chart untuk kategori
         const categoryLabels = categoryDistRes.data.map((d) => d.category);
         const categoryValues = categoryDistRes.data.map((d) => d.count);
+
+        // Membuat fungsi untuk menampilkan semua label kategori
+        const initialVisibility = {};
+        categoryLabels.forEach((label) => {
+          initialVisibility[label] = true;
+        });
+        setCategoryVisibility(initialVisibility);
+
         setCategoryDist({
           labels: categoryLabels,
           datasets: [
@@ -184,6 +237,24 @@ const Dashboard = () => {
     },
   };
 
+  // Menyiapkan data yang sudah difilter untuk ditampilkan
+  const visibleDataForChart = {
+    labels: categoryDist.labels.filter((label) => categoryVisibility[label]),
+    datasets: categoryDist.datasets.map((dataset) => ({
+      ...dataset,
+      data: categoryDist.labels
+        .map((label, index) =>
+          categoryVisibility[label] ? dataset.data[index] : null
+        )
+        .filter((data) => data !== null),
+      backgroundColor: categoryDist.labels
+        .map((label, index) =>
+          categoryVisibility[label] ? dataset.backgroundColor[index] : null
+        )
+        .filter((color) => color !== null),
+    })),
+  };
+
   return (
     <div className="">
       <div className="mb-8 flex justify-between items-center">
@@ -216,6 +287,8 @@ const Dashboard = () => {
       ) : (
         <>
           <div className="mb-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+          
+          {/* Membuat berita */}
             <Link
               to="/admin/create"
               className="flex flex-col items-center justify-center p-4 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition"
@@ -223,6 +296,8 @@ const Dashboard = () => {
               <FaPlus className="text-2xl mb-1" />
               <span className="font-semibold">Buat Berita</span>
             </Link>
+
+            {/* Mengelola user */}
             <Link
               to="/admin/users"
               className="flex flex-col items-center justify-center p-4 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 transition"
@@ -230,6 +305,8 @@ const Dashboard = () => {
               <FaUserShield className="text-2xl mb-1" />
               <span className="font-semibold">Kelola User</span>
             </Link>
+
+            {/* Mengelola kategori */}
             <Link
               to="/admin/category"
               className="flex flex-col items-center justify-center p-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
@@ -237,6 +314,8 @@ const Dashboard = () => {
               <FaFolderPlus className="text-2xl mb-1" />
               <span className="font-semibold">Kelola Kategori</span>
             </Link>
+
+            {/* Mengelola berita */}
             <Link
               to="/admin/news"
               className="flex flex-col items-center justify-center p-4 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 transition"
@@ -248,6 +327,7 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {/* Tampilan total berita */}
                 <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-green-500">
                   <div className="flex items-center space-x-4">
                     <FaNewspaper className="text-green-500 text-3xl" />
@@ -261,6 +341,8 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Tampilan total kategori */}
                 <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-blue-500">
                   <div className="flex items-center space-x-4">
                     <FaList className="text-blue-500 text-3xl" />
@@ -274,6 +356,8 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Tampilan total user */}
                 <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 border-l-4 border-purple-500">
                   <div className="flex items-center space-x-4">
                     <FaUsers className="text-purple-500 text-3xl" />
@@ -288,36 +372,89 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
-                  Pertumbuhan Berita (7 Hari Terakhir)
-                </h3>
-                {newsGrowth.labels.length > 0 ? (
-                  <Line data={newsGrowth} options={chartOptions} />
-                ) : (
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Data tidak cukup.
-                  </p>
-                )}
+
+            {/* Chart untuk pertumbuhan berita dan komentar */}
+              <div className="md:flex md:flex-row flex-col gap-8 md:space-y-0 space-y-4">
+                <div className="bg-white md:w-1/2 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                  <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
+                    Pertumbuhan Berita (7 Hari Terakhir)
+                  </h3>
+                  {newsGrowth.labels.length > 0 ? (
+                    <Line data={newsGrowth} options={chartOptions} />
+                  ) : (
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Data tidak cukup.
+                    </p>
+                  )}
+                </div>
+                <div className="bg-white md:w-1/2 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                  <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
+                    Pertumbuhan Komentar (7 Hari Terakhir)
+                  </h3>
+                  {commentGrowth.labels.length > 0 ? (
+                    <Line data={commentGrowth} options={chartOptions} />
+                  ) : (
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Data Tidak Cukup
+                    </p>
+                  )}
+                </div>
               </div>
+
+              {/* Chart untuk distribusi kategori by berita */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
                   Distribusi Berita per Kategori
                 </h3>
                 {categoryDist.labels.length > 0 ? (
-                  <div className="max-w-xs mx-auto">
-                    <Doughnut
-                      data={categoryDist}
-                      options={{
-                        plugins: {
-                          legend: {
-                            labels: {
-                              color: theme === "dark" ? "#cbd5e1" : "#4b5563",
-                            },
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+                  {/* Label untuk kategori */}
+                    <div className="flex-shrink-0">
+                      <ul className="space-y-2 sm:space-x-0 space-x-4 grid sm:grid-cols-1 grid-cols-2">
+                        {categoryDist.labels.map((label, index) => (
+                          <li
+                            key={label}
+                            className={`flex items-center text-sm cursor-pointer transition-opacity ${
+                              !categoryVisibility[label]
+                                ? "opacity-40"
+                                : "opacity-100"
+                            }`}
+                            onClick={() => handleLegendClick(label)}
+                          >
+                            <span
+                              className="inline-block w-4 h-4 rounded-full mr-2"
+                              style={{
+                                backgroundColor:
+                                  categoryDist.datasets[0].backgroundColor[
+                                    index
+                                  ],
+                              }}
+                            ></span>
+                            <span
+                              className={`text-gray-700 dark:text-gray-300 ${
+                                !categoryVisibility[label] ? "line-through" : ""
+                              }`}
+                            >
+                              {label}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Chart Doughnut */}
+                    <div className="w-48 h-48 sm:w-56 sm:h-56">
+                      <Doughnut
+                        data={visibleDataForChart}
+                        options={{
+                          responsive: true,
+                          maintainAspectRatio: false,
+                          plugins: {
+                            legend: { display: false },
                           },
-                        },
-                      }}
-                    />
+                        }}
+                      />
+                    </div>
                   </div>
                 ) : (
                   <p className="text-gray-500 dark:text-gray-400">
@@ -327,6 +464,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="space-y-8">
+            {/* Komentar terbaru */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300 flex items-center">
                   <FaComment className="mr-2" />
@@ -343,7 +481,6 @@ const Dashboard = () => {
                       </p>
                       <p className="text-gray-500 dark:text-gray-400 mt-1">
                         oleh <strong>{comment.username}</strong> pada
-                        
                         <Link
                           to={`/searchdetail/${comment.id_news}`}
                           className="text-blue-500 hover:underline dark:text-blue-400 ml-1"
@@ -360,6 +497,8 @@ const Dashboard = () => {
                   )}
                 </ul>
               </div>
+
+              {/* User terbaru */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300 flex items-center">
                   <FaUserPlus className="mr-2" />
@@ -386,6 +525,8 @@ const Dashboard = () => {
                   )}
                 </ul>
               </div>
+
+              {/* Berita fav */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300 flex items-center">
                   <FaStar className="mr-2 text-yellow-500" />
@@ -405,7 +546,6 @@ const Dashboard = () => {
                           {news.like_count} Likes
                         </p>
                       </div>
-                      
                       <Link
                         to={`/searchdetail/${news.id_news}`}
                         className="flex-shrink-0 px-3 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-semibold rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"

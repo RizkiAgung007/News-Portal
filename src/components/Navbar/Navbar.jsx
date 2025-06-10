@@ -112,7 +112,7 @@ const Navbar = ({ theme, toggleTheme }) => {
 
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-full text-gray-700 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+          className="p-2 rounded-full cursor-pointer text-gray-700 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           {theme === "light" ? <FaMoon size={20} /> : <FaSun size={20} />}
         </button>

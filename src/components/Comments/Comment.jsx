@@ -76,12 +76,12 @@ const Comment = ({ articleUrl, token, username }) => {
   // Tampilan utama komponen komentar
   return (
     <div className="mt-8">
-      <h2 className="text-xl font-semibold mb-4">Komentar</h2>
+      <h2 className="text-xl font-semibold mb-4 dark:text-gray-200">Komentar</h2>
 
       {/* Form untuk input komentar */}
       <form onSubmit={handleSubmit} className="mb-6">
         <textarea
-          className="w-full border rounded p-2 mb-2"
+          className="w-full border rounded p-2 mb-2 dark:text-gray-200"
           rows={3}
           placeholder="Tulis komentar kamu..."
           value={content}
@@ -90,7 +90,7 @@ const Comment = ({ articleUrl, token, username }) => {
         />
         <button
           type="submit"
-          className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
+          className="px-4 py-2 cursor-pointer bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
           disabled={loading}
         >
           {loading ? "Mengirim..." : "Kirim Komentar"}
@@ -104,20 +104,20 @@ const Comment = ({ articleUrl, token, username }) => {
       <div>
         {comments.length === 0 && <p>Belum ada komentar.</p>}
         {comments.map(({ id_comment, username, content, create_at }) => (
-          <div key={id_comment} className="border-b pb-4">
-            <div className="flex items-center space-x-3 mb-1">
+          <div key={id_comment} className="border-b pb-4 border-gray-200">
+            <div className="flex items-center space-x-3 py-4 mb-1">
               {/* Avatar huruf pertama username */}
               <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
                 {username.charAt(0).toUpperCase()}
               </div>
-              <span className="font-semibold">{username}</span>
+              <span className="font-semibold dark:text-gray-200">{username}</span>
               <span className="text-gray-500 text-sm">
                 {/* Tanggal komentar ditampilkan dalam format lokal */}
                 {new Date(create_at).toLocaleString()}
               </span>
             </div>
             {/* Isi komentar */}
-            <p>{content}</p>
+            <p className="dark:text-gray-200">{content}</p>
           </div>
         ))}
       </div>

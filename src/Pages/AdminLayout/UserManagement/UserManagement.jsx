@@ -11,7 +11,6 @@ const UserManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalUsers, setTotalUsers] = useState(0);
-
   const [sortOrder, setSortOrder] = useState("desc"); // default: terbaru dulu
 
   const [theme, setTheme] = useState(
@@ -25,8 +24,10 @@ const UserManagement = () => {
   }, [theme]);
   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
 
+  // Menyimpan token pada localstorage
   const token = localStorage.getItem("token");
 
+  // Mengamil API melalui endpoint pada databade 
   const fetchUsers = async (page = 1, order = "desc") => {
     setLoading(true);
     setError(null);
@@ -53,6 +54,7 @@ const UserManagement = () => {
     fetchUsers(currentPage, sortOrder);
   }, [currentPage, sortOrder]);
 
+  // Menangani tombol delete by id
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
     const originalUsers = [...users];
@@ -70,12 +72,14 @@ const UserManagement = () => {
     }
   };
 
+  // Menangani tombol untuk page
   const handlePageChange = (newPage) => {
     if (newPage > 0 && newPage <= totalPages) {
       setCurrentPage(newPage);
     }
   };
 
+  // Menangani tombol untuk sorting
   const handleSortToggle = () => {
     const newOrder = sortOrder === "desc" ? "asc" : "desc";
     setSortOrder(newOrder);
