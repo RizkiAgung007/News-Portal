@@ -38,7 +38,7 @@ const NewsView = () => {
   if (loading)
     return (
       <p className="p-6 text-gray-700 dark:text-gray-300">
-        Memuat detail berita...
+        Loading News Detail...
       </p>
     );
   if (error) return <p className="p-6 text-red-500">{error}</p>;
@@ -73,28 +73,27 @@ const NewsView = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 dark:bg-green-500 dark:text-white text-gray-800 font-semibold py-2 px-4 rounded-lg dark:hover:bg-green-600 hover:bg-gray-200 transition-colors duration-200"
-              aria-label="Lihat Berita di Halaman Publik"
             >
               <FaExternalLinkAlt />
-              <span>Lihat Langsung</span>
+              <span>Watch the News</span>
             </Link>
           </div>
         </div>
 
         <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-6 space-x-4">
           <span>
-            Kategori:{" "}
+            Category:{" "}
             <strong className="text-green-600 dark:text-green-400">
               {newsDetail.category}
             </strong>
           </span>
           <span>|</span>
           <span>
-            Dibuat oleh: <strong>{newsDetail.create_by}</strong>
+            Create by: <strong>{newsDetail.create_by}</strong>
           </span>
           <span>|</span>
           <span>
-            Tanggal:{" "}
+            Date:{" "}
             <strong>
               {new Date(newsDetail.create_at).toLocaleDateString("id-ID", {
                 day: "numeric",

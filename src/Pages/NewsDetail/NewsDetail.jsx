@@ -8,7 +8,12 @@ const NewsDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { article } = location.state || {};
+  // Ambil artikel dari state, jika tidak ada, fetch ulang (logika dari SearchDetailPage)
+  const { article: initialArticle } = location.state || {};
+  const [article, setArticle] = useState(initialArticle);
+  
+  // Anda mungkin perlu menambahkan useParams jika URL memiliki ID untuk fetch
+  // const { newsId } = useParams(); 
 
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -32,11 +37,19 @@ const NewsDetail = () => {
   }, [token, navigate]);
 
   useEffect(() => {
-    if (!article || !token) {
+    // Jika tidak ada artikel (misal, akses langsung dari URL), idealnya Anda fetch dari API
+    // Untuk saat ini kita asumsikan artikel selalu ada dari location.state
+    if (!article) return;
+    
+    // Logika untuk fetch status like
+    if (!token) {
       setLoadingLike(false);
       return;
     }
-    const articleIdentifier = article.url;
+
+    // Gunakan identifier yang konsisten
+    const articleIdentifier = article.url || article.id_news;
+    if (!articleIdentifier) return;
 
     setLoadingLike(true);
     fetch(
@@ -45,7 +58,7 @@ const NewsDetail = () => {
       )}`,
       { headers: { Authorization: `Bearer ${token}` } }
     )
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((res) => (res.ok ? res.json() : Promise.reject("Gagal memuat status like")))
       .then((data) => {
         setUserLikeStatus(data.userLikeStatus);
         setLikeCount(data.likeCount);
@@ -59,25 +72,35 @@ const NewsDetail = () => {
     if (!token) return alert("Silakan login terlebih dahulu.");
     setLoadingLike(true);
 
-    const articleIdentifier = article.url;
+    const articleIdentifier = article.url || article.id_news;
+    if (!articleIdentifier) {
+        setLoadingLike(false);
+        return alert("ID berita tidak ditemukan.");
+    }
+
+    // --> [PERBAIKAN LOGIKA KATEGORI] <--
+    const categoryNameToSync = article.category || article.source?.name || "Eksternal";
 
     try {
-      await fetch(`${API_BASE_URL}/api/news/sync-external`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          url: article.url,
-          title: article.title,
-          description: article.description,
-          urlToImage: article.urlToImage,
-          publishedAt: article.publishedAt,
-          category: article.source?.name || "Eksternal",
-        }),
-      });
-
+        // Hanya sync jika ini adalah berita eksternal (memiliki 'url' tapi tidak 'id_news')
+        if (article.url && !article.id_news) {
+            await fetch(`${API_BASE_URL}/api/news/sync-external`, {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                url: article.url,
+                title: article.title,
+                description: article.description,
+                urlToImage: article.urlToImage,
+                publishedAt: article.publishedAt,
+                category: categoryNameToSync,
+                }),
+            });
+        }
+      
       const isTogglingOff = userLikeStatus === action;
       const method = isTogglingOff ? "DELETE" : "POST";
       let body = { id_news: articleIdentifier };
@@ -110,15 +133,12 @@ const NewsDetail = () => {
       setLoadingLike(false);
     }
   };
-  
+
   if (!article) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center bg-gray-50 dark:bg-gray-900 min-h-screen">
         <p className="text-xl text-gray-800 dark:text-gray-100">
-          Data berita tidak tersedia.
-        </p>
-        <p className="text-gray-500 dark:text-gray-400 mt-2">
-          Ini bisa terjadi jika Anda mengakses halaman ini secara langsung.
+          Data Berita Tidak Tersedia.
         </p>
         <button
           onClick={() => navigate("/")}
@@ -130,33 +150,44 @@ const NewsDetail = () => {
     );
   }
 
+  // --> [PERBAIKAN UTAMA] <--
+  // Logika baru untuk mendapatkan nama kategori dari sumber manapun
+  const categoryName = article?.category || article?.source?.name || "Eksternal";
+
   return (
-    <div className="pt-6 px-32 bg-gray-50 dark:bg-gray-900">
+    <div className="pt-6 md:px-32 px-4 bg-gray-50 dark:bg-gray-900">
       <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         {article.title}
       </h1>
       <p className="text-gray-600 dark:text-gray-400 mb-2">
-        {new Date(article.publishedAt).toLocaleString("id-ID")}
+        {new Date(article.publishedAt || article.create_at).toLocaleString("id-ID")}
       </p>
       <img
         src={
-          article.urlToImage ||
-          "https://via.placeholder.com/800x450?text=No+Image"
+          article.urlToImage || 
+          (article.url_photo ? `${API_BASE_URL}${article.url_photo}` : "https://via.placeholder.com/800x450?text=No+Image")
         }
         alt={article.title}
         className="w-1/2 h-auto mb-6 rounded-lg shadow-md"
       />
 
-      <div className="prose max-w-none mb-4 dark:prose-invert">
-        {article.description || "Tidak ada konten."}
+      <div className="prose max-w-none mb-4 dark:prose-invert dark:text-gray-200">
+        {article.description || article.content || "Tidak ada konten."}
       </div>
-      <a
-        href={article.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 dark:text-blue-400 hover:underline"
-      >
-      </a>
+      
+      {categoryName && (
+        <button
+          onClick={() =>
+            navigate(`/category/${encodeURIComponent(categoryName)}`)
+          }
+          className="text-sm mb-6 mt-4 font-semibold"
+        >
+          <span className="dark:text-gray-200">Kategori:</span>{" "}
+          <span className="text-green-600 cursor-pointer dark:text-green-400 hover:text-gray-200 bg-gray-200 hover:bg-gray-600 transition-all mx-2 p-2 rounded-full">
+            {categoryName}
+          </span>
+        </button>
+      )}
 
       <div className="flex items-center space-x-6 my-6 border-t border-b border-gray-200 dark:border-gray-700 py-4">
         <button
@@ -184,7 +215,7 @@ const NewsDetail = () => {
           <span>{dislikeCount}</span>
         </button>
       </div>
-      <Comment articleUrl={article.url} token={token} userData={userData} />
+      <Comment articleUrl={article.url || article.id_news} token={token} userData={userData} />
     </div>
   );
 };

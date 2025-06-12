@@ -3,6 +3,7 @@ import { useLocation, useParams, useNavigate } from "react-router-dom";
 import Comment from "../../components/Comments/Comment";
 import { API_BASE_URL } from "../../config";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import Loading from "../../components/Loading/Loading"
 
 const SearchDetail = () => {
   const location = useLocation();
@@ -42,7 +43,7 @@ const SearchDetail = () => {
     setError(null);
     fetch(`${API_BASE_URL}/api/news/${newsId}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Berita tidak ditemukan");
+        if (!res.ok) throw new Error("News Not Found");
         return res.json();
       })
       .then((data) => {
@@ -72,7 +73,7 @@ const SearchDetail = () => {
       }
     )
       .then((res) => {
-        if (!res.ok) throw new Error("Gagal ambil status like");
+        if (!res.ok) throw new Error("Failed to fetch like status");
         return res.json();
       })
       .then((data) => {
@@ -86,7 +87,7 @@ const SearchDetail = () => {
 
   const handleLikeDislike = async (action) => {
     if (!token) {
-      alert("Silakan login terlebih dahulu untuk memberi like atau dislike");
+      alert("Please log in first to give a like or dislike.");
       return;
     }
     setLoadingLike(true);
@@ -132,12 +133,10 @@ const SearchDetail = () => {
       setLoadingLike(false);
     }
   };
-  
+
   if (loading)
     return (
-      <div className="p-10 text-center text-gray-700 dark:text-gray-300">
-        Memuat berita...
-      </div>
+      <Loading />
     );
   if (error) {
     return (
@@ -147,7 +146,7 @@ const SearchDetail = () => {
           onClick={() => navigate(-1)}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
-          Kembali
+          Back
         </button>
       </div>
     );
@@ -155,12 +154,12 @@ const SearchDetail = () => {
   if (!article)
     return (
       <div className="p-10 text-center text-gray-600 dark:text-gray-400">
-        Data berita tidak tersedia.
+        News data is not available.
       </div>
     );
 
   return (
-    <div className="pt-6 px-32 bg-gray-50 dark:bg-gray-900">
+    <div className="pt-6 md:px-32 px-4 bg-gray-50 dark:bg-gray-900">
       <h1 className="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         {article.title}
       </h1>
@@ -169,7 +168,7 @@ const SearchDetail = () => {
           ? new Date(article.create_at).toLocaleString("id-ID")
           : article.publishedAt
           ? new Date(article.publishedAt).toLocaleString("id-ID")
-          : "Tanggal tidak tersedia"}
+          : "Date not available"}
       </p>
       <img
         src={
@@ -193,9 +192,12 @@ const SearchDetail = () => {
           onClick={() =>
             navigate(`/category/${encodeURIComponent(article.category)}`)
           }
-          className="text-sm text-blue-600 dark:text-blue-400 font-semibold mb-6 hover:text-blue-800"
+          className="text-sm mb-6 mt-4 font-semibold"
         >
-          Kategori: {article.category}
+          <span className="dark:text-gray-200">Category:</span>{" "}
+          <span className="text-green-600 cursor-pointer dark:text-green-400 hover:text-gray-200 bg-gray-200 hover:bg-gray-600 transition-all mx-2 p-2 rounded-full">
+            {article.category}
+          </span>
         </button>
       )}
 

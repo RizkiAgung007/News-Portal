@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt, FaSave, FaTimes, FaSun, FaMoon } from "react-icons/fa";
 import { API_BASE_URL } from "../../../config";
+import { toast } from "react-toastify";
 
 const Category = () => {
   const [categories, setCategories] = useState([]); // Menyimpan daftar semua kategori.
@@ -78,17 +79,18 @@ const Category = () => {
       const res = await axios.post(
         `${API_BASE_URL}/api/category/create`,
         { name: newCategory.trim() },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
       if (res.status === 201) {
-        fetchData();
+        toast.success("Category success added");
+        fetchData(); // Muat ulang data setelah berhasil
       } else if (res.status === 200) {
-        alert("Category already exists");
+        toast.warning("Category already exists");
       }
       setNewCategory("");
     } catch (err) {
       console.error("Error creating category:", err);
-      setError("Failed to create category");
+      toast.error("Failed to create category");
     } finally {
       setLoading(false);
     }
@@ -109,7 +111,7 @@ const Category = () => {
   // Mengirim perubahan kategori ke API dan memuat ulang data.
   const handleSaveClick = async (id) => {
     if (!editingText.trim()) {
-      alert("Nama kategori tidak boleh kosong.");
+      toast.error("Nama kategori tidak boleh kosong.");
       return;
     }
     try {
@@ -118,14 +120,15 @@ const Category = () => {
         { name: editingText.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      toast.success("Category success edit")
       handleCancelClick();
       fetchData();
     } catch (err) {
       if (err.response && err.response.status === 409) {
-        alert("Nama kategori tersebut sudah digunakan.");
+        toast.warning("Nama kategori tersebut sudah digunakan.");
       } else {
         console.error("Error updating category:", err);
-        alert("Failed to update category");
+        toast.error("Failed to update category");
       }
     }
   };
@@ -139,9 +142,10 @@ const Category = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchData();
+      toast.success("Category has deleted")
     } catch (err) {
       console.error("Error deleting category:", err);
-      alert("Failed to delete category");
+      toast.error("Failed to delete category");
     }
   };
 
@@ -150,7 +154,7 @@ const Category = () => {
       <div className="flex-grow">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
-            Manajemen Kategori
+            Category Management
           </h1>
           {/* Tombol untuk theme  */}
           <button
@@ -161,7 +165,7 @@ const Category = () => {
           </button>
         </div>
         <p className="mb-6 text-gray-600 dark:text-gray-400">
-          Total kategori:{" "}
+          Total Category:{" "}
           <span className="font-semibold text-green-600 dark:text-green-400">
             {categories.length}
           </span>
@@ -170,7 +174,7 @@ const Category = () => {
         {/* Form untuk nambah kategori */}
         <div className="border-t border-b border-gray-200 dark:border-gray-700 py-6 mb-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
-            Tambah Kategori Baru
+            Add a New Category
           </h2>
           <form
             onSubmit={handleSubmit}
@@ -178,7 +182,7 @@ const Category = () => {
           >
             <input
               type="text"
-              placeholder="Nama kategori baru"
+              placeholder="New Category Name"
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-transparent flex-grow text-gray-900 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
@@ -201,114 +205,106 @@ const Category = () => {
           )}
         </div>
 
-        {/* Tampilan untuk tabel */}
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
-          Semua Kategori
-        </h2>
         <div className="md:flex md:flex-row flex-col justify-between gap-8">
-          <div className="overflow-x-auto w-full rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-            <table className="min-w-full text-left table-auto">
-              <thead className="bg-gray-100 dark:bg-gray-700/50 text-sm uppercase">
-                <tr>
-                  <th className="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">
-                    No
-                  </th>
-                  <th className="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300">
-                    Nama Kategori
-                  </th>
-                  <th className="px-5 py-3 font-semibold text-gray-600 dark:text-gray-300 text-center">
-                    Aksi
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {categories.length === 0 ? (
+          <div className="flex-grow">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
+              All Category
+            </h2>
+            <div className="overflow-x-auto rounded-lg border border-gray-300 dark:border-gray-700 shadow-sm">
+              <table className="min-w-full text-left table-auto">
+                <thead className="bg-green-50 dark:bg-gray-700/50 text-green-800 dark:text-green-300 font-medium">
                   <tr>
-                    <td
-                      colSpan={3}
-                      className="text-center py-6 text-gray-500 dark:text-gray-400 italic"
-                    >
-                      Tidak ada kategori
-                    </td>
+                    <th className="px-5 py-3 border-b border-gray-200 dark:border-gray-600">
+                      No
+                    </th>
+                    <th className="px-5 py-3 border-b border-gray-200 dark:border-gray-600">
+                      Category Name
+                    </th>
+                    <th className="px-5 py-3 border-b border-gray-200 dark:border-gray-600 text-center">
+                      Action
+                    </th>
                   </tr>
-                ) : (
-                  categories.map((cat, i) => (
-                    <tr
-                      key={cat.id_category}
-                      className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-200"
-                    >
-                      <td className="px-5 py-4 text-gray-700 dark:text-gray-300">
-                        {i + 1}
-                      </td>
-
-                      {/* Edit teks secara inline didalam table kategori */}
-                      <td className="px-5 py-4 font-semibold text-gray-900 dark:text-white">
-                        {editingCategoryId === cat.id_category ? (
-                          <input
-                            type="text"
-                            value={editingText}
-                            onChange={(e) => setEditingText(e.target.value)}
-                            className="w-full px-2 py-1 border rounded bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            autoFocus
-                          />
-                        ) : (
-                          cat.name
-                        )}
-                      </td>
-                      
-                      <td className="px-5 py-4 text-center">
-                        {editingCategoryId === cat.id_category ? (
-                          <>
-                            {/* Tombol untuk menyimpan edit kategori */}
-                            <button
-                              onClick={() => handleSaveClick(cat.id_category)}
-                              className="text-green-500 cursor-pointer hover:text-green-700 dark:text-green-400 dark:hover:text-green-500 transition mr-4"
-                              title="Simpan"
-                            >
-                              <FaSave className="inline-block text-lg" />
-                            </button>
-                            {/* Tombol untuk membatalkan edit kategori */}
-                            <button
-                              onClick={handleCancelClick}
-                              className="text-gray-500 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-500 transition"
-                              title="Batal"
-                            >
-                              <FaTimes className="inline-block text-lg" />
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            {/* Tombol untuk edit kategori */}
-                            <button
-                              onClick={() => handleEditClick(cat)}
-                              className="text-blue-500 cursor-pointer hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 transition mr-4"
-                              title="Edit Kategori"
-                            >
-                              <FaPencilAlt className="inline-block text-lg" />
-                            </button>
-                            {/* Tombol untuk menghapus kategori */}
-                            <button
-                              onClick={() => handleDelete(cat.id_category)}
-                              className="text-red-500 cursor-pointer hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"
-                              title="Hapus Kategori"
-                            >
-                              <FaRegTrashCan className="inline-block text-lg" />
-                            </button>
-                          </>
-                        )}
+                </thead>
+                <tbody>
+                  {categories.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={3}
+                        className="text-center py-6 text-gray-500 dark:text-gray-400 italic"
+                      >
+                        No Category
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                  ) : (
+                    categories.map((cat, i) => (
+                      <tr
+                        key={cat.id_category}
+                        className="odd:bg-white even:bg-green-50 hover:bg-green-100 dark:odd:bg-gray-800 dark:even:bg-gray-700/50 dark:hover:bg-gray-700 transition-colors duration-200"
+                      >
+                        <td className="px-5 py-3 border-b border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+                          {i + 1}
+                        </td>
+
+                        <td className="px-5 py-3 border-b border-gray-200 dark:border-gray-600 font-semibold text-gray-900 dark:text-white">
+                          {editingCategoryId === cat.id_category ? (
+                            <input
+                              type="text"
+                              value={editingText}
+                              onChange={(e) => setEditingText(e.target.value)}
+                              className="w-full px-2 py-1 border rounded bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+                              autoFocus
+                            />
+                          ) : (
+                            cat.name
+                          )}
+                        </td>
+
+                        <td className="px-5 py-3 border-b border-gray-200 dark:border-gray-600 text-center">
+                          {editingCategoryId === cat.id_category ? (
+                            <>
+                              <button
+                                onClick={() => handleSaveClick(cat.id_category)}
+                                className="text-green-500 cursor-pointer hover:text-green-700 dark:text-green-400 dark:hover:text-green-500 transition mr-4"
+                              >
+                                <FaSave className="inline-block text-lg" />
+                              </button>
+                              <button
+                                onClick={handleCancelClick}
+                                className="text-gray-500 cursor-pointer hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-500 transition"
+                              >
+                                <FaTimes className="inline-block text-lg" />
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() => handleEditClick(cat)}
+                                className="text-blue-500 cursor-pointer hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 transition mr-4"
+                              >
+                                <FaPencilAlt className="inline-block text-lg" />
+                              </button>
+                              <button
+                                onClick={() => handleDelete(cat.id_category)}
+                                className="text-red-500 cursor-pointer hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"
+                              >
+                                <FaRegTrashCan className="inline-block text-lg" />
+                              </button>
+                            </>
+                          )}
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {/* Sidebar Top 5 Kategori */}
-          <div className="lg:w-1/3 mt-8 lg:mt-0">
+          <div className="lg:w-1/3 mt-8 lg:mt-11">
             <div className="sticky top-6 bg-white dark:bg-gray-800/50 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
               <h3 className="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-200">
-                Top 5 Kategori
+                Top 5 Category
               </h3>
               {topCategories.length > 0 ? (
                 <ul className="space-y-3">
@@ -321,14 +317,14 @@ const Category = () => {
                         {index + 1}. {cat.category}
                       </span>
                       <span className="text-gray-500 dark:text-gray-400 font-medium bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-md">
-                        {cat.count} berita
+                        {cat.count} news
                       </span>
                     </li>
                   ))}
                 </ul>
               ) : (
                 <p className="text-sm text-gray-500 dark:text-gray-400 italic">
-                  Statistik tidak tersedia.
+                  Statistics not available.
                 </p>
               )}
             </div>

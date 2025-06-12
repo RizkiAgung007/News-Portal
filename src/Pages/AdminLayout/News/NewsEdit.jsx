@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { API_BASE_URL } from "../../../config";
+import { toast } from "react-toastify";
 
 const EditNews = () => {
   const [title, setTitle] = useState("");
@@ -20,6 +21,7 @@ const EditNews = () => {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
+  // Mengambil data melalui api ke db
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -40,7 +42,7 @@ const EditNews = () => {
     fetchCategories();
   }, []);
 
-  // Mengambil data berita yang akan diedit
+  // Mengambil data berita yang akan diedit by ID
   useEffect(() => {
     axios
       .get(`${API_BASE_URL}/api/news/${id}`, {
@@ -74,7 +76,7 @@ const EditNews = () => {
     setSuccess("");
 
     if (!title || !description || !category || !creator) {
-      return setError("Judul, deskripsi, kategori dan penulis wajib diisi.");
+      return setError("Title, Description, Category, and Author must be filled out.");
     }
 
     const formData = new FormData();
@@ -82,18 +84,11 @@ const EditNews = () => {
     formData.append("description", description);
     formData.append("category", category);
     formData.append("create_by", creator);
-    // formData.append("create_by", username); // Mungkin perlu disesuaikan
-    // Hanya tambahkan foto ke form jika pengguna memilih file baru
     if (photo) {
       formData.append("photo", photo);
     }
-    // Backend Anda harus bisa menangani kasus di mana foto tidak diupdate
-    // Endpoint PUT di backend harus diubah untuk bisa menerima 'multipart/form-data'
 
     try {
-      // Endpoint PUT di backend Anda saat ini belum menangani upload file.
-      // Anda perlu menambahkan multer ke endpoint PUT seperti pada POST.
-      // Jika backend belum siap, request ini mungkin gagal jika ada foto.
       const response = await axios.put(
         `${API_BASE_URL}/api/news/${id}`,
         formData,
@@ -107,18 +102,20 @@ const EditNews = () => {
 
       setSuccess(response.data.message);
       setTimeout(() => navigate("/admin/news"), 2000);
+      toast.success("Update success")
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "Terjadi kesalahan saat mengupdate berita."
+          "An error occurred while updating the news.."
       );
+      toast.error("An error occurred while updating the news.")
     }
   };
 
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">
-        Edit Berita
+        Edit News
       </h1>
       <button
         onClick={() => navigate("/admin/news")}
@@ -142,7 +139,7 @@ const EditNews = () => {
             htmlFor="title"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Judul Berita
+            News Title
           </label>
           <input
             type="text"
@@ -157,7 +154,7 @@ const EditNews = () => {
             htmlFor="description"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Deskripsi
+            Description
           </label>
           <textarea
             id="description"
@@ -167,48 +164,50 @@ const EditNews = () => {
             className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
           ></textarea>
         </div>
-        <div>
-          <label
-            htmlFor="category"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Kategori
-          </label>
-          <select
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-          >
-            <option value="">Pilih Kategori</option>
-            {categories.map((cat) => (
-              <option key={cat.id_category} value={cat.name}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label
-            htmlFor="create_by"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Create By
-          </label>
-          <input
-            type="text"
-            id="creator"
-            value={creator}
-            onChange={(e) => setCreator(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-          />
+        <div className="flex justify-between gap-12">
+          <div className="w-full">
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Category
+            </label>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat.id_category} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="w-full">
+            <label
+              htmlFor="create_by"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Create By
+            </label>
+            <input
+              type="text"
+              id="creator"
+              value={creator}
+              onChange={(e) => setCreator(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            />
+          </div>
         </div>
         <div>
           <label
             htmlFor="photo"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Ubah Foto (Opsional)
+            Upload Photo
           </label>
           <input
             type="file"
@@ -218,7 +217,7 @@ const EditNews = () => {
           />
           {preview && (
             <div className="mt-4">
-              <p className="text-sm text-gray-500 mb-2">Preview Foto:</p>
+              <p className="text-sm text-gray-500 mb-2">Photo Preview:</p>
               <img
                 src={preview}
                 alt="Preview"
@@ -232,7 +231,7 @@ const EditNews = () => {
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
           >
-            Update Berita
+            Update News
           </button>
         </div>
       </form>

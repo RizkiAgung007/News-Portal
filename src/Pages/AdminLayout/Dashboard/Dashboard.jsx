@@ -153,7 +153,7 @@ const Dashboard = () => {
           labels: growthNews,
           datasets: [
             {
-              label: "Berita Dibuat",
+              label: "News Created",
               data: growthNewsVal,
               borderColor: "rgb(34, 197, 94)",
               backgroundColor: "rgba(34, 197, 94, 0.5)",
@@ -174,7 +174,7 @@ const Dashboard = () => {
           labels: growthComment,
           datasets: [
             {
-              label: "Komentar Dibuat",
+              label: "Comment Created",
               data: growthComVal,
               borderColor: "rgb(59, 130, 246)",
               backgroundColor: "rgba(59, 130, 246, 0.5)",
@@ -198,7 +198,7 @@ const Dashboard = () => {
           labels: categoryLabels,
           datasets: [
             {
-              label: "Jumlah Berita",
+              label: "Number of News",
               data: categoryValues,
               backgroundColor: [
                 "#3B82F6",
@@ -310,7 +310,7 @@ const Dashboard = () => {
               className="flex flex-col items-center justify-center p-4 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition"
             >
               <FaPlus className="text-2xl mb-1" />
-              <span className="font-semibold">Buat Berita</span>
+              <span className="font-semibold">Create News</span>
             </Link>
 
             {/* Mengelola user */}
@@ -319,7 +319,7 @@ const Dashboard = () => {
               className="flex flex-col items-center justify-center p-4 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 transition"
             >
               <FaUserShield className="text-2xl mb-1" />
-              <span className="font-semibold">Kelola User</span>
+              <span className="font-semibold">User Management</span>
             </Link>
 
             {/* Mengelola kategori */}
@@ -328,7 +328,7 @@ const Dashboard = () => {
               className="flex flex-col items-center justify-center p-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
             >
               <FaFolderPlus className="text-2xl mb-1" />
-              <span className="font-semibold">Kelola Kategori</span>
+              <span className="font-semibold">Category Management</span>
             </Link>
 
             {/* Mengelola berita */}
@@ -337,7 +337,7 @@ const Dashboard = () => {
               className="flex flex-col items-center justify-center p-4 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 transition"
             >
               <FaNewspaper className="text-2xl mb-1" />
-              <span className="font-semibold">Semua Berita</span>
+              <span className="font-semibold">All News</span>
             </Link>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -349,7 +349,7 @@ const Dashboard = () => {
                     <FaNewspaper className="text-green-500 text-3xl" />
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Total Berita
+                        Total News
                       </p>
                       <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                         {newsCount}
@@ -364,7 +364,7 @@ const Dashboard = () => {
                     <FaList className="text-blue-500 text-3xl" />
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Total Kategori
+                        Total Category
                       </p>
                       <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                         {categoryCount}
@@ -379,7 +379,7 @@ const Dashboard = () => {
                     <FaUsers className="text-purple-500 text-3xl" />
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        Total Pengguna
+                        Total User
                       </p>
                       <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">
                         {userCount}
@@ -393,25 +393,25 @@ const Dashboard = () => {
               <div className="md:flex md:flex-row flex-col gap-8 md:space-y-0 space-y-4">
                 <div className="bg-white md:w-1/2 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                   <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
-                    Pertumbuhan Berita (7 Hari Terakhir)
+                    News Growth (Last 7 Days)
                   </h3>
                   {newsGrowth.labels.length > 0 ? (
                     <Line data={newsGrowth} options={chartOptions} />
                   ) : (
                     <p className="text-gray-500 dark:text-gray-400">
-                      Data tidak cukup.
+                      Not enough data.
                     </p>
                   )}
                 </div>
                 <div className="bg-white md:w-1/2 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                   <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
-                    Pertumbuhan Komentar (7 Hari Terakhir)
+                    Comment Growth (Last 7 Days)
                   </h3>
                   {commentGrowth.labels.length > 0 ? (
                     <Line data={commentGrowth} options={chartOptions} />
                   ) : (
                     <p className="text-gray-500 dark:text-gray-400">
-                      Data Tidak Cukup
+                      Not enough data.
                     </p>
                   )}
                 </div>
@@ -420,7 +420,7 @@ const Dashboard = () => {
               {/* Chart untuk distribusi kategori by berita */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
-                  Distribusi Berita per Kategori
+                  News Distribution by Category
                 </h3>
                 {categoryDist.labels.length > 0 ? (
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
@@ -474,7 +474,7 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <p className="text-gray-500 dark:text-gray-400">
-                    Data tidak cukup.
+                    Not enough data.
                   </p>
                 )}
               </div>
@@ -484,7 +484,7 @@ const Dashboard = () => {
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300 flex items-center">
                   <FaComment className="mr-2" />
-                  Komentar Terbaru
+                  Latest Comments
                 </h3>
                 <ul className="space-y-4">
                   {recentComments.map((comment, i) => (
@@ -496,7 +496,7 @@ const Dashboard = () => {
                         "{comment.content}"
                       </p>
                       <p className="text-gray-500 dark:text-gray-400 mt-1">
-                        oleh <strong>{comment.username}</strong> pada
+                        by <strong>{comment.username}</strong> on
                         <Link
                           to={`/searchdetail/${comment.id_news}`}
                           className="text-blue-500 hover:underline dark:text-blue-400 ml-1"
@@ -508,7 +508,7 @@ const Dashboard = () => {
                   ))}
                   {recentComments.length === 0 && (
                     <p className="text-gray-500 dark:text-gray-400">
-                      Belum ada komentar baru.
+                      No new comments yet.
                     </p>
                   )}
                 </ul>
@@ -518,7 +518,7 @@ const Dashboard = () => {
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300 flex items-center">
                   <FaUserPlus className="mr-2" />
-                  Pendaftar Baru
+                  New user
                 </h3>
                 <ul className="space-y-3">
                   {recentUsers.map((user, i) => (
@@ -536,7 +536,7 @@ const Dashboard = () => {
                   ))}
                   {recentUsers.length === 0 && (
                     <p className="text-gray-500 dark:text-gray-400">
-                      Belum ada pendaftar baru.
+                      There are no new registrants yet.
                     </p>
                   )}
                 </ul>
@@ -546,7 +546,7 @@ const Dashboard = () => {
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300 flex items-center">
                   <FaStar className="mr-2 text-yellow-500" />
-                  Berita Paling Disukai
+                  Most Liked News
                 </h3>
                 <ul className="space-y-3">
                   {favoriteNews.map((news) => (
@@ -572,7 +572,7 @@ const Dashboard = () => {
                   ))}
                   {favoriteNews.length === 0 && (
                     <p className="text-gray-500 dark:text-gray-400">
-                      Belum ada berita yang disukai.
+                      No news has been liked yet.
                     </p>
                   )}
                 </ul>

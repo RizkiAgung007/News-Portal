@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config";
+import NotFound from "../../components/NotFound/NotFound";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
@@ -34,9 +35,9 @@ const SearchPage = () => {
         setLoading(false);
       });
   }, [title]);
-  
+
   return (
-    <div className="pt-4 px-32 min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="pt-4 md:px-32 px-4 min-h-screen bg-gray-50 dark:bg-gray-900">
       <h1 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
         Hasil Pencarian:{" "}
         <span className="text-green-600 dark:text-green-400">"{title}"</span>
@@ -47,9 +48,11 @@ const SearchPage = () => {
       )}
       {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
       {!loading && !error && results.length === 0 && (
-        <p className="text-gray-600 dark:text-gray-400">
-          Tidak ada hasil ditemukan.
-        </p>
+        <div className="w-full flex flex-col items-center justify-center text-center py-16">
+          <div className="w-1/2 items-center justify-center flex dark:bg-gray-600 p-4 rounded-full">
+            <NotFound />
+          </div>
+        </div>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -83,7 +86,7 @@ const SearchPage = () => {
             <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 flex-grow">
               {news.description}
             </p>
-            <p className="text-blue-600 dark:text-blue-400 hover:underline text-sm mt-2 inline-block">
+            <p className="text-green-600 dark:text-green-400 hover:underline text-sm mt-2 inline-block">
               Baca Selengkapnya
             </p>
           </div>

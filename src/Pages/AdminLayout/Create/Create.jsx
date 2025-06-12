@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API_BASE_URL } from "../../../config";
 import { FaSun, FaMoon } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Create = () => {
   // State untuk menampung semua data dari input form.
@@ -95,7 +96,7 @@ const Create = () => {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Berita berhasil dibuat!");
+        toast.success("Berita berhasil dibuat!");
         e.target.reset();
         setForm({
           title: "",
@@ -105,10 +106,10 @@ const Create = () => {
           photo: null,
         });
       } else {
-        alert("Error: " + data.message);
+        toast.error("Error: " + data.message);
       }
     } catch (error) {
-      alert("Error saat submit: " + error.message);
+      toast.error("Error saat submit: " + error.message);
     } finally {
       setSubmitting(false);
     }
@@ -118,7 +119,7 @@ const Create = () => {
     <div className="">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
-          Buat Berita Baru
+          Create a New News
         </h2>
         {/* Tombol Theme */}
         <button
@@ -138,7 +139,7 @@ const Create = () => {
             htmlFor="title"
             className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Judul Berita
+            News Title
           </label>
           <input
             id="title"
@@ -146,7 +147,7 @@ const Create = () => {
             name="title"
             value={form.title}
             onChange={handleChange}
-            placeholder="Masukkan judul berita"
+            placeholder="Enter the news title"
             required
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
@@ -158,14 +159,14 @@ const Create = () => {
             htmlFor="description"
             className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Deskripsi
+            Description
           </label>
           <textarea
             id="description"
             name="description"
             value={form.description}
             onChange={handleChange}
-            placeholder="Masukkan deskripsi berita"
+            placeholder="Enter news description"
             required
             rows={6}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -179,7 +180,7 @@ const Create = () => {
               htmlFor="category"
               className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Kategori
+              Category
             </label>
             <select
               id="category"
@@ -190,7 +191,7 @@ const Create = () => {
               className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
               <option value="" disabled>
-                Pilih kategori
+                Choose a category
               </option>
               {categories.map((cat) => (
                 <option key={cat.id_category} value={cat.name}>
@@ -206,7 +207,7 @@ const Create = () => {
               htmlFor="create_by"
               className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Nama Penulis
+              Create By
             </label>
             <input
               id="create_by"
@@ -214,7 +215,7 @@ const Create = () => {
               name="create_by"
               value={form.create_by}
               onChange={handleChange}
-              placeholder="Masukkan nama penulis"
+              placeholder="Enter the Author's name"
               required
               className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
@@ -227,7 +228,7 @@ const Create = () => {
             htmlFor="photo"
             className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300"
           >
-            Upload Foto
+            Upload Photo
           </label>
           <input
             id="photo"
@@ -236,7 +237,7 @@ const Create = () => {
             accept="image/*"
             onChange={handleChange}
             required
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+            className="mt-1 cursor-pointer block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
           />
         </div>
 
@@ -247,7 +248,7 @@ const Create = () => {
             disabled={submitting}
             className="w-full cursor-pointer md:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-8 rounded-lg transition-colors disabled:bg-green-400"
           >
-            {submitting ? "Menyimpan..." : "Simpan Berita"}
+            {submitting ? "Adding..." : "Add News"}
           </button>
         </div>
       </form>

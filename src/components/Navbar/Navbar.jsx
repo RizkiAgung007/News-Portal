@@ -78,15 +78,15 @@ const Navbar = ({ theme, toggleTheme }) => {
     }`;
 
   return (
-    <div className="pt-6 px-32 sticky top-0 z-50 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
+    <div className="pt-6 md:px-32 sticky top-0 z-50 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
       <Link
         to="/"
-        className="text-xl font-bold text-gray-900 dark:text-gray-100"
+        className="text-xl font-bold text-gray-900 italic dark:text-gray-100"
       >
-        Portal Berita
+        Portal<span className="text-green-500">Berita</span>
       </Link>
 
-      <div className="relative lg:w-[640px] w-32 lg:mx-4">
+      <div className="relative lg:w-[640px] w-48 lg:mx-4">
         <input
           type="text"
           placeholder="Cari berita..."
@@ -184,7 +184,7 @@ const Navbar = ({ theme, toggleTheme }) => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="absolute top-full right-0 mt-1 w-full sm:w-60 bg-white dark:bg-gray-800 rounded-b-lg p-4 border-x border-b border-gray-200 dark:border-gray-700 shadow-lg flex flex-col gap-4 lg:hidden z-50">
+        <div className="absolute top-full right-0 w-full sm:w-60 bg-white dark:bg-gray-800 rounded-b-lg p-4 border-x border-b border-gray-200 dark:border-gray-700 shadow-lg flex flex-col gap-4 lg:hidden z-50">
           <NavLink
             to="/about-us"
             className={navLinkStyles}

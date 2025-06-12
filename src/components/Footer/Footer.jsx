@@ -17,8 +17,8 @@ const Footer = () => {
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
           <div className="md:col-span-2 lg:col-span-2">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Portal Berita
+            <h3 className="text-2xl italic font-bold text-gray-900 dark:text-white mb-2">
+              Portal<span className="text-green-400">Berita</span>
             </h3>
             <p className="text-gray-600 dark:text-gray-400 max-w-sm">
               Platform Anda untuk mendapatkan informasi terkini dan terpercaya

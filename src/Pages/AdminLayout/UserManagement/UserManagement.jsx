@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { API_BASE_URL } from "../../../config";
 import { FaSun, FaMoon, FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -75,9 +76,9 @@ const UserManagement = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchUsers(currentPage, sortOrder);
-      alert("User deleted successfully");
+      toast.success("User deleted successfully");
     } catch (err) {
-      console.error("Error deleting user:", err);
+      toast.error("Error deleting user:", err);
       setError("Failed to delete user");
       setUsers(originalUsers);
     }
@@ -104,10 +105,10 @@ const UserManagement = () => {
       <div className="flex justify-between items-center mb-6">
         <div className="">
           <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
-            Manajemen Pengguna
+            User Management
           </h1>
           <p className="mt-1 text-gray-600 dark:text-gray-400">
-            Total pengguna:{" "}
+            Total User:{" "}
             <span className="font-semibold text-green-700 dark:text-green-400">
               {totalUsers}
             </span>
@@ -118,7 +119,7 @@ const UserManagement = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Cari pengguna..."
+              placeholder="Search user..."
               className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500"
             />
           </div>
@@ -126,7 +127,6 @@ const UserManagement = () => {
         <div className="flex items-center space-x-2">
           <button
             onClick={handleSortToggle}
-            title="sorting"
             className="p-3 cursor-pointer rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
           >
             {sortOrder === "desc" ? <FaArrowDown /> : <FaArrowUp />}
@@ -167,7 +167,7 @@ const UserManagement = () => {
                   colSpan={4}
                   className="text-center py-6 text-gray-500 dark:text-gray-400 italic"
                 >
-                  Memuat...
+                  Loading...
                 </td>
               </tr>
             ) : users.length === 0 ? (
@@ -197,7 +197,7 @@ const UserManagement = () => {
                   <td className="px-5 py-3 border-b border-gray-200 dark:border-gray-600 text-center">
                     <button
                       onClick={() => handleDelete(user.id_users)}
-                      className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"
+                      className="text-red-500 cursor-pointer hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"
                       title="Delete User"
                     >
                       <FaRegTrashCan className="inline-block text-lg" />
@@ -220,7 +220,7 @@ const UserManagement = () => {
             Previous
           </button>
           <span className="text-sm text-gray-600 dark:text-gray-400">
-            Halaman {currentPage} dari {totalPages}
+            Page {currentPage} of {totalPages}
           </span>
           <button
             onClick={() => handlePageChange(currentPage + 1)}

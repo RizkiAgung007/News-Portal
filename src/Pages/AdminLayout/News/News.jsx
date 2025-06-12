@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../../config";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaEdit, FaSun, FaMoon, FaEye } from "react-icons/fa"; 
+import { toast } from "react-toastify";
 
 const News = () => {
   const [news, setNews] = useState([]);
@@ -68,8 +69,9 @@ const News = () => {
         throw new Error("Gagal menghapus berita");
       }
       setNews((prevNews) => prevNews.filter((item) => item.id_news !== id));
+      toast.success("News has deleted")
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
@@ -88,7 +90,7 @@ const News = () => {
     <div className="">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
-          Manajemen Berita
+          News Management
         </h1>
 
         {/* Tombol theme */}
@@ -100,7 +102,7 @@ const News = () => {
         </button>
       </div>
       <p className="text-gray-600 dark:text-gray-400 mb-6">
-        Total Berita:{" "}
+        Total News:{" "}
         <strong className="text-green-600 dark:text-green-400">
           {news.length}
         </strong>
@@ -149,21 +151,18 @@ const News = () => {
                   <button
                     onClick={() => handleDelete(item.id_news)}
                     className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 cursor-pointer transition"
-                    aria-label="Delete News"
                   >
                     <FaRegTrashCan />
                   </button>
                   <button
                     onClick={() => handleEdit(item.id_news)}
                     className="text-yellow-500 hover:text-yellow-700 dark:text-yellow-400 dark:hover:text-yellow-500 cursor-pointer transition"
-                    aria-label="Edit News"
                   >
                     <FaEdit />
                   </button>
                   <button
                     onClick={() => handleView(item.id_news)}
                     className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-500 cursor-pointer transition"
-                    aria-label="Edit News"
                   >
                     <FaEye />
                   </button>

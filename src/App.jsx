@@ -9,6 +9,7 @@ import RegistPage from "./Pages/Register/RegistPage";
 import ProfilePage from "./Pages/ProfilePage/ProfilePage";
 import NewsDetail from "./Pages/NewsDetail/NewsDetail";
 import SearchPage from "./Pages/SearchPage/SearchPage";
+import NotFound from "./components/NotFound/NotFound";
 import Footer from "./components/Footer/Footer";
 
 // Komponen Admin
@@ -25,6 +26,8 @@ import CategoryPageNews from "./Pages/CategoryPageNews/CategoryPageNews";
 import AboutUsPage from "./Pages/About/AboutUsPage";
 import ContactPage from "./Pages/Contact/ContactPage";
 import { useTheme } from "./components/Theme/Theme";
+import { ToastContainer } from "react-toastify";
+import EditProfile from "./Pages/ProfilePage/EditProfile";
 
 const AdminRoutes = ({ children }) => {
   const role = localStorage.getItem("role");
@@ -39,7 +42,7 @@ function App() {
     "/login",
     "/register",
     "/profile",
-    "/news/:id",
+    // "/news/:id",
     "/admin",
     "/admin/dashboard",
     "/admin/create",
@@ -48,6 +51,8 @@ function App() {
     "/admin/news",
     "/admin/edit/:id",
     "/admin/view/:id",
+    "/profile/edit"
+    // "*"
   ];
 
   const hideUI = pathsToHideUI.some((path) =>
@@ -58,6 +63,19 @@ function App() {
     <>
       {!hideUI && <Navbar toggleTheme={toggleTheme} theme={theme} />}
       {!hideUI && <CategoriesBar />}
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored" // bisa 'light', 'dark', atau 'colored'
+      />
 
       <Routes>
         <Route path="/" element={<NewsPage />} />
@@ -73,6 +91,8 @@ function App() {
         <Route path="/category/:category" element={<CategoryPageNews />} />
         <Route path="/about-us" element={<AboutUsPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/searchdetail/:newsid" element={<SearchDetail />} />
+        <Route path="/profile/edit" element={<EditProfile />} />
 
         <Route
           path="/admin"
@@ -93,9 +113,7 @@ function App() {
           <Route path="searchdetail/:id" element={<SearchDetail />} />
         </Route>
 
-        <Route
-          path="*"
-          element={<p className="p-4">Halaman tidak ditemukan.</p>}
+        <Route path="*" element={<NotFound />}
         />
       </Routes>
 

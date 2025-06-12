@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config";
+import PageNotFound from "../../components/NotFound/NotFound"
+import Loading from "../../components/Loading/Loading"
 
 const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 
@@ -67,20 +69,19 @@ const CategoryPage = () => {
       navigate(`/searchdetail/${article.id_news}`, { state: { article } });
     }
   };
-  // --- END OF LOGIKA ANDA ---
 
   return (
-    <div className="pt-4 px-32 min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="pt-4 md:px-32 px-4 min-h-screen bg-gray-50 dark:bg-gray-900">
       <h2 className="text-2xl font-bold mb-4 capitalize text-gray-900 dark:text-gray-100">
-        Berita {categoryName}
+        News {categoryName}
       </h2>
 
       {loading ? (
-        <p className="text-gray-600 dark:text-gray-400">Memuat berita...</p>
+        <Loading />
       ) : articles.length === 0 ? (
-        <p className="text-gray-600 dark:text-gray-400">
-          Berita tidak ditemukan.
-        </p>
+        <div>
+          <PageNotFound />
+        </div>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {articles.map((article, i) => (
@@ -114,10 +115,10 @@ const CategoryPage = () => {
               <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 line-clamp-3">
                 {article.description
                   ? article.description.slice(0, 120) + "..."
-                  : "Tidak ada deskripsi"}
+                  : "No Description"}
               </p>
-              <p className="text-blue-600 dark:text-blue-400 text-sm mt-2 inline-block underline font-medium">
-                Baca Selengkapnya
+              <p className="text-green-600 dark:text-green-400 text-sm mt-2 inline-block underline font-medium">
+                Read More...
               </p>
             </div>
           ))}

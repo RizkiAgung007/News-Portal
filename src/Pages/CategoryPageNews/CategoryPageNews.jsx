@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config";
+import Loading from "../../components/Loading/Loading";
+import NotFound from "../../components/NotFound/NotFound"
 
 const CategoryPageNews = () => {
   const { category } = useParams();
@@ -32,7 +34,7 @@ const CategoryPageNews = () => {
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center">
-        <p>Loading berita kategori "{category}"...</p>
+        <p><Loading /> "{category}"...</p>
       </div>
     );
   }
@@ -45,7 +47,7 @@ const CategoryPageNews = () => {
           onClick={() => navigate(-1)}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
-          Kembali
+          Back
         </button>
       </div>
     );
@@ -54,7 +56,7 @@ const CategoryPageNews = () => {
   if (newsList.length === 0) {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center">
-        <p>Tidak ada berita untuk kategori "{category}".</p>
+        <p><NotFound /> "{category}".</p>
         <button
           onClick={() => navigate(-1)}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
