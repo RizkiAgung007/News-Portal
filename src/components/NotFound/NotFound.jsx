@@ -4,7 +4,7 @@ import pageNotFound from "../../assets/page-not-found.svg"
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-500 flex flex-col justify-center items-center text-center px-4">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col justify-center items-center text-center px-4">
       <img src={pageNotFound}/>
       <h1 className="text-4xl font-bold text-gray-800 dark:text-white mt-4">
         404 - Page Not Found

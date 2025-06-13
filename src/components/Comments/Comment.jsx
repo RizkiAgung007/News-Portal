@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "../../config";
 
 const Comment = ({ articleUrl, token, username }) => {
-  const [comments, setComments] = useState([]); // State untuk menyimpan daftar komentar yang diambil dari API
-  const [content, setContent] = useState(""); // State untuk menyimpan isi komentar yang sedang diketik oleh user
-  const [loading, setLoading] = useState(false); // State untuk menangani status loading saat mengirim komentar
-  const [error, setError] = useState(null); // State untuk menangani pesan kesalahan saat terjadi error
+  const [comments, setComments] = useState([]);
+  const [content, setContent] = useState(""); 
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState(null);
 
   // Menyimpan URL artikel yang akan digunakan untuk mengambil atau mengirim komentar
   const newsUrl = articleUrl;

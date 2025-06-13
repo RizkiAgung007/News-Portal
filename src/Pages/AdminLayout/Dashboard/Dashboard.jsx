@@ -55,6 +55,7 @@ const Dashboard = () => {
     labels: [],
     datasets: [],
   });
+  const [userGrowth, setUserGrowth] = useState({ label: [], datasets: [] });
   const [categoryDist, setCategoryDist] = useState({
     labels: [],
     datasets: [],
@@ -111,6 +112,7 @@ const Dashboard = () => {
           `${API_BASE_URL}/api/auth/recent-users`,
           `${API_BASE_URL}/api/news/stats/growth`,
           `${API_BASE_URL}/api/comments/stats/growth`,
+          `${API_BASE_URL}/api/auth/stats/growth`,
           `${API_BASE_URL}/api/category/stats/category-distribution`,
           `${API_BASE_URL}/api/news/favorites/top`,
         ];
@@ -129,6 +131,7 @@ const Dashboard = () => {
           recentUsersRes,
           growthNewRes,
           growthComRes,
+          growthUserRes,
           categoryDistRes,
           favNewsRes,
         ] = await Promise.all(requests);
@@ -176,6 +179,27 @@ const Dashboard = () => {
             {
               label: "Comment Created",
               data: growthComVal,
+              borderColor: "rgb(59, 130, 246)",
+              backgroundColor: "rgba(59, 130, 246, 0.5)",
+              tension: 0.1,
+            },
+          ],
+        });
+
+        // Membuat chart untuk pertumbuhan user
+        const growthUser = growthUserRes.data.map((d) =>
+          new Date(d.date).toLocaleDateString("id-ID", {
+            day: "numeric",
+            month: "short",
+          })
+        );
+        const growthUserVal = growthUserRes.data.map((d) => d.count);
+        setUserGrowth({
+          labels: growthUser,
+          datasets: [
+            {
+              label: "User Created",
+              data: growthUserVal,
               borderColor: "rgb(59, 130, 246)",
               backgroundColor: "rgba(59, 130, 246, 0.5)",
               tension: 0.1,
@@ -417,68 +441,86 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Chart untuk distribusi kategori by berita */}
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
-                  News Distribution by Category
-                </h3>
-                {categoryDist.labels.length > 0 ? (
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-                    {/* Label untuk kategori */}
-                    <div className="flex-shrink-0">
-                      <ul className="space-y-2 sm:space-x-0 space-x-4 grid sm:grid-cols-1 grid-cols-2">
-                        {categoryDist.labels.map((label, index) => (
-                          <li
-                            key={label}
-                            className={`flex items-center text-sm cursor-pointer transition-opacity ${
-                              !categoryVisibility[label]
-                                ? "opacity-40"
-                                : "opacity-100"
-                            }`}
-                            onClick={() => handleLegendClick(label)}
-                          >
-                            <span
-                              className="inline-block w-4 h-4 rounded-full mr-2"
-                              style={{
-                                backgroundColor:
-                                  categoryDist.datasets[0].backgroundColor[
-                                    index
-                                  ],
-                              }}
-                            ></span>
-                            <span
-                              className={`text-gray-700 dark:text-gray-300 ${
-                                !categoryVisibility[label] ? "line-through" : ""
-                              }`}
-                            >
-                              {label}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+              <div className="md:flex md:flex-row flex-col gap-8 md:space-y-0 space-y-4">
+                <div className="bg-white md:w-1/2 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                  <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
+                    User Growth (Last 7 Days)
+                  </h3>
+                  {userGrowth.labels.length > 0 ? (
+                    <Line data={userGrowth} options={chartOptions} />
+                  ) : (
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Not enough data.
+                    </p>
+                  )}
+                </div>
 
-                    {/* Chart Doughnut */}
-                    <div className="w-48 h-48 sm:w-56 sm:h-56">
-                      <Doughnut
-                        data={visibleDataForChart}
-                        options={{
-                          responsive: true,
-                          maintainAspectRatio: false,
-                          plugins: {
-                            legend: { display: false },
-                          },
-                        }}
-                      />
+                {/* Chart untuk distribusi kategori by berita */}
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                  <h3 className="font-semibold mb-4 text-gray-700 dark:text-gray-300">
+                    News Distribution by Category
+                  </h3>
+                  {categoryDist.labels.length > 0 ? (
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+                      {/* Label untuk kategori */}
+                      <div className="flex-shrink-0">
+                        <ul className="space-y-2 sm:space-x-0 space-x-4 grid sm:grid-cols-1 grid-cols-2">
+                          {categoryDist.labels.map((label, index) => (
+                            <li
+                              key={label}
+                              className={`flex items-center text-sm cursor-pointer transition-opacity ${
+                                !categoryVisibility[label]
+                                  ? "opacity-40"
+                                  : "opacity-100"
+                              }`}
+                              onClick={() => handleLegendClick(label)}
+                            >
+                              <span
+                                className="inline-block w-4 h-4 rounded-full mr-2"
+                                style={{
+                                  backgroundColor:
+                                    categoryDist.datasets[0].backgroundColor[
+                                      index
+                                    ],
+                                }}
+                              ></span>
+                              <span
+                                className={`text-gray-700 dark:text-gray-300 ${
+                                  !categoryVisibility[label]
+                                    ? "line-through"
+                                    : ""
+                                }`}
+                              >
+                                {label}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Chart Doughnut */}
+                      <div className="w-48 h-48 sm:w-56 sm:h-56">
+                        <Doughnut
+                          data={visibleDataForChart}
+                          options={{
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                              legend: { display: false },
+                            },
+                          }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ) : (
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Not enough data.
-                  </p>
-                )}
+                  ) : (
+                    <p className="text-gray-500 dark:text-gray-400">
+                      Not enough data.
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
+            
             <div className="space-y-8">
               {/* Komentar terbaru */}
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">

@@ -4,15 +4,18 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt, FaSave, FaTimes, FaSun, FaMoon } from "react-icons/fa";
 import { API_BASE_URL } from "../../../config";
 import { toast } from "react-toastify";
+import Confirm from "../../../components/Modal/Confirm";
 
 const Category = () => {
-  const [categories, setCategories] = useState([]); // Menyimpan daftar semua kategori.
-  const [newCategory, setNewCategory] = useState(""); // State untuk input form tambah kategori.
-  const [error, setError] = useState(null); // Menyimpan pesan error untuk UI.
-  const [loading, setLoading] = useState(false); // Flag untuk status request API.
-  const [topCategories, setTopCategories] = useState([]); // Menyimpan data statistik top kategori.
-  const [editingCategoryId, setEditingCategoryId] = useState(null); // ID kategori yang sedang diedit.
-  const [editingText, setEditingText] = useState(""); // Teks untuk input saat mode edit.
+  const [categories, setCategories] = useState([]);
+  const [newCategory, setNewCategory] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [topCategories, setTopCategories] = useState([]);
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
+  const [editingText, setEditingText] = useState("");
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [categoryDelete, setCategoryDelete] = useState(null);
 
   // State untuk tema (light/dark), default dari localStorage atau sistem.
   const [theme, setTheme] = useState(() => {
@@ -79,7 +82,7 @@ const Category = () => {
       const res = await axios.post(
         `${API_BASE_URL}/api/category/create`,
         { name: newCategory.trim() },
-        { headers: { Authorization: `Bearer ${token}` } },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.status === 201) {
         toast.success("Category success added");
@@ -120,7 +123,7 @@ const Category = () => {
         { name: editingText.trim() },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      toast.success("Category success edit")
+      toast.success("Category success edit");
       handleCancelClick();
       fetchData();
     } catch (err) {
@@ -133,19 +136,28 @@ const Category = () => {
     }
   };
 
-  // Menghapus kategori setelah konfirmasi dan memuat ulang data.
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this category?"))
-      return;
+  const handleDelete = (category) => {
+    setCategoryDelete(category);
+    setConfirmModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!categoryDelete) return;
+
     try {
-      await axios.delete(`${API_BASE_URL}/api/category/delete/${id}`, {
+      const idToDelete = categoryDelete.id_category;
+
+      await axios.delete(`${API_BASE_URL}/api/category/delete/${idToDelete}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      toast.success(`Kategori "${categoryDelete.name}" berhasil dihapus.`);
       fetchData();
-      toast.success("Category has deleted")
     } catch (err) {
       console.error("Error deleting category:", err);
-      toast.error("Failed to delete category");
+      toast.error(`Gagal menghapus kategori "${categoryDelete.name}".`);
+    } finally {
+      setConfirmModalOpen(false);
+      setCategoryDelete(null);
     }
   };
 
@@ -284,7 +296,7 @@ const Category = () => {
                                 <FaPencilAlt className="inline-block text-lg" />
                               </button>
                               <button
-                                onClick={() => handleDelete(cat.id_category)}
+                                onClick={() => handleDelete(cat)}
                                 className="text-red-500 cursor-pointer hover:text-red-700 dark:text-red-400 dark:hover:text-red-500 transition"
                               >
                                 <FaRegTrashCan className="inline-block text-lg" />
@@ -298,6 +310,17 @@ const Category = () => {
                 </tbody>
               </table>
             </div>
+            {/* [BARU] Render komponen ConfirmModal di sini */}
+            <Confirm
+              isOpen={confirmModalOpen}
+              onClose={() => setConfirmModalOpen(false)}
+              onConfirm={confirmDelete}
+              title="Konfirmasi Hapus Kategori"
+              // [BARU] Pesan dinamis sesuai kategori yang dipilih
+              message={`Apakah Anda yakin ingin menghapus kategori "${categoryDelete?.name}"? Aksi ini tidak dapat dibatalkan.`}
+              confirmText="Ya, Hapus"
+              cancelText="Batal"
+            />
           </div>
 
           {/* Sidebar Top 5 Kategori */}

@@ -168,10 +168,10 @@ const NewsDetail = () => {
           (article.url_photo ? `${API_BASE_URL}${article.url_photo}` : "https://via.placeholder.com/800x450?text=No+Image")
         }
         alt={article.title}
-        className="w-1/2 h-auto mb-6 rounded-lg shadow-md"
+        className="md:w-1/2 w-full h-auto mb-6 rounded-lg shadow-md"
       />
 
-      <div className="prose max-w-none mb-4 dark:prose-invert dark:text-gray-200">
+      <div className="prose md:w-[1000px] text-justify mb-4 dark:prose-invert dark:text-gray-200">
         {article.description || article.content || "Tidak ada konten."}
       </div>
       

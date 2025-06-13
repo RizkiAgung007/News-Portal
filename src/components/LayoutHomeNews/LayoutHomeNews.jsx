@@ -26,9 +26,7 @@ const LayoutHomeNews = () => {
         // Mengambil 3 jenis artikel secara paralel
         const [mainRes, breakingRes, latestRes] = await Promise.all([
           fetch(`https://newsapi.org/v2/everything?q=news&apiKey=${API_KEY}`),
-          fetch(
-            `https://newsapi.org/v2/everything?q=breaking%20news&apiKey=${API_KEY}`
-          ),
+          fetch(`https://newsapi.org/v2/everything?q=breaking%20news&apiKey=${API_KEY}`),
           fetch(
             `https://newsapi.org/v2/everything?q=latest&sortBy=publishedAt&apiKey=${API_KEY}`
           ),
