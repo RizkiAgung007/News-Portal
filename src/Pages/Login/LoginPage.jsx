@@ -81,7 +81,7 @@ const LoginPage = () => {
               <input
                 id="username"
                 type="text"
-                placeholder="cth: admin"
+                placeholder="cth: username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
