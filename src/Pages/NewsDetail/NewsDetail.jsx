@@ -182,7 +182,7 @@ const NewsDetail = () => {
           }
           className="text-sm mb-6 mt-4 font-semibold"
         >
-          <span className="dark:text-gray-200">Kategori:</span>{" "}
+          <span className="dark:text-gray-200">Category:</span>{" "}
           <span className="text-green-600 cursor-pointer dark:text-green-400 hover:text-gray-200 bg-gray-200 hover:bg-gray-600 transition-all mx-2 p-2 rounded-full">
             {categoryName}
           </span>
