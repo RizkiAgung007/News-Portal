@@ -32,10 +32,10 @@ const EditNews = () => {
         if (res.ok) {
           setCategories(data);
         } else {
-          setError("Gagal memuat kategori");
+          setError("Failed to load category");
         }
       } catch (err) {
-        setError("Terjadi kesalahan saat memuat kategori");
+        setError("An error occurred while loading categories");
         console.error(err);
       }
     };

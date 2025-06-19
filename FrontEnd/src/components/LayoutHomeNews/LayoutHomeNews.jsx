@@ -41,7 +41,7 @@ const LayoutHomeNews = () => {
         if (latestData.status === "ok")
           setLatestArticles(latestData.articles.slice(0, 4)); // Menampilkan 4 berita terbaru
       } catch (err) {
-        setError("Gagal memuat berita.");
+        setError("Failed to load news.");
       } finally {
         setLoading(false);
       }

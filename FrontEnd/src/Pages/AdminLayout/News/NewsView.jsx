@@ -26,7 +26,7 @@ const NewsView = () => {
         });
         setNewsDetail(response.data);
       } catch (err) {
-        setError("Gagal memuat detail berita. Mungkin berita tidak ditemukan.");
+        setError("Failed to load news details. Maybe the news was not found.");
         console.error(err);
       } finally {
         setLoading(false);

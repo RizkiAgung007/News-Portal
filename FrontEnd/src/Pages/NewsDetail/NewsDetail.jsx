@@ -83,7 +83,7 @@ const NewsDetail = () => {
       { headers: { Authorization: `Bearer ${token}` } }
     )
       .then((res) =>
-        res.ok ? res.json() : Promise.reject("Gagal memuat status like")
+        res.ok ? res.json() : Promise.reject("Failed to load like status")
       )
       .then((data) => {
         setUserLikeStatus(data.userLikeStatus);
@@ -141,7 +141,7 @@ const NewsDetail = () => {
         },
         body: JSON.stringify(body),
       });
-      if (!res.ok) throw new Error("Gagal memproses permintaan");
+      if (!res.ok) throw new Error("Failet to process request");
 
       const statusRes = await fetch(
         `${API_BASE_URL}/api/likes?id_news=${encodeURIComponent(
@@ -215,7 +215,7 @@ const NewsDetail = () => {
           className="text-sm mb-6 mt-4 font-semibold"
         >
           <span className="dark:text-gray-200">Category:</span>{" "}
-          <span className="text-green-600 cursor-pointer dark:text-green-400 hover:text-gray-200 bg-gray-200 hover:bg-gray-600 transition-all mx-2 p-2 rounded-full">
+          <span className="text-green-600 cursor-pointer dark:text-green-400 hover:text-gray-200 bg-gray-200 dark:bg-gray-700 hover:bg-gray-600 transition-all mx-2 p-2 rounded-full">
             {categoryName}
           </span>
         </button>

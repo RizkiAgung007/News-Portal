@@ -16,7 +16,7 @@ const RegistPage = () => {
     e.preventDefault();
 
     if (password !== confirm) {
-      toast.error("Password dan konfirmasi tidak cocok!");
+      toast.error("Password and confirmation do not match!");
       return;
     }
 
@@ -32,14 +32,14 @@ const RegistPage = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.message || "Registrasi gagal");
+        toast.error(data.message || "Registration failed");
         return;
       }
 
-      toast.success("Registrasi berhasil! Silakan login.");
+      toast.success("Registration successful! Please login.");
       navigate("/login");
     } catch (error) {
-      toast.error("Terjadi kesalahan saat registrasi");
+      toast.error("An error occurred during registration");
       console.error(error);
     } finally {
       setLoading(false);

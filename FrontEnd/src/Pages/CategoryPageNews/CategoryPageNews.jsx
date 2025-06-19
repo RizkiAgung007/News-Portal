@@ -18,7 +18,7 @@ const CategoryPageNews = () => {
 
     fetch(`${API_BASE_URL}/api/news?category=${encodeURIComponent(category)}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Gagal memuat berita");
+        if (!res.ok) throw new Error("Failed to load news");
         return res.json();
       })
       .then((data) => {

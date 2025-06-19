@@ -66,7 +66,7 @@ const UserManagement = () => {
       ) {
         setError(err.response.data.message);
       } else {
-        setError("Gagal memuat pengguna. Silakan coba lagi.");
+        setError("Failed to load user. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -124,7 +124,7 @@ const UserManagement = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      toast.success("Pengguna berhasil dihapus!");
+      toast.success("User successfully deleted!");
       fetchUsers(currentPage, sortOrder, searchQuery);
     } catch (err) {
       console.error("Error deleting user:", err);
@@ -137,7 +137,7 @@ const UserManagement = () => {
       ) {
         toast.error(err.response.data.message);
       } else {
-        toast.error("Gagal menghapus pengguna. Silakan coba lagi.");
+        toast.error("Failed to delete user. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -164,7 +164,7 @@ const UserManagement = () => {
   };
 
   if (loading && users.length === 0) {
-    return <Loading text="Memuat daftar pengguna..." />;
+    return <Loading />;
   }
 
   return (

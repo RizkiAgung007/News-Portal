@@ -26,7 +26,7 @@ const LoginPage = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.message || "Login gagal. Periksa kembali username dan password Anda.");
+        toast.error(data.message || "Login failed. Please double check your username and password..");
         return; 
       }
 
@@ -38,7 +38,7 @@ const LoginPage = () => {
         localStorage.setItem("id_users", data.userId)
       }
 
-      toast.success("Login berhasil! Selamat datang kembali.");
+      toast.success("Login successfull! Welcome back.");
       
       if (data.role === "admin") {
         navigate("/admin/dashboard");
@@ -46,7 +46,7 @@ const LoginPage = () => {
         navigate("/");
       }
     } catch (error) {
-      toast.error("Tidak dapat terhubung ke server. Silakan coba lagi nanti.");
+      toast.error("Unable to connect to server. Please try again later.");
       console.error(error);
     } finally {
       setLoading(false); 

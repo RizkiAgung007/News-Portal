@@ -80,7 +80,7 @@ const Review = () => {
       ) {
         setError(err.response.data.message);
       } else {
-        setError("Gagal memuat ulasan. Silakan coba lagi.");
+        setError("Failed to load review. Please try again.");
       }
     } finally {
       setLoading(false);
@@ -137,7 +137,7 @@ const Review = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      toast.success("Ulasan berhasil dihapus!");
+      toast.success("Review successfully deleted!");
       fetchReviews(currentPage, sortOrder, searchQuery);
     } catch (err) {
       console.error("Error deleting review:", err);
@@ -149,7 +149,7 @@ const Review = () => {
       ) {
         toast.error(err.response.data.message);
       } else {
-        toast.error("Gagal menghapus ulasan. Silakan coba lagi.");
+        toast.error("Failed to delete review. Please try again..");
       }
     } finally {
       setLoading(false);
@@ -175,7 +175,7 @@ const Review = () => {
   };
 
   if (loading && reviews.length === 0) {
-    return <Loading text="Memuat daftar ulasan..." />;
+    return <Loading  />;
   }
   if (error) {
     return (

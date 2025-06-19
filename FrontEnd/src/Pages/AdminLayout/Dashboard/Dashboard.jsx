@@ -31,6 +31,7 @@ import {
   LineElement,
 } from "chart.js";
 import { Line, Doughnut } from "react-chartjs-2";
+import Loading from "../../../components/Loading/Loading";
 
 ChartJS.register(
   CategoryScale,
@@ -323,9 +324,7 @@ const Dashboard = () => {
       )}
 
       {loading ? (
-        <p className="text-gray-600 dark:text-gray-400">
-          Memuat data dasbor...
-        </p>
+        <Loading />
       ) : (
         <>
           <div className="mb-8 grid grid-cols-2 md:grid-cols-5 gap-4">

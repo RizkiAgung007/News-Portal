@@ -19,7 +19,7 @@ const ViewReview = () => {
     if (!id || !token) {
       if (!token) {
         toast.error(
-          "Anda harus login sebagai admin untuk melihat halaman ini."
+          "You must be logged in as an admin to view this page.."
         );
         navigate("/login");
       } else {
@@ -41,20 +41,20 @@ const ViewReview = () => {
         console.error("Error fetching review detail:", err);
         if (axios.isAxiosError(err) && err.response) {
           if (err.response.status === 404) {
-            setError("Ulasan tidak ditemukan.");
-            toast.error("Ulasan tidak ditemukan.");
+            setError("No reviews found.");
+            toast.error("No reviews found.");
             navigate("/admin/reviews");
           } else if (err.response.status === 403) {
-            setError("Akses ditolak.");
-            toast.error("Akses ditolak.");
+            setError("Access denied.");
+            toast.error("Access denied.");
             navigate("/login");
           } else {
-            setError("Gagal memuat detail ulasan.");
-            toast.error("Gagal memuat detail ulasan.");
+            setError("Failed to load review details.");
+            toast.error("Failed to load review details.");
           }
         } else {
-          setError("Terjadi kesalahan jaringan.");
-          toast.error("Terjadi kesalahan jaringan.");
+          setError("A network error occurred.");
+          toast.error("A network error occurred.");
         }
       } finally {
         setLoading(false);
@@ -63,12 +63,12 @@ const ViewReview = () => {
     fetchReviewDetail();
   }, [id, token, navigate]);
 
-  if (loading) return <Loading text="Memuat detail ulasan..." />;
+  if (loading) return <Loading />;
   if (error) return <p className="p-6 text-red-500 text-center">{error}</p>;
   if (!reviewDetail)
     return (
       <p className="p-6 text-gray-500 text-center">
-        Detail ulasan tidak tersedia.
+        Review details are not available.
       </p>
     );
 

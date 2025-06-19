@@ -68,7 +68,7 @@ const News = () => {
         setCategories(res.data);
       } catch (err) {
         console.error("Error fetching categories:", err);
-        toast.error("Gagal memuat daftar kategori.");
+        toast.error("Failed to load category list.");
       }
     };
     fetchCategories();
@@ -109,7 +109,7 @@ const News = () => {
       ) {
         setError(err.response.data.message);
       } else {
-        setError(err.message || "Gagal memuat berita.");
+        setError(err.message || "Failed to load news.");
       }
     } finally {
       setLoading(false);
@@ -157,7 +157,7 @@ const News = () => {
       await axios.delete(`${API_BASE_URL}/api/news/${newsToDeleteId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      toast.success("Berita berhasil dihapus!");
+      toast.success("News successfully deleted!");
       fetchNews(currentPage, sortOrder, categoryFilter, searchQuery); 
     } catch (error) {
       console.error("Error deleting news:", error);
@@ -169,7 +169,7 @@ const News = () => {
       ) {
         toast.error(error.response.data.message);
       } else {
-        toast.error(error.message || "Gagal menghapus berita.");
+        toast.error(error.message || "Failet to delete news.");
       }
     } finally {
       setLoading(false);
@@ -201,7 +201,7 @@ const News = () => {
   };
 
   if (loading && news.length === 0) {
-    return <Loading text="Memuat berita..." />;
+    return <Loading />;
   }
   if (error) {
     return (

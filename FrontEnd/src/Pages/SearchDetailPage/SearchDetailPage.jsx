@@ -138,7 +138,7 @@ const SearchDetail = () => {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.error || "Gagal memproses permintaan");
+        throw new Error(errorData.error || "Failed to process request");
       }
 
       const statusRes = await fetch(
@@ -219,7 +219,7 @@ const SearchDetail = () => {
           className="text-sm mb-6 mt-4 font-semibold"
         >
           <span className="dark:text-gray-200">Category:</span>{" "}
-          <span className="text-green-600 cursor-pointer dark:text-green-400 hover:text-gray-200 bg-gray-200 hover:bg-gray-600 transition-all mx-2 p-2 rounded-full">
+          <span className="text-green-600 cursor-pointer dark:text-green-400 hover:text-gray-200 bg-gray-200 dark:bg-gray-700 hover:bg-gray-600 transition-all mx-2 p-2 rounded-full">
             {article.category}
           </span>
         </button>

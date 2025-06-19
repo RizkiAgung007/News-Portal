@@ -14,7 +14,7 @@ const CategoriesBar = () => {
       try {
         const req = await fetch(`${API_BASE_URL}/api/category/public/all`);
         if (!req.ok) {
-          throw new Error("Gagal mengambil daftar kategori");
+          throw new Error("Failed to fetch category list");
         }
         const data = await req.json();
         setCategories(data);
@@ -51,7 +51,7 @@ const CategoriesBar = () => {
       <div className="w-full flex md:justify-center justify-start px-4 sm:px-6 lg:px-8 py-3 md:overflow-x-visible overflow-x-auto no-scrollbar">
         <div className="flex items-center gap-3 whitespace-nowrap">
           {loading ? (
-            <p className="text-sm text-gray-500">Memuat kategori...</p>
+            <p className="text-sm text-gray-500">Loading categories. . .</p>
           ) : (
             <>
               {categories.map(renderCategoryLink)}

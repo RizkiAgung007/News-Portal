@@ -26,7 +26,7 @@ const EditProfile = ({}) => {
         const res = await fetch(`${API_BASE_URL}/api/auth/profile`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        if (!res.ok) throw new Error("Gagal memuat profil untuk diedit.");
+        if (!res.ok) throw new Error("Failed to load profile for editing.");
         const data = await res.json();
         setCurrentUsername(data.username);
         setNewUsername(data.username);
@@ -43,7 +43,7 @@ const EditProfile = ({}) => {
   const handleUpdateUsername = async (e) => {
     e.preventDefault();
     if (newUsername === currentUsername)
-      return toast.info("Username tidak berubah.");
+      return toast.info("Username does not change.");
     setFormLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/api/auth/update-profile`, {
@@ -56,7 +56,7 @@ const EditProfile = ({}) => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      toast.success("Username berhasil diperbarui!");
+      toast.success("Username updated successfully!");
       navigate("/profile");
     } catch (error) {
       toast.error(error.message);
@@ -79,7 +79,7 @@ const EditProfile = ({}) => {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      toast.success("Password berhasil diubah!");
+      toast.success("Password changed successfully!");
       navigate("/profile");
     } catch (error) {
       toast.error(error.message);

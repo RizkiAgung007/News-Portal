@@ -117,7 +117,7 @@ const Category = () => {
   // Mengirim perubahan kategori ke API dan memuat ulang data.
   const handleSaveClick = async (id) => {
     if (!editingText.trim()) {
-      toast.error("Nama kategori tidak boleh kosong.");
+      toast.error("The category name cannot be empty.");
       return;
     }
     try {
@@ -131,7 +131,7 @@ const Category = () => {
       fetchData();
     } catch (err) {
       if (axios.isAxiosError(err) && err.response && err.response.status === 409) {
-        toast.warning("Nama kategori tersebut sudah digunakan.");
+        toast.warning("The category name is already in use.");
       } else {
         console.error("Error updating category:", err);
         toast.error("Failed to update category");
@@ -153,11 +153,11 @@ const Category = () => {
       await axios.delete(`${API_BASE_URL}/api/category/delete/${idToDelete}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      toast.success(`Kategori "${categoryDelete.name}" berhasil dihapus.`);
+      toast.success(`Category "${categoryDelete.name}" successfully deleted.`);
       fetchData();
     } catch (err) {
       console.error("Error deleting category:", err);
-      toast.error(`Gagal menghapus kategori "${categoryDelete.name}".`);
+      toast.error(`Failed to delete category "${categoryDelete.name}".`);
     } finally {
       setConfirmModalOpen(false);
       setCategoryDelete(null);

@@ -23,7 +23,7 @@ const SearchPage = () => {
 
     fetch(`${API_BASE_URL}/api/news/search?title=${encodeURIComponent(title)}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Gagal mengambil data");
+        if (!res.ok) throw new Error("Failed to retrieve data");
         return res.json();
       })
       .then((data) => {

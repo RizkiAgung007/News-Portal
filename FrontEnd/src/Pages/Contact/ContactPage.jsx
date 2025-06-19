@@ -37,7 +37,7 @@ const ContactPage = () => {
     setError(null);
 
     if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-      setError("Semua field wajib diisi.");
+      setError("All fields are required to be filled in.");
       setIsLoading(false);
       return;
     }
@@ -58,11 +58,11 @@ const ContactPage = () => {
 
       if (!res.ok) {
       const errData = await res.json();
-      throw new Error(errData.message || "Gagal mengirim ulasan")
+      throw new Error(errData.message || "Failed to submit review")
     }
 
     setFormData({ name: "", email: "", subject: "", message: "" });
-    toast.success("Ulasan Anda berhasil dikirim!");
+    toast.success("Your reviews has been successfully send!");
 
     } catch (err) {
       setError(err.message)

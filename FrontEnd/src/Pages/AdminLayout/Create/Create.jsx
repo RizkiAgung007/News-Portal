@@ -13,11 +13,10 @@ const Create = () => {
     photo: null,
   });
 
-  const [categories, setCategories] = useState([]); // Menyimpan daftar kategori.
-  const [error, setError] = useState(null); // Menyimpan pesan error jika terjadi kesalahan.
-  const [submitting, setSubmitting] = useState(false); // Flag untuk status proses pengiriman form.
+  const [categories, setCategories] = useState([]); 
+  const [error, setError] = useState(null); 
+  const [submitting, setSubmitting] = useState(false);
 
-  // State untuk tema (light/dark), default dari localStorage atau sistem.
   const [theme, setTheme] = useState(() => {
     if (localStorage.getItem("theme")) {
       return localStorage.getItem("theme");
@@ -54,10 +53,10 @@ const Create = () => {
         if (res.ok) {
           setCategories(data);
         } else {
-          setError("Gagal memuat kategori");
+          setError("Failed to load category");
         }
       } catch (err) {
-        setError("Terjadi kesalahan saat memuat kategori");
+        setError("An error occurred while loading categories");
         console.error(err);
       }
     };
@@ -96,7 +95,7 @@ const Create = () => {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("Berita berhasil dibuat!");
+        toast.success("News successfully created!");
         e.target.reset();
         setForm({
           title: "",
@@ -109,7 +108,7 @@ const Create = () => {
         toast.error("Error: " + data.message);
       }
     } catch (error) {
-      toast.error("Error saat submit: " + error.message);
+      toast.error("Error when submitting: " + error.message);
     } finally {
       setSubmitting(false);
     }

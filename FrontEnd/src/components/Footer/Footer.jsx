@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaFacebook, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 
-// Daftar kategori bisa tetap di sini atau diambil dari API jika Anda mau
 const categories = [
   "Sport",
   "Health",
@@ -14,15 +13,12 @@ const categories = [
 
 const Footer = () => {
   return (
-    // [GAYA] Latar belakang diubah menjadi putih/gelap agar footer terasa seperti panel yang bersih
     <footer className="bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700">
-      {/* [GAYA] Padding ditambah agar lebih lega dan premium */}
       <div className="container mx-auto px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12">
           
           {/* Kolom Logo & Deskripsi */}
           <div className="col-span-2 lg:col-span-2">
-            {/* [GAYA] Logo dibuat non-italic agar lebih formal dan sesuai tema */}
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
               Portal<span className="text-green-500">Berita</span>
             </h3>
@@ -30,7 +26,7 @@ const Footer = () => {
               Platform Anda untuk mendapatkan informasi terkini dan terpercaya
               dari berbagai penjuru dunia, disajikan dengan cepat dan akurat.
             </p>
-            {/* [GAYA] Ikon sosial media diberi background agar terlihat seperti tombol */}
+
             <div className="flex space-x-3 mt-6">
               <a href="#" aria-label="Facebook" className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 hover:bg-blue-500 hover:text-white transition-all">
                 <FaFacebook size={20} />
@@ -49,7 +45,6 @@ const Footer = () => {
 
           {/* Kolom Kategori */}
           <div>
-            {/* [GAYA] Judul kolom dibuat uppercase & tracking lebih lebar untuk hirarki yang jelas */}
             <h4 className="font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-wider text-sm">
               Kategori
             </h4>
@@ -91,7 +86,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Kolom Langganan (Contoh tambahan) */}
           <div>
              <h4 className="font-bold text-gray-900 dark:text-white mb-4 uppercase tracking-wider text-sm">
               Langganan Newsletter
@@ -107,7 +101,6 @@ const Footer = () => {
 
         </div>
 
-        {/* [GAYA] Copyright diperbarui agar lebih modern */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-sm">
           <p>
             &copy; {new Date().getFullYear()} <strong>PortalBerita</strong>. All Rights Reserved.

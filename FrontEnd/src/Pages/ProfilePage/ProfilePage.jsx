@@ -70,7 +70,7 @@ const ProfilePage = () => {
         );
 
         if (!profileRes.ok || !statsRes.ok || !likesRes.ok || !commentsRes.ok)
-          throw new Error("Gagal mengambil semua data profil.");
+          throw new Error("Failed to retrieve all profile data.");
 
         const profileData = await profileRes.json();
         const statsData = await statsRes.json();
@@ -98,7 +98,7 @@ const ProfilePage = () => {
         });
       } catch (error) {
         toast.error(
-          error.message || "Sesi Anda berakhir, silakan login kembali."
+          error.message || "Your session has expired, please log back in."
         );
         handleLogout(false);
       } finally {
@@ -113,7 +113,7 @@ const ProfilePage = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("role");
     navigate("/login");
-    toast.info("Anda berhasil logout");
+    toast.info("You have successfully logged out");
   };
 
   const handleLogout = () => {
@@ -137,7 +137,7 @@ const ProfilePage = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const result = await res.json();
-      if (!res.ok) throw new Error(result.message || "Gagal memuat riwayat");
+      if (!res.ok) throw new Error(result.message || "Failed to load history");
       setMobileHistory((prev) => ({
         ...prev,
         data: page === 1 ? result.data : [...prev.data, ...result.data],
@@ -183,7 +183,7 @@ const ProfilePage = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       const result = await res.json();
-      if (!res.ok) throw new Error(result.message || "Gagal memuat riwayat");
+      if (!res.ok) throw new Error(result.message || "Failed to load history");
       setHistory((prev) => ({
         ...prev,
         data: [...prev.data, ...result.data],

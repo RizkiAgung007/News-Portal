@@ -39,7 +39,7 @@ const Comment = ({ articleUrl, token, userData }) => {
       })
       .catch((err) => {
         console.error("Error fetching comments:", err);
-        setError("Gagal mengambil komentar");
+        setError("Failed to retrieve comments");
       });
   };
 
@@ -51,7 +51,7 @@ const Comment = ({ articleUrl, token, userData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!content.trim()) return toast.warning("Komentar tidak boleh kosong");
+    if (!content.trim()) return toast.warning("Comments cannot be empty");
 
     setLoading(true);
     setError(null);
@@ -68,7 +68,7 @@ const Comment = ({ articleUrl, token, userData }) => {
 
       if (!res.ok) {
         const errData = await res.json();
-        throw new Error(errData.message || "Gagal mengirim komentar");
+        throw new Error(errData.message || "Failed to post comment");
       }
 
       setContent("");
@@ -102,13 +102,13 @@ const Comment = ({ articleUrl, token, userData }) => {
 
       if (!res.ok) {
         const errData = await res.json();
-        throw new Error(errData.message || "Gagal menghapus komentar");
+        throw new Error(errData.message || "Failed to delete comment");
       }
 
       setComments(
         comments.filter((comment) => comment.id_comment !== commentToDelete.id_comment)
       );
-      toast.success("Komentar berhasil dihapus!");
+      toast.success("Comment successfully deleted!");
     } catch (err) {
       setError(err.message);
       alert(err.message);
@@ -122,7 +122,7 @@ const Comment = ({ articleUrl, token, userData }) => {
   if (!token) {
     return (
       <div className="mt-8 p-4 border rounded bg-yellow-50 dark:bg-gray-800 text-yellow-800 dark:text-white">
-        Kamu harus <strong><Link to="/login">login</Link></strong> untuk mengirim komentar.
+        You must <strong><Link to="/login">login</Link></strong> to send comment.
       </div>
     );
   }
@@ -131,7 +131,7 @@ const Comment = ({ articleUrl, token, userData }) => {
   return (
     <div className="mt-8">
       <h2 className="text-xl font-semibold mb-4 dark:text-gray-200">
-        Komentar
+        Comment
       </h2>
 
       {/* Form untuk input komentar */}
@@ -139,7 +139,7 @@ const Comment = ({ articleUrl, token, userData }) => {
         <textarea
           className="w-full border rounded p-2 mb-2 dark:text-gray-200"
           rows={3}
-          placeholder="Tulis komentar kamu..."
+          placeholder="Write your comments..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
           disabled={loading}
@@ -149,7 +149,7 @@ const Comment = ({ articleUrl, token, userData }) => {
           className="px-4 py-2 cursor-pointer bg-green-600 text-white rounded hover:bg-green-700 disabled:opacity-50"
           disabled={loading}
         >
-          {loading ? "Mengirim..." : "Kirim Komentar"}
+          {loading ? "Sending..." : "Send Comment"}
         </button>
       </form>
 
@@ -159,7 +159,7 @@ const Comment = ({ articleUrl, token, userData }) => {
       {/* Daftar komentar yang sudah ada */}
       <div>
         {comments.length === 0 && (
-          <p className="dark:text-gray-400">Belum ada komentar.</p>
+          <p className="dark:text-gray-400">No comments yet.</p>
         )}
         {comments.map((comment) => (
           <div
@@ -201,10 +201,10 @@ const Comment = ({ articleUrl, token, userData }) => {
           setCommentToDelete(null); 
         }}
         onConfirm={handleConfirmDelete}
-        title="Konfirmasi Hapus Komentar"
-        message={`Apakah Anda yakin ingin menghapus komentar ini:\n"${commentToDelete ? commentToDelete.content : ''}"? Aksi ini tidak dapat dibatalkan.`}
-        confirmText="Ya, Hapus"
-        cancelText="Batal"
+        title="Confirm Delete Comment"
+        message={`Are you sure you want to delete this comment?:\n"${commentToDelete ? commentToDelete.content : ''}"? This action cannot be undone.`}
+        confirmText="Yes, Delete"
+        cancelText="Cancel"
       />
     </div>
   );
