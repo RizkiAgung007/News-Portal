@@ -26,6 +26,7 @@ dist-ssr
 # Konfigurasi dan file sensitif
 FrontEnd/.env
 FrontEnd/node_modules/
+FrontEnd/src/config.js
 
 Backend/.env
 Backend/uploads/
