@@ -31,3 +31,6 @@ Backend/.env
 Backend/uploads/
 BackEnd/node_modules/
 
+node_modules/
+npm.txt
+
