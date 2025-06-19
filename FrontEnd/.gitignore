@@ -24,5 +24,10 @@ dist-ssr
 *.sw?
 
 # Konfigurasi dan file sensitif
-.env
+FrontEnd/.env
+FrontEnd/node_modules/
+
+Backend/.env
+Backend/uploads/
+BackEnd/node_modules/
 
