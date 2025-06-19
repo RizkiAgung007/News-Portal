@@ -1,0 +1,259 @@
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate, NavLink } from "react-router-dom";
+import { RxAvatar } from "react-icons/rx";
+import { CiSearch } from "react-icons/ci";
+import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
+import { FaSun, FaMoon, FaTachometerAlt } from "react-icons/fa";
+
+const Navbar = ({ theme, toggleTheme }) => {
+  const [menuOpen, setMenuOpen] = useState(false); // State untuk mengatur apakah menu mobile terbuka atau tidak
+  const [avatarMenuOpen, setAvatarMenuOpen] = useState(false); // State untuk mengatur apakah dropdown menu pada avatar terbuka atau tidak
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") || ""
+  ); // State untuk menyimpan nama pengguna dari localStorage jika tersedia
+  const [searchTerm, setSearchTerm] = useState(""); // State untuk menyimpan input dari kolom pencarian
+  const navigate = useNavigate(); // Hook untuk navigasi antar halaman
+  const avatarMenuRef = useRef(); // Ref digunakan untuk mendeteksi klik di luar menu avatar
+
+  // useEffect untuk mengatur kelas tema pada elemen root dan menyimpannya di localStorage
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  // const toggleTheme = () => {
+  //   setTheme(theme === 'light' ? 'dark' : 'light');
+  // };
+
+  // useEffect untuk menutup menu avatar jika user mengklik di luar elemen tersebut
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        avatarMenuRef.current &&
+        !avatarMenuRef.current.contains(event.target)
+      ) {
+        setAvatarMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Fungsi untuk menangani pencarian ketika user menekan ikon cari
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      // Mengarahkan ke halaman hasil pencarian jika input tidak kosong
+      navigate(`/search?title=${encodeURIComponent(searchTerm.trim())}`);
+      setSearchTerm("");
+    }
+  };
+
+  // Fungsi untuk mendeteksi tombol Enter saat mengetik di kolom pencarian
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(e);
+    }
+  };
+
+  // Fungsi untuk logout pengguna dan menghapus data dari localStorage
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
+    setUsername("");
+    setAvatarMenuOpen(false);
+    navigate("/login");
+  };
+
+  // Fungsi untuk mengatur gaya NavLink berdasarkan apakah aktif atau tidak
+  const navLinkStyles = ({ isActive }) =>
+    `text-lg text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition ${
+      isActive ? "font-bold text-green-600 dark:text-green-400" : ""
+    }`;
+
+  return (
+    <div className="pt-6 md:px-32 sticky top-0 z-50 flex justify-between items-center border-b border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
+      <Link
+        to="/"
+        className="text-xl font-bold text-gray-900 italic dark:text-gray-100"
+      >
+        Portal<span className="text-green-500">Berita</span>
+      </Link>
+
+      <div className="relative lg:w-[640px] w-48 lg:mx-4">
+        <input
+          type="text"
+          placeholder="Cari berita..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={onKeyDown}
+          className="w-full lg:px-4 px-2 py-2 lg:pr-10 rounded-lg border border-gray-300 text-gray-900 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600 outline-none focus:ring-2 focus:ring-green-500"
+        />
+        <CiSearch
+          onClick={handleSearch}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 cursor-pointer"
+        />
+      </div>
+
+      {/* Desktop Menu */}
+      <div className="hidden lg:flex items-center gap-8 ml-6">
+        <NavLink to="/about-us" className={navLinkStyles}>
+          About Us
+        </NavLink>
+        <NavLink to="/contact" className={navLinkStyles}>
+          Contact
+        </NavLink>
+
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-full cursor-pointer text-gray-700 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+        >
+          {theme === "light" ? <FaMoon size={20} /> : <FaSun size={20} />}
+        </button>
+
+        {/* Avatar dan dropdown */}
+        <div className="relative" ref={avatarMenuRef}>
+          <RxAvatar
+            className="w-7 h-7 cursor-pointer text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition"
+            onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
+          />
+          {avatarMenuOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 z-50">
+              {username ? (
+                <>
+                  {localStorage.getItem("role") === "admin" && (
+                    <button
+                      onClick={() => {
+                        setAvatarMenuOpen(false);
+                        navigate("/admin/dashboard");
+                      }}
+                      className="block w-full cursor-pointer text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      Dashboard
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setAvatarMenuOpen(false);
+                      navigate("/profile");
+                    }}
+                    className="block w-full cursor-pointer text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Profile
+                  </button>
+                  <hr className="my-1 border-gray-200 dark:border-gray-600" />
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full cursor-pointer text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => {
+                    setAvatarMenuOpen(false);
+                    navigate("/login");
+                  }}
+                  className="block w-full text-left px-4 py-2 text-green-600 dark:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  Login
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Hamburger icon untuk mobile */}
+      <div className="lg:hidden flex items-center ml-6">
+        <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+          {menuOpen ? (
+            <HiOutlineX className="w-7 h-7 text-gray-700 dark:text-gray-300" />
+          ) : (
+            <HiOutlineMenuAlt3 className="w-7 h-7 text-gray-700 dark:text-gray-300" />
+          )}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="absolute top-full right-0 w-full sm:w-60 bg-white dark:bg-gray-800 rounded-b-lg p-4 border-x border-b border-gray-200 dark:border-gray-700 shadow-lg flex flex-col gap-4 lg:hidden z-50">
+          <NavLink
+            to="/about-us"
+            className={navLinkStyles}
+            onClick={() => setMenuOpen(false)}
+          >
+            About Us
+          </NavLink>
+          <NavLink
+            to="/contact"
+            className={navLinkStyles}
+            onClick={() => setMenuOpen(false)}
+          >
+            Contact
+          </NavLink>
+          <hr className="border-gray-200 dark:border-gray-700" />
+
+          {username ? (
+            <>
+              {localStorage.getItem("role") === "admin" && (
+                <Link
+                  to="/admin/dashboard"
+                  className="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <FaTachometerAlt className="w-6 h-6" /> <span>Dashboard</span>
+                </Link>
+              )}
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400"
+                onClick={() => setMenuOpen(false)}
+              >
+                <RxAvatar className="w-6 h-6" /> <span>Profile</span>
+              </Link>
+            </>
+          ) : null}
+
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400"
+          >
+            {theme === "light" ? (
+              <FaMoon className="w-6 h-6" />
+            ) : (
+              <FaSun className="w-6 h-6" />
+            )}{" "}
+            <span>Ganti Tema</span>
+          </button>
+          <hr className="border-gray-200 dark:border-gray-700" />
+          {username ? (
+            <button
+              onClick={handleLogout}
+              className="text-red-600 dark:text-red-400 text-left"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="text-green-600 dark:text-green-400"
+              onClick={() => setMenuOpen(false)}
+            >
+              Login
+            </Link>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Navbar;
