@@ -3,6 +3,7 @@ import db from "../db.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import rateLimit from "express-rate-limit";
 
 dotenv.config();
 const router = express.Router();
@@ -11,6 +12,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // Middleware verifikasi token
 function verifyToken(req, res, next) {
+
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res
@@ -33,16 +35,42 @@ function verifyToken(req, res, next) {
   }
 }
 
+// Rate limit untuk login
+const loginLimit = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  limit: 5,
+  message: { message: "Terlalu banyak percobaan login, coba lagi nanti." },
+})
+
 // Method post untuk REGISTER
 router.post("/register", async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
-      return res
-        .status(400)
-        .json({ message: "Username dan password diperlukan" });
+      return res.status(400).json({ message: "Username dan password wajib diisi." });
     }
 
+    if (typeof username !== "string" || typeof password !== "string") {
+      return res.status(400).json({ message: "Input tidak valid." });
+    }
+
+    if (username.length < 3 || username.length > 20) {
+      return res.status(400).json({ message: "Username harus antara 3-20 karakter." });
+    }
+
+    if (password.length < 6 || password.length > 100) {
+      return res.status(400).json({ message: "Password harus minimal 6 karakter." });
+    }
+
+    const usernamePattern = /^[a-zA-Z0-9_.-]+$/; 
+    if (!usernamePattern.test(username)) {
+      return res.status(400).json({ message: "Username hanya boleh berisi huruf, angka, titik, underscore, atau dash." });
+    }
+
+    if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      return res.status(400).json({ message: "Password harus mengandung huruf besar dan angka." });
+    }
+    
     const hashed = await bcrypt.hash(password, 10);
     const queryPostUser =
       "INSERT INTO users (username, password) VALUES (?, ?)";
@@ -60,7 +88,7 @@ router.post("/register", async (req, res) => {
 });
 
 // Method post untuk LOGIN
-router.post("/login", async (req, res) => {
+router.post("/login", loginLimit, async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -96,11 +124,10 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Password salah" });
     }
 
-    const token = jwt.sign({ id: userId, role: role }, JWT_SECRET, {
+    const token = jwt.sign({ id: userId, username, role: role }, JWT_SECRET, {
       expiresIn: "2h",
     });
-    // Menambahkan userId ke respons agar frontend bisa menyimpannya
-    return res.status(200).json({ token, username: user.username, role: role, userId: userId });
+    return res.status(200).json({ token, role: role, username, userId: userId });
   } catch (error) {
     console.error("LOGIN ERROR:", error);
     return res.status(500).json({ message: "Terjadi kesalahan pada server" });

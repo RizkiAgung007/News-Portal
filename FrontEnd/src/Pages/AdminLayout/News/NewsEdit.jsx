@@ -57,8 +57,8 @@ const EditNews = () => {
         setPreview(`${API_BASE_URL}${newsData.url_photo}`);
       })
       .catch((err) => {
-        console.error("Gagal mengambil data berita", err);
-        setError("Data berita tidak ditemukan.");
+        console.error("Failed to fetch news data", err);
+        setError("News data not found.");
       });
   }, [id, token]);
 

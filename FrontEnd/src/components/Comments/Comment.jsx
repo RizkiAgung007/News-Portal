@@ -16,11 +16,11 @@ const Comment = ({ articleUrl, token, userData }) => {
   const newsUrl = articleUrl;
 
   // Debugging logs untuk userData
-  console.log("userData dari props (Comment.jsx):", userData);
-  if (userData) {
-    console.log("Tipe userData.id_users:", typeof userData.id_users);
-    console.log("Nilai userData.id_users:", userData.id_users);
-  }
+  // console.log("userData dari props (Comment.jsx):", userData);
+  // if (userData) {
+  //   console.log("Tipe userData.id_users:", typeof userData.id_users);
+  //   console.log("Nilai userData.id_users:", userData.id_users);
+  // }
 
   // Fungsi untuk mengambil daftar komentar berdasarkan URL artikel
   const fetchComments = () => {
@@ -35,7 +35,7 @@ const Comment = ({ articleUrl, token, userData }) => {
       })
       .then((data) => {
         setComments(data);
-        console.log("Fetch comments", data);
+        // console.log("Fetch comments", data);
       })
       .catch((err) => {
         console.error("Error fetching comments:", err);

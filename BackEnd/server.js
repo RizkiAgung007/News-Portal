@@ -9,6 +9,7 @@ import likeRoutes from './routes/like.js'
 import reviewRoutes from './routes/ulasan.js';
 import dotenv from 'dotenv';
 import path from 'path';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ app.use(cors({
     credentials: true,
 }));
 app.use(express.json());
-
+// app.use(rateLimit())
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 app.use('/api/auth', authRoutes);

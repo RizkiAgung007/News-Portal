@@ -1,7 +1,7 @@
 import React from "react";
 import { PropagateLoader } from "react-spinners";
 
-const Loading = ({loading}) => {
+const Loading = ({ loading }) => {
   return (
     <div>
       <div className="flex justify-center items-center my-96">

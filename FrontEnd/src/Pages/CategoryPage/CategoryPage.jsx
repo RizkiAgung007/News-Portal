@@ -50,7 +50,7 @@ const CategoryPage = () => {
         const combined = [...dbArticles, ...apiArticles];
         setArticles(combined);
       } catch (err) {
-        console.error("Gagal mengambil data:", err);
+        console.error("Failed to retrieve data:", err);
         setArticles([]);
       } finally {
         setLoading(false);

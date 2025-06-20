@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { RxExit } from "react-icons/rx";
 import { API_BASE_URL } from "../../config";
 import { toast } from "react-toastify";
-import Loading from "../../components/Loading/Loading"
+import Loading from "../../components/Loading/Loading";
 
 const RegistPage = () => {
   const [username, setUsername] = useState("");
@@ -52,11 +52,13 @@ const RegistPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex justify-center items-center p-4 sm:p-6 relative font-sans">
-      <RxExit
+      <button
         className="absolute top-6 right-6 w-7 h-7 text-gray-500 cursor-pointer hover:text-red-500 transition"
         onClick={handleExit}
-        title="Kembali ke Beranda"
-      />
+        aria-label="Exit"
+      >
+        <RxExit />
+      </button>
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-md w-full border-l-4 border-green-500">
         <div className="p-8">
           <h1 className="text-center text-2xl font-bold mb-1 text-gray-800 dark:text-gray-100">
@@ -108,12 +110,12 @@ const RegistPage = () => {
                 htmlFor="confirm"
                 className="block mb-1.5 text-sm font-medium text-gray-600 dark:text-gray-300"
               >
-                Konfirmasi Password
+                Confirm Password
               </label>
               <input
                 id="confirm"
                 type="password"
-                placeholder="Ulangi password Anda"
+                placeholder="Confirm your password"
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 required
@@ -126,18 +128,23 @@ const RegistPage = () => {
               disabled={loading}
               className="w-full flex justify-center items-center gap-3 bg-green-500 hover:bg-green-600 transition-colors text-white py-3 rounded-lg font-bold text-base shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              {loading && <Loading />}
               {loading ? "PROCES..." : "REGISTER"}
             </button>
           </form>
 
+          {loading && (
+            <div data-testid="loader" className="absolute z-50">
+              <Loading loading={loading} />
+            </div>
+          )}
+
           <p className="mt-6 text-center text-gray-600 dark:text-gray-400 text-sm">
-            Sudah punya akun?{" "}
+            Already have an account?{" "}
             <Link
               to="/login"
               className="text-green-600 font-semibold hover:underline"
             >
-              Masuk di sini
+              Sign In
             </Link>
           </p>
         </div>

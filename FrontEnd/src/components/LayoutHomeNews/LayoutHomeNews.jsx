@@ -47,7 +47,6 @@ const LayoutHomeNews = () => {
       }
     };
 
-    // Panggil fungsi untuk fetch artikel
     fetchAllArticles();
   }, []);
 
