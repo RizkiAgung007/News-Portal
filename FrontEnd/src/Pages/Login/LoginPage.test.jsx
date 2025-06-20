@@ -145,10 +145,11 @@ describe("LoginPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "adminuser" },
     });
+
     fireEvent.change(screen.getByLabelText(/password/i), {
       target: { value: "adminpass" },
     });
-    // Gunakan getByRole dengan name spesifik untuk tombol login
+
     fireEvent.click(screen.getByRole("button", { name: "LOGIN" }));
 
     await waitFor(() => {
@@ -235,10 +236,11 @@ describe("LoginPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "wronguser" },
     });
+
     fireEvent.change(screen.getByLabelText(/password/i), {
       target: { value: "wrongpass" },
     });
-    // Gunakan getByRole dengan name spesifik untuk tombol login
+
     fireEvent.click(screen.getByRole("button", { name: "LOGIN" }));
 
     await waitFor(() => {
@@ -261,10 +263,11 @@ describe("LoginPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "anyuser" },
     });
+
     fireEvent.change(screen.getByLabelText(/password/i), {
       target: { value: "anypass" },
     });
-    // Gunakan getByRole dengan name spesifik untuk tombol login
+
     fireEvent.click(screen.getByRole("button", { name: "LOGIN" }));
 
     await waitFor(() => {
@@ -299,9 +302,11 @@ describe("LoginPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "user" },
     });
+
     fireEvent.change(screen.getByLabelText(/password/i), {
       target: { value: "pass" },
     });
+
     fireEvent.click(loginButton);
 
     await waitFor(() => {
@@ -328,7 +333,6 @@ describe("LoginPage Component", () => {
       </Router>
     );
 
-    // Menggunakan name: 'Exit Login' karena itu adalah aria-label yang Anda set
     const exitButton = screen.getByRole("button", { name: "Exit Login" });
     fireEvent.click(exitButton);
     expect(mockNavigate).toHaveBeenCalledWith("/");

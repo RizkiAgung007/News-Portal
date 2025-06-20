@@ -42,10 +42,9 @@ jest.mock("react-spinners", () => ({
 }));
 
 jest.mock("../../components/Loading/Loading", () => {
-  // eslint-disable-next-line react/display-name
   return ({ loading }) => {
     if (loading) {
-      return <div data-testid="loader-wrapper"></div>; // Ini yang akan dirender jika `loading` true
+      return <div data-testid="loader-wrapper"></div>; 
     }
     return null;
   };
@@ -98,9 +97,7 @@ describe("RegistPage Component", () => {
 
     // Memastikan elemen-elemen form ada di dokumen
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-    // Gunakan teks label yang persis sama
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
-    // Gunakan teks label yang persis sama
     expect(screen.getByLabelText("Confirm Password")).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/cth: username/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/••••••••/i)).toBeInTheDocument();
@@ -124,9 +121,7 @@ describe("RegistPage Component", () => {
     );
 
     const usernameInput = screen.getByLabelText(/username/i);
-    // Dapatkan input "Password" secara spesifik
     const passwordInput = screen.getByLabelText("Password");
-    // Dapatkan input "Confirm Password" secara spesifik
     const confirmPasswordInput = screen.getByLabelText("Confirm Password");
 
     fireEvent.change(usernameInput, { target: { value: "testuser" } });
@@ -159,11 +154,11 @@ describe("RegistPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "normaluser" },
     });
-    // Dapatkan input "Password" secara spesifik
+
     fireEvent.change(screen.getByLabelText("Password"), {
       target: { value: "userpass" },
     });
-    // Dapatkan input "Confirm Password" secara spesifik
+
     fireEvent.change(screen.getByLabelText("Confirm Password"), {
       target: { value: "userpass" },
     });
@@ -188,14 +183,15 @@ describe("RegistPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "testuser" },
     });
-    // Dapatkan input "Password" secara spesifik
+
     fireEvent.change(screen.getByLabelText("Password"), {
       target: { value: "password123" },
     });
-    // Dapatkan input "Confirm Password" secara spesifik
+
     fireEvent.change(screen.getByLabelText("Confirm Password"), {
       target: { value: "passwordSalah" },
     });
+
     fireEvent.click(screen.getByRole("button", { name: "REGISTER" }));
 
     await waitFor(() => {
@@ -223,11 +219,9 @@ describe("RegistPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "existinguser" },
     });
-    // Dapatkan input "Password" secara spesifik
     fireEvent.change(screen.getByLabelText("Password"), {
       target: { value: "password123" },
     });
-    // Dapatkan input "Confirm Password" secara spesifik
     fireEvent.change(screen.getByLabelText("Confirm Password"), {
       target: { value: "password123" },
     });
@@ -252,14 +246,15 @@ describe("RegistPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "anyuser" },
     });
-    // Dapatkan input "Password" secara spesifik
+
     fireEvent.change(screen.getByLabelText("Password"), {
       target: { value: "anypass" },
     });
-    // Dapatkan input "Confirm Password" secara spesifik
+
     fireEvent.change(screen.getByLabelText("Confirm Password"), {
       target: { value: "anypass" },
     });
+
     fireEvent.click(screen.getByRole("button", { name: "REGISTER" }));
 
     await waitFor(() => {
@@ -294,11 +289,11 @@ describe("RegistPage Component", () => {
     fireEvent.change(screen.getByLabelText(/username/i), {
       target: { value: "user" },
     });
-    // Dapatkan input "Password" secara spesifik
+
     fireEvent.change(screen.getByLabelText("Password"), {
       target: { value: "pass" },
     });
-    // Dapatkan input "Confirm Password" secara spesifik
+
     fireEvent.change(screen.getByLabelText("Confirm Password"), {
       target: { value: "pass" },
     });
@@ -309,7 +304,6 @@ describe("RegistPage Component", () => {
       expect(registerButton).toHaveTextContent("PROCES...");
     });
 
-    // Kita mencari data-testid="loader" yang membungkus komponen Loading
     expect(screen.getByTestId("loader")).toBeInTheDocument();
 
     resolveFetch();
