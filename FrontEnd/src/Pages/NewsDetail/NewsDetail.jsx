@@ -8,12 +8,8 @@ const NewsDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Ambil artikel dari state, jika tidak ada, fetch ulang (logika dari SearchDetailPage)
   const { article: initialArticle } = location.state || {};
   const [article, setArticle] = useState(initialArticle);
-
-  // Anda mungkin perlu menambahkan useParams jika URL memiliki ID untuk fetch
-  // const { newsId } = useParams();
 
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -71,7 +67,6 @@ const NewsDetail = () => {
       return;
     }
 
-    // Gunakan identifier yang konsisten
     const articleIdentifier = article.url || article.id_news;
     if (!articleIdentifier) return;
 
@@ -95,21 +90,19 @@ const NewsDetail = () => {
   }, [article, token]);
 
   const handleLikeDislike = async (action) => {
-    if (!token) return alert("Silakan login terlebih dahulu.");
+    if (!token) return alert("Please log in first.");
     setLoadingLike(true);
 
     const articleIdentifier = article.url || article.id_news;
     if (!articleIdentifier) {
       setLoadingLike(false);
-      return alert("ID berita tidak ditemukan.");
+      return alert("News ID not found.");
     }
 
-    // --> [PERBAIKAN LOGIKA KATEGORI] <--
     const categoryNameToSync =
       article.category || article.source?.name || "Eksternal";
 
     try {
-      // Hanya sync jika ini adalah berita eksternal (memiliki 'url' tapi tidak 'id_news')
       if (article.url && !article.id_news) {
         await fetch(`${API_BASE_URL}/api/news/sync-external`, {
           method: "POST",
@@ -141,7 +134,7 @@ const NewsDetail = () => {
         },
         body: JSON.stringify(body),
       });
-      if (!res.ok) throw new Error("Failet to process request");
+      if (!res.ok) throw new Error("Failed to process request");
 
       const statusRes = await fetch(
         `${API_BASE_URL}/api/likes?id_news=${encodeURIComponent(
@@ -155,7 +148,7 @@ const NewsDetail = () => {
       setLikeCount(newData.likeCount);
       setDislikeCount(newData.dislikeCount);
     } catch (error) {
-      alert(error.message);
+      window.alert(error.message);
     } finally {
       setLoadingLike(false);
     }
@@ -177,8 +170,6 @@ const NewsDetail = () => {
     );
   }
 
-  // --> [PERBAIKAN UTAMA] <--
-  // Logika baru untuk mendapatkan nama kategori dari sumber manapun
   const categoryName =
     article?.category || article?.source?.name || "Eksternal";
 
@@ -225,6 +216,7 @@ const NewsDetail = () => {
         <button
           onClick={() => handleLikeDislike(true)}
           disabled={loadingLike || !token}
+          data-testid="like-button" 
           className={`flex items-center cursor-pointer space-x-2 px-4 py-2 rounded transition-colors duration-200 ${
             userLikeStatus === true
               ? "bg-green-500 text-white"
@@ -232,11 +224,12 @@ const NewsDetail = () => {
           } hover:bg-green-600 dark:hover:bg-green-600 disabled:opacity-50`}
         >
           <FaThumbsUp />
-          <span>{likeCount}</span>
+          <span data-testid="like-count">{likeCount}</span>
         </button>
         <button
           onClick={() => handleLikeDislike(false)}
           disabled={loadingLike || !token}
+          data-testid="dislike-button" 
           className={`flex items-center cursor-pointer space-x-2 px-4 py-2 rounded transition-colors duration-200 ${
             userLikeStatus === false
               ? "bg-red-500 text-white"
@@ -244,13 +237,14 @@ const NewsDetail = () => {
           } hover:bg-red-600 dark:hover:bg-red-600 disabled:opacity-50`}
         >
           <FaThumbsDown />
-          <span>{dislikeCount}</span>
+          <span data-testid="dislike-count">{dislikeCount}</span>
         </button>
       </div>
       <Comment
         articleUrl={article.url || article.id_news}
         token={token}
         userData={userData}
+        data-testid="comment-section"
       />
     </div>
   );

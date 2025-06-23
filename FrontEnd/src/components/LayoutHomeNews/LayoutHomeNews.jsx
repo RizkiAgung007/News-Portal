@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
+import { NEWS_API_KEY } from "../../api"; 
 
 // Mengambil API key dari env
-const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
+// const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 
 const LayoutHomeNews = () => {
   const [mainArticles, setMainArticles] = useState([]);
@@ -20,10 +21,12 @@ const LayoutHomeNews = () => {
       try {
         // Mengambil 3 jenis artikel secara paralel
         const [mainRes, breakingRes, latestRes] = await Promise.all([
-          fetch(`https://newsapi.org/v2/everything?q=news&apiKey=${API_KEY}`),
-          fetch(`https://newsapi.org/v2/everything?q=breaking%20news&apiKey=${API_KEY}`),
+          fetch(`https://newsapi.org/v2/everything?q=news&apiKey=${NEWS_API_KEY}`),
           fetch(
-            `https://newsapi.org/v2/everything?q=latest&sortBy=publishedAt&apiKey=${API_KEY}`
+            `https://newsapi.org/v2/everything?q=breaking%20news&apiKey=${NEWS_API_KEY}`
+          ),
+          fetch(
+            `https://newsapi.org/v2/everything?q=latest&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`
           ),
         ]);
 
@@ -53,7 +56,7 @@ const LayoutHomeNews = () => {
   // Tampilkan pesan loading jika data masih loading
   if (loading)
     return (
-      <Loading />
+        <Loading loading={loading}/>
     );
 
   // Tampilkan pesan error jika ada kesalahan saat fetch data
@@ -101,12 +104,14 @@ const LayoutHomeNews = () => {
                 {article.title}
               </h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 my-2">
-                {new Date(article.publishedAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'long', year: 'numeric' })}
+                {new Date(article.publishedAt).toLocaleDateString("id-ID", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
               </p>
               <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3 flex-grow">
-                {article.description
-                  ? article.description
-                  : "No Description"}
+                {article.description ? article.description : "No Description"}
               </p>
               <p className="text-green-600 dark:text-green-400 font-semibold text-sm mt-2 inline-block">
                 Read More...
@@ -128,21 +133,27 @@ const LayoutHomeNews = () => {
             onClick={() => handleClickArticle(mainArticle)}
           >
             <div className="overflow-hidden">
-                <img
-                    src={
-                    mainArticle.urlToImage ||
-                    "https://via.placeholder.com/800x450?text=No+Image"
-                    }
-                    alt={mainArticle.title}
-                    className="w-full h-96 object-cover transform transition-transform duration-500 ease-in-out"
-                />
+              <img
+                src={
+                  mainArticle.urlToImage ||
+                  "https://via.placeholder.com/800x450?text=No+Image"
+                }
+                alt={mainArticle.title}
+                className="w-full h-96 object-cover transform transition-transform duration-500 ease-in-out"
+              />
             </div>
             <div className="p-6">
               <h2 className="text-3xl font-bold mb-3 text-gray-900 dark:text-white group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors duration-300">
                 {mainArticle.title}
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
-                {new Date(mainArticle.publishedAt).toLocaleString("id-ID", { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                {new Date(mainArticle.publishedAt).toLocaleString("id-ID", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </p>
               <p className="text-gray-700 dark:text-gray-300 text-base">
                 {mainArticle.description || "No Description"}
@@ -175,23 +186,26 @@ const LayoutHomeNews = () => {
                   {article.title}
                 </h3>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-                  {new Date(article.publishedAt).toLocaleDateString("id-ID", { day: 'numeric', month: 'long' })}
+                  {new Date(article.publishedAt).toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    month: "long",
+                  })}
                 </p>
               </div>
             </div>
           ))}
         </div>
       </div>
-      
+
       {/* [PERBAIKAN] Menambahkan garis pemisah antar seksi */}
-      <hr className="border-gray-200 dark:border-gray-700 my-6"/>
+      <hr className="border-gray-200 dark:border-gray-700 my-6" />
 
       {/* Tampilkan breaking news dan latest news jika ada */}
       {breakingArticles.length > 0 &&
         renderArticleGrid(breakingArticles, "Breaking News")}
-      
-      <hr className="border-gray-200 dark:border-gray-700 my-6"/>
-      
+
+      <hr className="border-gray-200 dark:border-gray-700 my-6" />
+
       {latestArticles.length > 0 &&
         renderArticleGrid(latestArticles, "Latest News")}
     </div>

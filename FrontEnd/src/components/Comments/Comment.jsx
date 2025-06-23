@@ -111,7 +111,7 @@ const Comment = ({ articleUrl, token, userData }) => {
       toast.success("Comment successfully deleted!");
     } catch (err) {
       setError(err.message);
-      alert(err.message);
+      window.alert(err.message);
     } finally {
       setLoading(false);
       setCommentToDelete(null); 
@@ -183,6 +183,7 @@ const Comment = ({ articleUrl, token, userData }) => {
                     onClick={() => handleDeleteClick(comment)} 
                     className="ml-auto cursor-pointer text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-600"
                     disabled={loading}
+                    data-testid="delete-comment-button"
                   >
                     <FaRegTrashCan />
                   </button>
@@ -196,6 +197,7 @@ const Comment = ({ articleUrl, token, userData }) => {
       {/* Komponen ConfirmModal */}
       <Confirm
         isOpen={confirmModalOpen}
+        data-testid="confirm-modal"
         onClose={() => {
           setConfirmModalOpen(false);
           setCommentToDelete(null); 

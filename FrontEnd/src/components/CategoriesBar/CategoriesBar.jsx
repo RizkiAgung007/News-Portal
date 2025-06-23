@@ -33,7 +33,7 @@ const CategoriesBar = () => {
       key={cat}
       to={`/category/${cat.toLowerCase()}`}
       className={({ isActive }) =>
-        `text-sm md:text-base font-medium px-4 py-2 rounded-full transition-colors duration-300
+        `aktif text-sm md:text-base font-medium px-4 py-2 rounded-full transition-colors duration-300
         ${
           isActive
             ? "bg-green-600 text-white shadow"

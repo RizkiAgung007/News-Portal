@@ -6,15 +6,15 @@ import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 import { FaSun, FaMoon, FaTachometerAlt } from "react-icons/fa";
 
 const Navbar = ({ theme, toggleTheme }) => {
-  const [menuOpen, setMenuOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false);
   const [avatarMenuOpen, setAvatarMenuOpen] = useState(false);
   const [username, setUsername] = useState(
     localStorage.getItem("username") || ""
-  ); 
+  );
   const [searchTerm, setSearchTerm] = useState("");
-  const navigate = useNavigate(); 
-  const avatarMenuRef = useRef(); 
-  
+  const navigate = useNavigate();
+  const avatarMenuRef = useRef();
+
   useEffect(() => {
     const root = window.document.documentElement;
     if (theme === "dark") {
@@ -24,10 +24,6 @@ const Navbar = ({ theme, toggleTheme }) => {
     }
     localStorage.setItem("theme", theme);
   }, [theme]);
-
-  // const toggleTheme = () => {
-  //   setTheme(theme === 'light' ? 'dark' : 'light');
-  // };
 
   // useEffect untuk menutup menu avatar jika user mengklik di luar elemen tersebut
   useEffect(() => {
@@ -47,7 +43,6 @@ const Navbar = ({ theme, toggleTheme }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      // Mengarahkan ke halaman hasil pencarian jika input tidak kosong
       navigate(`/search?title=${encodeURIComponent(searchTerm.trim())}`);
       setSearchTerm("");
     }
@@ -72,7 +67,7 @@ const Navbar = ({ theme, toggleTheme }) => {
 
   // Fungsi untuk mengatur gaya NavLink berdasarkan apakah aktif atau tidak
   const navLinkStyles = ({ isActive }) =>
-    `text-lg text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition ${
+    `aktif text-lg text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition ${
       isActive ? "font-bold text-green-600 dark:text-green-400" : ""
     }`;
 
@@ -88,7 +83,7 @@ const Navbar = ({ theme, toggleTheme }) => {
       <div className="relative lg:w-[640px] w-48 lg:mx-4">
         <input
           type="text"
-          placeholder="Cari berita..."
+          placeholder="Search News..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onKeyDown={onKeyDown}
@@ -97,21 +92,32 @@ const Navbar = ({ theme, toggleTheme }) => {
         <CiSearch
           onClick={handleSearch}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 cursor-pointer"
+          data-testid="cisearch-icon"
         />
       </div>
 
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center gap-8 ml-6">
-        <NavLink to="/about-us" className={navLinkStyles}>
+        <NavLink
+          to="/about-us"
+          className={navLinkStyles}
+          data-testid="desktop-about-us-link"
+        >
           About Us
         </NavLink>
-        <NavLink to="/contact" className={navLinkStyles}>
+        <NavLink
+          to="/contact"
+          className={navLinkStyles}
+          data-testid="desktop-contact-link"
+        >
           Contact
         </NavLink>
 
         <button
           onClick={toggleTheme}
           className="p-2 rounded-full cursor-pointer text-gray-700 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+          aria-label="Toggle theme"
+          data-testid="desktop-toggle-theme-button"
         >
           {theme === "light" ? <FaMoon size={20} /> : <FaSun size={20} />}
         </button>
@@ -121,9 +127,13 @@ const Navbar = ({ theme, toggleTheme }) => {
           <RxAvatar
             className="w-7 h-7 cursor-pointer text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition"
             onClick={() => setAvatarMenuOpen(!avatarMenuOpen)}
+            aria-label="Avatar"
           />
           {avatarMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 z-50">
+            <div
+              className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-2 z-50"
+              data-testid="desktop-avatar-menu"
+            >
               {username ? (
                 <>
                   {localStorage.getItem("role") === "admin" && (
@@ -133,6 +143,7 @@ const Navbar = ({ theme, toggleTheme }) => {
                         navigate("/admin/dashboard");
                       }}
                       className="block w-full cursor-pointer text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      data-testid="desktop-dashboard-button"
                     >
                       Dashboard
                     </button>
@@ -143,6 +154,7 @@ const Navbar = ({ theme, toggleTheme }) => {
                       navigate("/profile");
                     }}
                     className="block w-full cursor-pointer text-left px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    data-testid="desktop-profile-button"
                   >
                     Profile
                   </button>
@@ -150,6 +162,7 @@ const Navbar = ({ theme, toggleTheme }) => {
                   <button
                     onClick={handleLogout}
                     className="block w-full cursor-pointer text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    data-testid="desktop-logout-button"
                   >
                     Logout
                   </button>
@@ -161,6 +174,7 @@ const Navbar = ({ theme, toggleTheme }) => {
                     navigate("/login");
                   }}
                   className="block w-full text-left px-4 py-2 text-green-600 dark:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  data-testid="desktop-login-button"
                 >
                   Login
                 </button>
@@ -170,24 +184,34 @@ const Navbar = ({ theme, toggleTheme }) => {
         </div>
       </div>
 
-      {/* Hamburger icon untuk mobile */}
+      {/* Ikon Hamburger untuk mobile */}
       <div className="lg:hidden flex items-center ml-6">
         <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
           {menuOpen ? (
-            <HiOutlineX className="w-7 h-7 text-gray-700 dark:text-gray-300" />
+            <HiOutlineX
+              className="w-7 h-7 text-gray-700 dark:text-gray-300"
+              data-testid="close-menu-icon"
+            />
           ) : (
-            <HiOutlineMenuAlt3 className="w-7 h-7 text-gray-700 dark:text-gray-300" />
+            <HiOutlineMenuAlt3
+              className="w-7 h-7 text-gray-700 dark:text-gray-300"
+              data-testid="open-menu-icon"
+            />
           )}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Menu Mobile */}
       {menuOpen && (
-        <div className="absolute top-full right-0 w-full sm:w-60 bg-white dark:bg-gray-800 rounded-b-lg p-4 border-x border-b border-gray-200 dark:border-gray-700 shadow-lg flex flex-col gap-4 lg:hidden z-50">
+        <div
+          className="absolute top-full right-0 w-full sm:w-60 bg-white dark:bg-gray-800 rounded-b-lg p-4 border-x border-b border-gray-200 dark:border-gray-700 shadow-lg flex flex-col gap-4 lg:hidden z-50"
+          data-testid="mobile-menu" 
+        >
           <NavLink
             to="/about-us"
             className={navLinkStyles}
             onClick={() => setMenuOpen(false)}
+            data-testid="mobile-about-us-link"
           >
             About Us
           </NavLink>
@@ -195,6 +219,7 @@ const Navbar = ({ theme, toggleTheme }) => {
             to="/contact"
             className={navLinkStyles}
             onClick={() => setMenuOpen(false)}
+            data-testid="mobile-contact-link"
           >
             Contact
           </NavLink>
@@ -207,6 +232,7 @@ const Navbar = ({ theme, toggleTheme }) => {
                   to="/admin/dashboard"
                   className="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400"
                   onClick={() => setMenuOpen(false)}
+                  data-testid="mobile-dashboard-link"
                 >
                   <FaTachometerAlt className="w-6 h-6" /> <span>Dashboard</span>
                 </Link>
@@ -215,6 +241,7 @@ const Navbar = ({ theme, toggleTheme }) => {
                 to="/profile"
                 className="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400"
                 onClick={() => setMenuOpen(false)}
+                data-testid="mobile-profile-link"
               >
                 <RxAvatar className="w-6 h-6" /> <span>Profile</span>
               </Link>
@@ -222,21 +249,26 @@ const Navbar = ({ theme, toggleTheme }) => {
           ) : null}
 
           <button
-            onClick={toggleTheme}
+            onClick={() => {
+              toggleTheme();
+              setMenuOpen(false);
+            }} 
             className="flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400"
+            data-testid="mobile-change-theme-button" 
           >
             {theme === "light" ? (
               <FaMoon className="w-6 h-6" />
             ) : (
               <FaSun className="w-6 h-6" />
             )}{" "}
-            <span>Ganti Tema</span>
+            <span>Change Theme</span>
           </button>
           <hr className="border-gray-200 dark:border-gray-700" />
           {username ? (
             <button
               onClick={handleLogout}
               className="text-red-600 dark:text-red-400 text-left"
+              data-testid="mobile-logout-button"
             >
               Logout
             </button>
@@ -245,6 +277,7 @@ const Navbar = ({ theme, toggleTheme }) => {
               to="/login"
               className="text-green-600 dark:text-green-400"
               onClick={() => setMenuOpen(false)}
+              data-testid="mobile-login-link"
             >
               Login
             </Link>

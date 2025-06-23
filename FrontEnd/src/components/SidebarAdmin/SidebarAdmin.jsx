@@ -53,7 +53,7 @@ const SidebarAdmin = ({
         <Link to="/admin/dashboard" className="flex items-center space-x-3">
           <FaCogs className="text-3xl text-green-500 flex-shrink-0" />
           <span
-            className={`text-xl font-semibold tracking-wider text-gray-800 dark:text-white whitespace-nowrap transition-opacity duration-200 ${
+            className={`aktif text-xl font-semibold tracking-wider text-gray-800 dark:text-white whitespace-nowrap transition-opacity duration-200 ${
               isDesktopCollapsed ? "opacity-0" : "opacity-100"
             }`}
           >
