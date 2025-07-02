@@ -40,6 +40,9 @@ portal-berita/
 - [Body-parser](https://www.npmjs.com/package/body-parser)
 - [Dote-env](https://www.npmjs.com/package/dotenv)
 
+### Database
+
+- [MySQL](https://www.mysql.com/)
 ---
 
 ---
