@@ -168,7 +168,7 @@ router.get("/profile", verifyToken, async (req, res) => {
       if (rows.length === 0)
         return res.status(404).json({ message: "Admin tidak ditemukan" });
       return res.status(200).json({ 
-        userId: rows[0].id_admin, // Konsisten menggunakan userId
+        userId: rows[0].id_admin, 
         username: rows[0].username, 
         role: "admin", 
       });
@@ -180,7 +180,7 @@ router.get("/profile", verifyToken, async (req, res) => {
       if (rows.length === 0)
         return res.status(404).json({ message: "User tidak ditemukan" });
       return res.status(200).json({
-        userId: rows[0].id_users, // Konsisten menggunakan userId
+        userId: rows[0].id_users, 
         username: rows[0].username,
         createdAt: rows[0].create_at,
         role: "user",
@@ -296,8 +296,8 @@ router.get("/activity-stats/:id", verifyToken, async (req, res) => {
     return res.status(403).json({ message: "Akses ditolak. Hanya admin yang dapat melihat statistik aktivitas pengguna lain." });
   }
   try {
-    const userIdToView = req.params.id; // Ambil ID user dari parameter URL
-
+    const userIdToView = req.params.id; 
+    
     const likeQuery = "SELECT COUNT(*) AS likeCount FROM likes WHERE id_users = ? AND value = 1";
     const [likeResult] = await db.query(likeQuery, [userIdToView]);
 

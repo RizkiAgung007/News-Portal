@@ -88,7 +88,7 @@ describe("RegistPage Component", () => {
   });
 
   // Test Case 1: Komponen merender dengan benar
-  test("merender elemen-elemen form register dengan benar", () => {
+  test("1. Merender elemen-elemen form register dengan benar", () => {
     render(
       <Router>
         <RegistPage />
@@ -113,7 +113,7 @@ describe("RegistPage Component", () => {
   });
 
   // Test Case 2: Input fields diperbarui dengan nilai yang benar
-  test("memungkinkan pengetikan pada field username, password dan confirm password", () => {
+  test("2. Memungkinkan pengetikan pada field username, password dan confirm password", () => {
     render(
       <Router>
         <RegistPage />
@@ -134,7 +134,7 @@ describe("RegistPage Component", () => {
   });
 
   // Test Case 3: Register berhasil untuk user
-  test("menangani registrasi berhasil dan navigasi ke halaman login", async () => {
+  test("3. Menangani registrasi berhasil dan navigasi ke halaman login", async () => {
     global.fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
@@ -173,7 +173,7 @@ describe("RegistPage Component", () => {
   });
 
   // Test Case 4: Registrasi gagal (password tidak cocok)
-  test("menangani registrasi gagal jika password dan konfirmasi tidak cocok", async () => {
+  test("4. Menangani registrasi gagal jika password dan konfirmasi tidak cocok", async () => {
     render(
       <Router>
         <RegistPage />
@@ -204,7 +204,7 @@ describe("RegistPage Component", () => {
   });
 
   // Test Case 5: Registrasi gagal (respons server tidak OK)
-  test("menangani registrasi gagal dengan pesan error dari server", async () => {
+  test("5. Menangani registrasi gagal dengan pesan error dari server", async () => {
     global.fetch.mockResolvedValueOnce({
       ok: false,
       json: () => Promise.resolve({ message: "Username sudah ada." }),
@@ -234,7 +234,7 @@ describe("RegistPage Component", () => {
   });
 
   // Test Case 6: Registrasi gagal (error jaringan/fetch)
-  test("menangani registrasi gagal dengan error jaringan", async () => {
+  test("6. Menangani registrasi gagal dengan error jaringan", async () => {
     global.fetch.mockRejectedValueOnce(new Error("Koneksi terputus."));
 
     render(
@@ -267,7 +267,7 @@ describe("RegistPage Component", () => {
   });
 
   // Test Case 7: Loading state ditampilkan saat registrasi
-  test("menunjukkan indikator loading selama proses registrasi", async () => {
+  test("7. Menunjukkan indikator loading selama proses registrasi", async () => {
     let resolveFetch;
     const fetchPromise = new Promise((resolve) => {
       resolveFetch = () =>
@@ -316,7 +316,7 @@ describe("RegistPage Component", () => {
   });
 
   // Test Case 8: Tombol Keluar (Exit)
-  test("tombol keluar menavigasi ke halaman utama", () => {
+  test("8. Tombol keluar menavigasi ke halaman utama", () => {
     render(
       <Router>
         <RegistPage />

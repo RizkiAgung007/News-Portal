@@ -38,6 +38,7 @@ const ContactPage = () => {
 
     if (!formData.name || !formData.email || !formData.subject || !formData.message) {
       setError("All fields are required to be filled in.");
+      toast.error("All columns are required to be filled in.");
       setIsLoading(false);
       return;
     }
@@ -66,6 +67,7 @@ const ContactPage = () => {
 
     } catch (err) {
       setError(err.message)
+      toast.error("Failed to submit review");
     } finally {
       setIsLoading(false);
     }
@@ -124,6 +126,7 @@ const ContactPage = () => {
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
+                aria-label="maps"
               ></iframe>
             </div>
           </div>

@@ -3,8 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../../config";
 import PageNotFound from "../../components/NotFound/NotFound"
 import Loading from "../../components/Loading/Loading"
+import { NEWS_API_KEY } from "../../api";
 
-const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
+// const API_KEY = import.meta.env.VITE_NEWS_API_KEY;
 
 const CategoryPage = () => {
   const { categoryName } = useParams();
@@ -35,7 +36,7 @@ const CategoryPage = () => {
           : [];
 
         const apiRes = await fetch(
-          `https://newsapi.org/v2/top-headlines?country=us&category=${categoryName}&apiKey=${API_KEY}`
+          `https://newsapi.org/v2/top-headlines?country=us&category=${categoryName}&apiKey=${NEWS_API_KEY}`
         );
         const apiData = await apiRes.json();
 

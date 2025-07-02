@@ -62,10 +62,10 @@ const RegistPage = () => {
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-md w-full border-l-4 border-green-500">
         <div className="p-8">
           <h1 className="text-center text-2xl font-bold mb-1 text-gray-800 dark:text-gray-100">
-            Buat Akun Baru
+            Create a New Account
           </h1>
           <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-8">
-            Daftar untuk mulai memberikan kontribusi.
+            Sign up to start contributing.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">

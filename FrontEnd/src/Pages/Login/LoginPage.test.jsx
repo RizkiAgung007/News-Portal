@@ -83,7 +83,7 @@ describe("LoginPage Component", () => {
   });
 
   // Test Case 1: Komponen merender dengan benar
-  test("merender elemen-elemen form login dengan benar", () => {
+  test("1. Merender elemen-elemen form login dengan benar", () => {
     render(
       <Router>
         <LoginPage />
@@ -98,7 +98,7 @@ describe("LoginPage Component", () => {
     expect(screen.getByRole("button", { name: "LOGIN" })).toBeInTheDocument();
     expect(screen.getByText(/don't have an account yet?/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: /register now/i })
+      screen.getByRole("link", { name: /sign up/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: "Exit Login" })
@@ -106,7 +106,7 @@ describe("LoginPage Component", () => {
   });
 
   // Test Case 2: Input fields diperbarui dengan nilai yang benar
-  test("memungkinkan pengetikan pada field username dan password", () => {
+  test("2. Memungkinkan pengetikan pada field username dan password", () => {
     render(
       <Router>
         <LoginPage />
@@ -124,7 +124,7 @@ describe("LoginPage Component", () => {
   });
 
   // Test Case 3: Login berhasil untuk admin
-  test("menangani login berhasil dan navigasi ke dashboard admin untuk peran admin", async () => {
+  test("3. Menangani login berhasil dan navigasi ke dashboard admin untuk peran admin", async () => {
     global.fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
@@ -185,7 +185,7 @@ describe("LoginPage Component", () => {
   });
 
   // Test Case 4: Login berhasil untuk non-admin (pengguna biasa)
-  test("menangani login berhasil dan navigasi ke halaman utama untuk peran pengguna biasa", async () => {
+  test("4. Menangani login berhasil dan navigasi ke halaman utama untuk peran pengguna biasa", async () => {
     global.fetch.mockResolvedValueOnce({
       ok: true,
       json: () =>
@@ -221,7 +221,7 @@ describe("LoginPage Component", () => {
   });
 
   // Test Case 5: Login gagal (respons server tidak OK)
-  test("menangani login gagal dengan pesan error dari server", async () => {
+  test("5. Menangani login gagal dengan pesan error dari server", async () => {
     global.fetch.mockResolvedValueOnce({
       ok: false,
       json: () => Promise.resolve({ message: "Username atau password salah." }),
@@ -251,7 +251,7 @@ describe("LoginPage Component", () => {
   });
 
   // Test Case 6: Login gagal (error jaringan/fetch)
-  test("menangani login gagal dengan error jaringan", async () => {
+  test("6. Menangani login gagal dengan error jaringan", async () => {
     global.fetch.mockRejectedValueOnce(new Error("Koneksi terputus."));
 
     render(
@@ -280,7 +280,7 @@ describe("LoginPage Component", () => {
   });
 
   // Test Case 7: Loading state ditampilkan saat login
-  test("menunjukkan indikator loading selama proses login", async () => {
+  test("7. Menunjukkan indikator loading selama proses login", async () => {
     let resolveFetch;
     const fetchPromise = new Promise((resolve) => {
       resolveFetch = () =>
@@ -326,7 +326,7 @@ describe("LoginPage Component", () => {
   });
 
   // Test Case 8: Tombol Keluar (Exit)
-  test("tombol keluar menavigasi ke halaman utama", () => {
+  test("8. Tombol keluar menavigasi ke halaman utama", () => {
     render(
       <Router>
         <LoginPage />

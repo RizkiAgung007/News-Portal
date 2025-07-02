@@ -114,7 +114,7 @@ const SearchDetail = () => {
 
   const handleLikeDislike = async (action) => {
     if (!token) {
-      alert("Please log in first to give a like or dislike.");
+      window.alert("Please log in first to give a like or dislike.");
       return;
     }
     setLoadingLike(true);
@@ -228,35 +228,42 @@ const SearchDetail = () => {
       <div className="flex items-center space-x-6 mb-6 border-t border-b border-gray-200 dark:border-gray-700 py-4">
         <button
           disabled={loadingLike || !token}
+          data-testid="like-button"
+          aria-label="like"
           onClick={() => handleLikeDislike(true)}
-          className={`flex items-center space-x-2 px-4 py-2 cursor-pointer rounded transition-colors duration-200 ${
+          className={`aktif flex items-center space-x-2 px-4 py-2 cursor-pointer rounded transition-colors duration-200 ${
             userLikeStatus === true
               ? "bg-green-500 text-white"
               : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
           } hover:bg-green-600 dark:hover:bg-green-600 disabled:opacity-50`}
         >
           <FaThumbsUp />
-          <span>{likeCount}</span>
+          <span data-testid="like-count">{likeCount}</span>
         </button>
         <button
           disabled={loadingLike || !token}
           onClick={() => handleLikeDislike(false)}
+          data-testid="dislike-button"
+          aria-label="dislike"
           className={`flex items-center space-x-2 px-4 py-2 cursor-pointer rounded transition-colors duration-200 ${
             userLikeStatus === false
-              ? "bg-red-500 text-white"
+              ? "aktif bg-red-500 text-white"
               : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
           } hover:bg-red-600 dark:hover:bg-red-600 disabled:opacity-50`}
         >
           <FaThumbsDown />
-          <span>{dislikeCount}</span>
+          <span data-testid="dislike-count">{dislikeCount}</span>
         </button>
       </div>
 
-      <Comment
-        articleUrl={article.url || article.id_news || newsId}
-        token={token}
-        userData={userData}
-      />
+      {token && userData && (
+        <Comment
+          articleUrl={article.url || article.id_news || newsId}
+          token={token}
+          userData={userData}
+          data-testid="comment"
+        />
+      )}
     </div>
   );
 };
