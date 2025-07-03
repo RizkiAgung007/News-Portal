@@ -24,22 +24,13 @@ dist-ssr/
 *.sw?
 
 # Sensitive configuration
-FrontEnd/.env
-FrontEnd/src/config.js
-FrontEnd/node_modules/
+# FrontEnd/.env
+# FrontEnd/src/config.js
+# FrontEnd/node_modules/
 
-BackEnd/.env
-BackEnd/uploads/
-BackEnd/node_modules/
-
-admin.sql
-category.sql
-comments.sql
-likes.sql
-news.sql
-portal_berita.sql
-ulasan.sql
-users.sql
+.env
+uploads/
+node_modules/
 
 # Misc
 npm.txt
