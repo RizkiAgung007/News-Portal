@@ -48,10 +48,8 @@ const SearchPage = () => {
       )}
       {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
       {!loading && !error && results.length === 0 && (
-        <div className="w-full flex flex-col items-center justify-center text-center py-16">
-          <div className="w-1/2 items-center justify-center flex dark:bg-gray-600 p-4 rounded-full">
-            <NotFound />
-          </div>
+        <div>
+          <NotFound />
         </div>
       )}
 
