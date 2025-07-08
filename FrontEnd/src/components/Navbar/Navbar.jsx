@@ -77,7 +77,7 @@ const Navbar = ({ theme, toggleTheme }) => {
         to="/"
         className="text-xl font-bold text-gray-900 italic dark:text-gray-100"
       >
-        Portal<span className="text-green-500">Berita</span>
+        News<span className="text-green-500">Lalin</span>
       </Link>
 
       <div className="relative lg:w-[640px] w-48 lg:mx-4">

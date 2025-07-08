@@ -30,11 +30,11 @@ ChartJS.register(
 );
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
         <App />
       </ThemeProvider>
     </BrowserRouter>
-  </StrictMode>,
+  // </StrictMode>,
 );

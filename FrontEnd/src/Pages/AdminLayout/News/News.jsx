@@ -224,10 +224,10 @@ const News = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div className="w-full md:w-auto">
           <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
-            Manajemen Berita
+            News Management
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Total Berita:{" "}
+            Total News:{" "}
             <strong className="text-green-600 dark:text-green-400">
               {totalNewsCount}
             </strong>
@@ -420,7 +420,7 @@ const News = () => {
             disabled={currentPage === 1 || loading}
             className="px-4 py-2 cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 transition-colors"
           >
-            Sebelumnya
+            Prev
           </button>
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
@@ -441,7 +441,7 @@ const News = () => {
             disabled={currentPage === totalPages || loading}
             className="px-4 py-2 cursor-pointer bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 transition-colors"
           >
-            Selanjutnya
+            Next
           </button>
         </div>
       )}

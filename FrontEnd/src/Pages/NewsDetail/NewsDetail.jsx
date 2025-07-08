@@ -8,8 +8,11 @@ const NewsDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+
   const { article: initialArticle } = location.state || {};
   const [article, setArticle] = useState(initialArticle);
+
+
 
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -98,9 +101,10 @@ const NewsDetail = () => {
       setLoadingLike(false);
       return alert("News ID not found.");
     }
-
+    
+    // [PERBAIKAN] Menggunakan properti standar 'sourceName'
     const categoryNameToSync =
-      article.category || article.source?.name || "Eksternal";
+      article.category || article.sourceName || "Eksternal";
 
     try {
       if (article.url && !article.id_news) {
@@ -114,9 +118,9 @@ const NewsDetail = () => {
             url: article.url,
             title: article.title,
             description: article.description,
-            urlToImage: article.urlToImage,
+            image: article.imageUrl, 
             publishedAt: article.publishedAt,
-            category: categoryNameToSync,
+            category: article.category,
           }),
         });
       }
@@ -158,20 +162,20 @@ const NewsDetail = () => {
     return (
       <div className="max-w-4xl mx-auto p-6 text-center bg-gray-50 dark:bg-gray-900 min-h-screen">
         <p className="text-xl text-gray-800 dark:text-gray-100">
-          Data Berita Tidak Tersedia.
+          News Data Not Available.
         </p>
         <button
           onClick={() => navigate("/")}
           className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
         >
-          Kembali ke Beranda
+          Back
         </button>
       </div>
     );
   }
 
   const categoryName =
-    article?.category || article?.source?.name || "Eksternal";
+    article?.category || article?.sourceName || "Eksternal";
 
   return (
     <div className="pt-6 md:px-32 px-4 bg-gray-50 dark:bg-gray-900">
@@ -183,12 +187,15 @@ const NewsDetail = () => {
           "id-ID"
         )}
       </p>
+      
       <img
         src={
           article.urlToImage ||
-          (article.url_photo
+          article.imageUrl || 
+          article.image ||    
+          (article.url_photo  
             ? `${API_BASE_URL}${article.url_photo}`
-            : "https://via.placeholder.com/800x450?text=No+Image")
+            : "https://via.placeholder.com/800x450?text=No+Image") 
         }
         alt={article.title}
         className="md:w-1/2 w-full h-auto mb-6 rounded-lg shadow-md"

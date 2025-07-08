@@ -370,7 +370,7 @@ const Review = () => {
             disabled={currentPage === 1 || loading}
             className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 transition-colors"
           >
-            Sebelumnya
+            Prev
           </button>
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
             <button
@@ -391,7 +391,7 @@ const Review = () => {
             disabled={currentPage === totalPages || loading}
             className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 disabled:opacity-50 transition-colors"
           >
-            Selanjutnya
+            Next
           </button>
         </div>
       )}

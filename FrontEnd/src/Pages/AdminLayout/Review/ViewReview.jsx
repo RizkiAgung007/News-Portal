@@ -18,9 +18,7 @@ const ViewReview = () => {
   useEffect(() => {
     if (!id || !token) {
       if (!token) {
-        toast.error(
-          "You must be logged in as an admin to view this page.."
-        );
+        toast.error("You must be logged in as an admin to view this page..");
         navigate("/login");
       } else {
         setError("ID ulasan tidak ditemukan.");
@@ -130,10 +128,20 @@ const ViewReview = () => {
           <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100 border-b border-gray-300 dark:border-gray-600 pb-2">
             Message
           </h2>
-          <div className="p-4 text-justify">
-            <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap">
-              {reviewDetail.message}
-            </p>
+          <div className="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 text-lg leading-relaxed whitespace-pre-wrap text-justify">
+            {reviewDetail.message
+              ? reviewDetail.message.split(/\n\s*\n/).map((paragraph, index) => (
+                <div
+                  key={index}
+                  className="my-8"
+                  style={{
+                    textIndent: "3rem",
+                  }}
+                >
+                  {paragraph}
+                </div>
+              ))
+              : "Not have content"}
           </div>
         </section>
       </div>

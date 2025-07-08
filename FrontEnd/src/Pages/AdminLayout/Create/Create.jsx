@@ -148,7 +148,7 @@ const Create = () => {
             onChange={handleChange}
             placeholder="Enter the news title"
             required
-            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           />
         </div>
 
@@ -168,7 +168,7 @@ const Create = () => {
             placeholder="Enter news description"
             required
             rows={6}
-            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
           />
         </div>
 
@@ -187,7 +187,7 @@ const Create = () => {
               value={form.category}
               onChange={handleChange}
               required
-              className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             >
               <option value="" disabled>
                 Choose a category
@@ -216,7 +216,7 @@ const Create = () => {
               onChange={handleChange}
               placeholder="Enter the Author's name"
               required
-              className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
             />
           </div>
         </div>

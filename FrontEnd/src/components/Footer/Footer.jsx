@@ -19,8 +19,8 @@ const Footer = () => {
           
           {/* Kolom Logo & Deskripsi */}
           <div className="col-span-2 lg:col-span-2">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
-              Portal<span className="text-green-500">Berita</span>
+            <h3 className="text-2xl font-bold text-gray-900 italic dark:text-white mb-3">
+              News<span className="text-green-500">Lalin</span>
             </h3>
             <p className="max-w-sm text-sm">
               Platform Anda untuk mendapatkan informasi terkini dan terpercaya

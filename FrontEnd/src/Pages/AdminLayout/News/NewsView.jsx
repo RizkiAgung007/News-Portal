@@ -109,8 +109,22 @@ const NewsView = () => {
           className="w-full h-auto object-cover rounded-lg mb-6"
         />
 
-        <div className="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 text-lg leading-relaxed">
-          <p>{newsDetail.description}</p>
+        <div className="prose dark:prose-invert max-w-none text-gray-800 dark:text-gray-200 text-lg leading-relaxed whitespace-pre-wrap text-justify">
+          {
+            newsDetail.description
+            ? newsDetail.description.split(/\n\s*\n/).map((paragraph, index) => (
+              <div
+                key={index}
+                className="my-8"
+                style={{ 
+                  textIndent: '3rem' 
+                }}
+              >
+                {paragraph}
+              </div>
+            ))
+            : "Not have content"
+          }
         </div>
       </div>
     </div>

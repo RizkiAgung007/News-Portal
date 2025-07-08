@@ -5,6 +5,7 @@ import { API_BASE_URL } from "../../config";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import Loading from "../../components/Loading/Loading";
 
+
 const SearchDetail = () => {
   const location = useLocation();
   const { newsId } = useParams();
@@ -13,6 +14,9 @@ const SearchDetail = () => {
   const [article, setArticle] = useState(location.state?.article || null);
   const [loading, setLoading] = useState(!article);
   const [error, setError] = useState(null);
+
+  // const { article: initialArticle } = location.state || {};
+  // console.log("DATA ARTIKEL DI HALAMAN DETAIL:", initialArticle);
 
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -194,21 +198,46 @@ const SearchDetail = () => {
           ? new Date(article.publishedAt).toLocaleString("id-ID")
           : "Date not available"}
       </p>
-      <img
+      
+      { article.url_photo ?
+        <img
         src={
           article.url_photo
-            ? `${API_BASE_URL}${article.url_photo}`
+            ?`${API_BASE_URL}${article.url_photo}`
             : article.urlToImage ||
               "https://via.placeholder.com/800x450?text=No+Image"
         }
         alt={article.title}
-        className="md:w-1/2 w-full h-auto mb-6 rounded-lg shadow-md"
+        className="w-full md:h-[750px] object-cover mb-6 rounded-lg shadow-md"
       />
+      :
+      <img
+        src={
+          article.urlToImage
+            ?`${API_BASE_URL}${article.urlToImage}`
+            : article.urlToImage ||
+              "https://via.placeholder.com/800x450?text=No+Image"
+        }
+        alt={article.title}
+        className="w-full md:h-[750px] object-cover mb-6 rounded-lg shadow-md"
+      />}
 
-      <div className="prose md:w-[1000px] text-lg max-w-none mb-4 dark:prose-invert dark:text-gray-200">
-        {article.content
-          ? article.content.replace(/\[\+\d+ chars\]$/, "")
-          : article.description || "Tidak ada konten"}
+      <div className="prose md:w-[1000px] text-lg max-w-none text-justify mb-4 dark:prose-invert dark:text-gray-200 whitespace-pre-wrap">
+        {
+          article.description
+            ? article.description.split(/\n\s*\n/).map((paragraph, index) => (
+                <div 
+                  key={index}
+                  className="my-8"
+                  style={{ 
+                    textIndent: '3rem' 
+                  }}
+                >
+                  {paragraph}
+                </div>
+              ))
+            : "Not have content"
+        }
       </div>
 
       {article.category && (
@@ -256,14 +285,14 @@ const SearchDetail = () => {
         </button>
       </div>
 
-      {token && userData && (
+      {/* {token && userData && ( */}
         <Comment
           articleUrl={article.url || article.id_news || newsId}
           token={token}
           userData={userData}
           data-testid="comment"
         />
-      )}
+      {/* )} */}
     </div>
   );
 };

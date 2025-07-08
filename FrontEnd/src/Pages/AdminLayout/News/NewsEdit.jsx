@@ -146,7 +146,7 @@ const EditNews = () => {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            className="mt-1 block w-full px-3 py-2 bg-white dark:text-gray-300 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
           />
         </div>
         <div>
@@ -161,7 +161,7 @@ const EditNews = () => {
             rows="10"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+            className="mt-1 block w-full px-3 py-2 bg-white dark:text-gray-300 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
           ></textarea>
         </div>
         <div className="flex justify-between gap-12">
@@ -176,7 +176,7 @@ const EditNews = () => {
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+              className="mt-1 block w-full px-3 py-2 bg-white dark:text-gray-300 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
             >
               <option value="">Select Category</option>
               {categories.map((cat) => (
@@ -198,7 +198,7 @@ const EditNews = () => {
               id="creator"
               value={creator}
               onChange={(e) => setCreator(e.target.value)}
-              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
+              className="mt-1 block w-full px-3 py-2 bg-white dark:text-gray-300 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
             />
           </div>
         </div>
@@ -213,11 +213,11 @@ const EditNews = () => {
             type="file"
             id="photo"
             onChange={handlePhotoChange}
-            className="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+            className="mt-1 block w-full text-sm text-gray-500 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
           />
           {preview && (
             <div className="mt-4">
-              <p className="text-sm text-gray-500 mb-2">Photo Preview:</p>
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Photo Preview:</p>
               <img
                 src={preview}
                 alt="Preview"
