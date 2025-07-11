@@ -173,7 +173,7 @@ const Create = () => {
         </div>
 
         {/* Kategori */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6">
           <div>
             <label
               htmlFor="category"
@@ -193,7 +193,7 @@ const Create = () => {
                 Choose a category
               </option>
               {categories.map((cat) => (
-                <option key={cat.id_category} value={cat.name}>
+                <option key={cat.id_category} value={cat.name} className="w-1/2">
                   {cat.name}
                 </option>
               ))}
